@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Taproom · Pizza — Table QR codes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<style>
+  :root {
+    --paper: #d8d2c4;
+    --paper-deep: #c9c1a8;
+    --ink: #2b1208;
+    --accent: #a83817;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #2a221c; font-family: 'DM Mono', monospace; color: var(--ink); }
+
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(20,16,12,0.96);
+    backdrop-filter: blur(8px);
+    color: #fefbf2;
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .toolbar h1 {
+    margin: 0; font-family: 'Archivo Black', sans-serif;
+    font-size: 18px; letter-spacing: -0.02em;
+  }
+  .toolbar .controls { display: flex; align-items: center; gap: 10px; }
+  .toolbar label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; }
+  .toolbar select, .toolbar input[type=number] {
+    background: #fefbf2; color: #1a1310;
+    border: none; padding: 6px 10px; border-radius: 6px;
+    font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600;
+  }
+  .toolbar button {
+    background: var(--accent); color: #fff; border: none;
+    padding: 8px 14px; border-radius: 6px;
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+
+  .sheet {
+    max-width: 1100px; margin: 24px auto;
+    padding: 30px;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 14% 22%, rgba(120,90,40,0.05) 0, transparent 40%),
+      radial-gradient(circle at 86% 78%, rgba(120,90,40,0.05) 0, transparent 40%);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  /* ── Table card ── */
+  .tcard {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 16px 14px 18px;
+    text-align: center;
+    page-break-inside: avoid;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .tcard-wordmark {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px; line-height: 0.85; letter-spacing: -0.04em;
+    color: var(--accent);
+  }
+  .tcard-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 36px; line-height: 0.9; letter-spacing: -0.05em;
+    color: var(--ink);
+    margin-top: 2px;
+  }
+  .tcard-num small {
+    display: block; font-size: 9px; letter-spacing: 0.15em;
+    color: var(--ink); opacity: 0.7;
+    font-family: 'DM Mono', monospace; font-weight: 500;
+    margin-bottom: -2px;
+  }
+
+  .tcard-qr {
+    margin: 6px 0 4px;
+    position: relative;
+    width: 170px; height: 170px;
+  }
+
+  .tcard-msg {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px; letter-spacing: 0.04em;
+    color: var(--accent); text-transform: lowercase;
+    line-height: 1.1;
+  }
+  .tcard-msg .lg { font-size: 14px; }
+  .tcard-foot {
+    font-family: 'DM Mono', monospace; font-size: 8.5px;
+    color: var(--ink); opacity: 0.6;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── Slice container ── */
+  .slice-wrap {
+    width: 200px; height: 180px;
+    position: relative;
+  }
+  .slice-wrap svg.slice-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .slice-wrap .qr-in-slice {
+    position: absolute;
+    top: 64px; left: 50%;
+    transform: translateX(-50%);
+    width: 88px; height: 88px;
+    background: #fefbf2;
+    padding: 4px;
+  }
+
+  /* ── Pizza container ── */
+  .pizza-wrap {
+    width: 200px; height: 200px;
+    position: relative;
+  }
+  .pizza-wrap svg.pizza-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+  .pizza-wrap .qr-in-pizza {
+    position: absolute;
+    top: 56px; left: 50%;
+    transform: translateX(-50%);
+    width: 88px; height: 88px;
+    background: #fefbf2;
+    padding: 4px;
+  }
+
+  .tcard canvas { display: block; image-rendering: pixelated; }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { box-shadow: none; margin: 0; padding: 12mm; max-width: none; background: #fff; }
+    .grid { gap: 8mm; grid-template-columns: repeat(3, 1fr); }
+    .tcard { background: #fff; page-break-inside: avoid; }
+    @page { size: A4 portrait; margin: 10mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>The Taproom · Pizza — table QR sheet</h1>
+  <div class="controls">
+    <label>Style</label>
+    <select id="style">
+      <option value="plain">Plain</option>
+      <option value="slice" selected>Pizza slice</option>
+      <option value="pizza">Full pizza</option>
+    </select>
+    <label>Tables</label>
+    <input id="count" type="number" min="1" max="60" value="30" />
+    <label>Base URL</label>
+    <input id="baseurl" type="text" value="https://hefjam.github.io" style="width: 240px;" />
+    <button onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="sheet">
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+  const styleSel = document.getElementById('style');
+  const countInput = document.getElementById('count');
+  const baseInput = document.getElementById('baseurl');
+  const grid = document.getElementById('grid');
+
+  // QR rendering — uses qrcode-generator UMD: window.qrcode
+  function makeQR(text, sizePx) {
+    const qr = qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    const cells = qr.getModuleCount();
+    const cell = sizePx / cells;
+    const canvas = document.createElement('canvas');
+    canvas.width = sizePx; canvas.height = sizePx;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fefbf2';
+    ctx.fillRect(0, 0, sizePx, sizePx);
+    ctx.fillStyle = '#1a1310';
+    for (let r = 0; r < cells; r++) {
+      for (let c = 0; c < cells; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect(Math.floor(c*cell), Math.floor(r*cell), Math.ceil(cell), Math.ceil(cell));
+        }
+      }
+    }
+    return canvas;
+  }
+
+  function sliceBg() {
+    return `
+      <svg class="slice-bg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- crust outer -->
+        <path d="M20 30 L180 30 L100 170 Z" fill="#e8a545" stroke="#8a4a18" stroke-width="3" stroke-linejoin="round"/>
+        <!-- cheese -->
+        <path d="M30 38 L170 38 L100 158 Z" fill="#f7d774" stroke="#c98520" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- toppings: pepperoni dots -->
+        <circle cx="60" cy="60" r="6" fill="#a83817"/>
+        <circle cx="140" cy="60" r="7" fill="#a83817"/>
+        <circle cx="100" cy="85" r="5" fill="#a83817"/>
+        <circle cx="70" cy="110" r="5" fill="#a83817"/>
+        <circle cx="130" cy="110" r="5" fill="#a83817"/>
+        <circle cx="100" cy="135" r="5" fill="#a83817"/>
+        <!-- basil leaves -->
+        <ellipse cx="50" cy="80" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(20 50 80)"/>
+        <ellipse cx="155" cy="85" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(-15 155 85)"/>
+      </svg>
+    `;
+  }
+
+  function pizzaBg() {
+    return `
+      <svg class="pizza-bg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- crust outer -->
+        <circle cx="100" cy="100" r="92" fill="#e8a545" stroke="#8a4a18" stroke-width="3"/>
+        <!-- cheese inner -->
+        <circle cx="100" cy="100" r="80" fill="#f7d774" stroke="#c98520" stroke-width="1.5"/>
+        <!-- pepperoni dots around the edge -->
+        <circle cx="55" cy="55" r="7" fill="#a83817"/>
+        <circle cx="145" cy="55" r="7" fill="#a83817"/>
+        <circle cx="55" cy="145" r="7" fill="#a83817"/>
+        <circle cx="145" cy="145" r="7" fill="#a83817"/>
+        <circle cx="100" cy="32" r="6" fill="#a83817"/>
+        <circle cx="100" cy="168" r="6" fill="#a83817"/>
+        <circle cx="32" cy="100" r="6" fill="#a83817"/>
+        <circle cx="168" cy="100" r="6" fill="#a83817"/>
+        <!-- basil -->
+        <ellipse cx="70" cy="80" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(20 70 80)"/>
+        <ellipse cx="130" cy="80" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(-20 130 80)"/>
+        <ellipse cx="70" cy="125" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(-20 70 125)"/>
+        <ellipse cx="130" cy="125" rx="4" ry="2.5" fill="#2f6b3a" transform="rotate(20 130 125)"/>
+      </svg>
+    `;
+  }
+
+  function buildCard(n, style, baseUrl) {
+    const card = document.createElement('div');
+    card.className = 'tcard';
+    const url = `${baseUrl}/?t=${String(n).padStart(2, '0')}`;
+
+    card.innerHTML = `
+      <div class="tcard-wordmark">the<br/>taproom<br/><span style="font-family:'DM Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.18em; color:#1a1310; opacity:0.75;">· PIZZA ·</span></div>
+      <div class="tcard-num"><small>TABLE</small>${String(n).padStart(2, '0')}</div>
+    `;
+
+    const qrSize = 160;
+    let qrHost;
+
+    if (style === 'plain') {
+      const wrap = document.createElement('div');
+      wrap.className = 'tcard-qr';
+      wrap.style.width = '160px'; wrap.style.height = '160px';
+      wrap.style.background = '#fefbf2';
+      wrap.style.padding = '5px';
+      qrHost = wrap;
+      card.appendChild(wrap);
+    } else if (style === 'slice') {
+      const wrap = document.createElement('div');
+      wrap.className = 'slice-wrap';
+      wrap.innerHTML = sliceBg();
+      const qrBox = document.createElement('div');
+      qrBox.className = 'qr-in-slice';
+      wrap.appendChild(qrBox);
+      qrHost = qrBox;
+      card.appendChild(wrap);
+    } else {
+      const wrap = document.createElement('div');
+      wrap.className = 'pizza-wrap';
+      wrap.innerHTML = pizzaBg();
+      const qrBox = document.createElement('div');
+      qrBox.className = 'qr-in-pizza';
+      wrap.appendChild(qrBox);
+      qrHost = qrBox;
+      card.appendChild(wrap);
+    }
+
+    const innerSize = style === 'plain' ? 150 : 80;
+    const canvas = makeQR(url, innerSize);
+    canvas.style.width = '100%'; canvas.style.height = '100%';
+    qrHost.appendChild(canvas);
+
+    const msg = document.createElement('div');
+    msg.className = 'tcard-msg';
+    msg.innerHTML = 'scan to <span class="lg">order &amp; pay</span>';
+    card.appendChild(msg);
+
+    const foot = document.createElement('div');
+    foot.className = 'tcard-foot';
+    foot.textContent = `the taproom · st. ives`;
+    card.appendChild(foot);
+
+    return card;
+  }
+
+  function rebuild() {
+    const style = styleSel.value;
+    const count = Math.max(1, Math.min(60, parseInt(countInput.value, 10) || 30));
+    const baseUrl = baseInput.value.trim() || 'https://hefjam.github.io';
+    grid.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+      grid.appendChild(buildCard(i, style, baseUrl));
+    }
+  }
+
+  styleSel.addEventListener('change', rebuild);
+  countInput.addEventListener('change', rebuild);
+  baseInput.addEventListener('change', rebuild);
+  rebuild();
+</script>
+</body>
+</html>
