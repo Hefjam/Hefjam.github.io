@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard — The Taproom</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#140d04;--surf:#1f1409;--card:#2c1c0a;--primary:#e8a545;
+      --text:#f0e6d0;--muted:#8a7560;--border:#3d2c18;
+      --ok:#4caf50;--warn:#ff9800;--bad:#f44336;--r:10px;
+    }
+    body{background:var(--bg);min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text)}
+
+    /* ── Login ────────────────────────────────────────────────── */
+    #login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px}
+    .login-box{background:var(--surf);border-radius:16px;padding:40px 32px;width:100%;max-width:340px;text-align:center}
+    .login-box h1{font-size:22px;margin-bottom:6px}
+    .login-box p{color:var(--muted);font-size:14px;margin-bottom:28px}
+    .pin{font-size:28px;letter-spacing:.25em;text-align:center;background:var(--card);border:1.5px solid var(--border);color:var(--text);border-radius:8px;padding:14px;width:100%;font-family:inherit}
+    .pin:focus{outline:none;border-color:var(--primary)}
+
+    /* ── App layout ───────────────────────────────────────────── */
+    #app{display:none;flex-direction:column;min-height:100vh}
+
+    /* ── Header ───────────────────────────────────────────────── */
+    .hdr{background:var(--surf);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90}
+    .hdr-title{font-weight:700;font-size:17px}
+    .hdr-acts{display:flex;gap:10px;align-items:center}
+    .ico-btn{background:none;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 11px;cursor:pointer;font-size:17px;line-height:1}
+    .ico-btn:hover{border-color:var(--primary)}
+    .lnk-btn{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit}
+    .lnk-btn:hover{color:var(--text)}
+
+    /* ── Date nav ─────────────────────────────────────────────── */
+    .date-nav{background:var(--surf);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+    .nav-btn{background:none;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 14px;cursor:pointer;font-size:13px;font-family:inherit}
+    .nav-btn:hover{border-color:var(--primary);color:var(--primary)}
+    .date-pick{background:none;border:none;color:var(--text);font:600 16px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;cursor:pointer;text-align:center;width:170px}
+    .date-pick::-webkit-calendar-picker-indicator{filter:invert(.7);cursor:pointer}
+
+    /* ── Stats bar ────────────────────────────────────────────── */
+    .stats{display:flex;border-bottom:1px solid var(--border)}
+    .stat{flex:1;padding:12px 10px;text-align:center;border-right:1px solid var(--border)}
+    .stat:last-child{border-right:none}
+    .sv{font-size:22px;font-weight:700;color:var(--primary)}
+    .sl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+    /* ── Booking cards ────────────────────────────────────────── */
+    .list{flex:1;padding:14px;padding-bottom:90px}
+    .bcard{background:var(--surf);border-radius:var(--r);padding:13px 15px;margin-bottom:9px;border-left:3px solid transparent;cursor:pointer;transition:border-color .15s}
+    .bcard:hover{border-color:var(--primary)}
+    .bcard.st-arrived{border-color:var(--ok)}
+    .bcard.st-no_show{border-color:var(--bad);opacity:.6}
+    .bcard.st-cancelled{border-color:var(--bad);opacity:.45}
+    .bcard-top{display:flex;justify-content:space-between;align-items:flex-start}
+    .bcard-name{font-weight:700;font-size:15px}
+    .bcard-covers{font-size:13px;color:var(--muted);margin-top:2px}
+    .bcard-time{font-size:18px;font-weight:700;color:var(--primary);text-align:right}
+    .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px}
+    .bd-confirmed{background:rgba(232,165,69,.12);color:var(--primary)}
+    .bd-arrived{background:rgba(76,175,80,.12);color:var(--ok)}
+    .bd-no_show{background:rgba(244,67,54,.12);color:var(--bad)}
+    .bd-cancelled{background:rgba(244,67,54,.12);color:var(--bad)}
+    .bcard-contact{font-size:12px;color:var(--muted);margin-top:6px}
+    .bcard-notes{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px}
+    .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:15px}
+    .divider{text-align:center;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:12px 0 6px}
+
+    /* ── FAB ──────────────────────────────────────────────────── */
+    .fab{position:fixed;bottom:24px;right:20px;width:54px;height:54px;background:var(--primary);border:none;border-radius:50%;color:#140d04;font-size:28px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:80;font-family:inherit}
+    .fab:hover{opacity:.9}
+
+    /* ── Modal ────────────────────────────────────────────────── */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+    .modal{background:var(--surf);border-radius:18px 18px 0 0;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding:24px}
+    .modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .modal-hdr h2{font-size:19px;font-weight:700}
+    .close-btn{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;font-family:inherit}
+    label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+    input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:7px;font-size:15px;color:var(--text);background:var(--card);outline:none;transition:border-color .2s;font-family:inherit}
+    input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+    select option{background:var(--card)}
+    textarea{resize:vertical;min-height:70px}
+    .field{margin-bottom:13px}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{padding:12px 18px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .2s}
+    .btn-p{background:var(--primary);color:#140d04}
+    .btn-p:hover{opacity:.9}
+    .btn-p:disabled{opacity:.5;cursor:not-allowed}
+    .btn-d{background:var(--bad);color:#fff}
+    .btn-g{background:none;border:1px solid var(--border);color:var(--text)}
+    .btn-g:hover{border-color:var(--primary)}
+    .full{width:100%;display:block;margin-bottom:8px}
+    .st-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+    .st-acts .btn{font-size:13px;padding:9px 6px}
+    .merr{background:rgba(244,67,54,.08);border:1px solid rgba(244,67,54,.25);border-radius:7px;padding:9px 12px;color:#ff8a80;font-size:13px;margin-bottom:12px;display:none}
+    .lerr{color:#ff8a80;font-size:13px;margin-top:10px;display:none}
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login">
+  <div class="login-box">
+    <h1>Staff Login</h1>
+    <p>Enter your PIN to access the booking diary</p>
+    <input class="pin" type="password" id="pin" placeholder="••••" maxlength="8" inputmode="numeric">
+    <div class="lerr" id="lerr">Incorrect PIN — please try again.</div>
+    <button class="btn btn-p full" style="margin-top:16px" id="login-btn">Sign in</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app">
+  <div class="hdr">
+    <span class="hdr-title" id="hdr-title">Bookings</span>
+    <div class="hdr-acts">
+      <button class="ico-btn" id="settings-btn" title="Settings">&#9881;</button>
+      <button class="lnk-btn" id="logout-btn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="date-nav">
+    <button class="nav-btn" id="prev-day">&larr; Prev</button>
+    <input class="date-pick" type="date" id="date-pick">
+    <button class="nav-btn" id="next-day">Next &rarr;</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="sv" id="st-bk">0</div><div class="sl">Bookings</div></div>
+    <div class="stat"><div class="sv" id="st-cv">0</div><div class="sl">Covers</div></div>
+    <div class="stat"><div class="sv" id="st-ar">0</div><div class="sl">Arrived</div></div>
+    <div class="stat"><div class="sv" id="st-ns">0</div><div class="sl">No-show</div></div>
+  </div>
+
+  <div class="list" id="list">
+    <div class="empty">Loading&hellip;</div>
+  </div>
+  <button class="fab" id="add-btn">+</button>
+</div>
+
+<!-- Booking modal -->
+<div class="overlay" id="bk-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 id="bk-modal-title">New Booking</h2>
+      <button class="close-btn" id="bk-close">&#x2715;</button>
+    </div>
+    <div class="st-acts" id="bk-st-acts" style="display:none">
+      <button class="btn" style="background:rgba(76,175,80,.12);color:var(--ok)" data-set-status="arrived">Arrived</button>
+      <button class="btn" style="background:rgba(244,67,54,.12);color:var(--bad)" data-set-status="no_show">No-show</button>
+      <button class="btn btn-g" data-set-status="confirmed">Restore</button>
+    </div>
+    <div class="merr" id="bk-err"></div>
+    <div class="row2">
+      <div class="field"><label>Date</label><input type="date" id="bk-date"></div>
+      <div class="field"><label>Time</label><input type="time" id="bk-time"></div>
+    </div>
+    <div class="field"><label>Covers</label><input type="number" id="bk-covers" min="1" max="200" placeholder="2"></div>
+    <div class="field"><label>Guest name</label><input type="text" id="bk-name" placeholder="Full name"></div>
+    <div class="row2">
+      <div class="field"><label>Phone</label><input type="tel" id="bk-phone" placeholder="07700 000000"></div>
+      <div class="field"><label>Email</label><input type="email" id="bk-email" placeholder="(optional)"></div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="bk-notes" placeholder="Dietary, celebrations&hellip;"></textarea></div>
+    <button class="btn btn-p full" id="bk-save">Save Booking</button>
+    <button class="btn btn-d full" id="bk-cancel" style="display:none">Cancel this booking</button>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="overlay" id="set-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>Settings</h2>
+      <button class="close-btn" id="set-close">&#x2715;</button>
+    </div>
+    <div class="field"><label>Restaurant name</label><input type="text" id="s-name"></div>
+    <div class="field"><label>Confirmation email (from address)</label><input type="email" id="s-email" placeholder="bookings@taproom.com"></div>
+    <div class="row2">
+      <div class="field"><label>Opens</label><input type="time" id="s-open"></div>
+      <div class="field"><label>Closes</label><input type="time" id="s-close"></div>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Slot interval</label>
+        <select id="s-interval">
+          <option value="15">Every 15 min</option>
+          <option value="30" selected>Every 30 min</option>
+          <option value="60">Every hour</option>
+        </select>
+      </div>
+      <div class="field"><label>Max covers / slot</label><input type="number" id="s-max" min="1" max="1000" placeholder="40"></div>
+    </div>
+    <div class="field"><label>Change PIN <span style="font-weight:400;text-transform:none">(leave blank to keep)</span></label><input type="password" id="s-pin" placeholder="New PIN" inputmode="numeric" maxlength="8"></div>
+    <button class="btn btn-p full" id="s-save">Save Settings</button>
+  </div>
+</div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('staff_token') || '';
+let currentDate = new Date().toISOString().split('T')[0];
+let editId = null;
+
+// ── SHA-256 ───────────────────────────────────────────────────────────────────
+async function sha256(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+function authH() {
+  return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+}
+
+async function doLogin() {
+  const pin = document.getElementById('pin').value;
+  if (!pin) return;
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = '…';
+
+  try {
+    const pinHash = await sha256(pin);
+    const res = await fetch(`${API}/api/auth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pin: pinHash }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      token = data.token;
+      localStorage.setItem('staff_token', token);
+      showApp();
+    } else {
+      document.getElementById('lerr').style.display = 'block';
+      document.getElementById('pin').value = '';
+    }
+  } catch {
+    document.getElementById('lerr').textContent = 'Connection error.';
+    document.getElementById('lerr').style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Sign in';
+}
+
+function showApp() {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('date-pick').value = currentDate;
+  loadBookings();
+}
+
+function doLogout() {
+  localStorage.removeItem('staff_token');
+  token = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('pin').value = '';
+  document.getElementById('lerr').style.display = 'none';
+}
+
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('pin').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('logout-btn').addEventListener('click', doLogout);
+
+// Auto-login if token cached
+if (token) {
+  fetch(`${API}/api/bookings?date=${currentDate}`, { headers: { Authorization: `Bearer ${token}` } })
+    .then(r => { if (r.ok) showApp(); else { localStorage.removeItem('staff_token'); token = ''; } })
+    .catch(() => {});
+}
+
+// ── Date nav ──────────────────────────────────────────────────────────────────
+function shiftDate(days) {
+  const d = new Date(currentDate + 'T12:00:00');
+  d.setDate(d.getDate() + days);
+  currentDate = d.toISOString().split('T')[0];
+  document.getElementById('date-pick').value = currentDate;
+  loadBookings();
+}
+document.getElementById('prev-day').addEventListener('click', () => shiftDate(-1));
+document.getElementById('next-day').addEventListener('click', () => shiftDate(1));
+document.getElementById('date-pick').addEventListener('change', e => { currentDate = e.target.value; loadBookings(); });
+
+// ── Bookings list ─────────────────────────────────────────────────────────────
+async function loadBookings() {
+  const list = document.getElementById('list');
+  list.innerHTML = '<div class="empty">Loading&hellip;</div>';
+  try {
+    const res = await fetch(`${API}/api/bookings?date=${currentDate}`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401) { doLogout(); return; }
+    const { bookings } = await res.json();
+    renderList(bookings || []);
+  } catch {
+    list.innerHTML = '<div class="empty">Failed to load bookings.</div>';
+  }
+}
+
+function renderList(bookings) {
+  const list = document.getElementById('list');
+  const active = bookings.filter(b => b.status !== 'cancelled');
+  const cancelled = bookings.filter(b => b.status === 'cancelled');
+
+  // Stats
+  document.getElementById('st-bk').textContent = active.length;
+  document.getElementById('st-cv').textContent = active.reduce((s, b) => s + b.covers, 0);
+  document.getElementById('st-ar').textContent = active.filter(b => b.status === 'arrived').length;
+  document.getElementById('st-ns').textContent = active.filter(b => b.status === 'no_show').length;
+
+  if (!active.length && !cancelled.length) {
+    list.innerHTML = '<div class="empty">No bookings for this day.<br>Tap + to add one.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  active.forEach(b => list.appendChild(mkCard(b)));
+
+  if (cancelled.length) {
+    const div = document.createElement('div');
+    div.className = 'divider';
+    div.textContent = `${cancelled.length} cancelled`;
+    list.appendChild(div);
+    cancelled.forEach(b => list.appendChild(mkCard(b)));
+  }
+}
+
+const STATUS_LABELS = { confirmed: 'Confirmed', arrived: 'Arrived', no_show: 'No-show', cancelled: 'Cancelled' };
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function mkCard(b) {
+  const d = document.createElement('div');
+  d.className = `bcard st-${b.status}`;
+  d.innerHTML = `
+    <div class="bcard-top">
+      <div>
+        <div class="bcard-name">${esc(b.name)}</div>
+        <div class="bcard-covers">${b.covers} ${b.covers === 1 ? 'guest' : 'guests'}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="bcard-time">${b.time_slot}</div>
+        <span class="badge bd-${b.status}">${STATUS_LABELS[b.status] ?? b.status}</span>
+      </div>
+    </div>
+    <div class="bcard-contact">${esc(b.phone)}${b.email ? ' &middot; ' + esc(b.email) : ''}</div>
+    ${b.notes ? `<div class="bcard-notes">${esc(b.notes)}</div>` : ''}
+  `;
+  d.addEventListener('click', () => openEdit(b));
+  return d;
+}
+
+// ── Booking modal ─────────────────────────────────────────────────────────────
+function closeModal() {
+  document.getElementById('bk-overlay').style.display = 'none';
+}
+
+document.getElementById('bk-close').addEventListener('click', closeModal);
+document.getElementById('bk-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('bk-overlay')) closeModal();
+});
+document.getElementById('add-btn').addEventListener('click', () => openAdd());
+
+function openAdd() {
+  editId = null;
+  document.getElementById('bk-modal-title').textContent = 'New Booking';
+  document.getElementById('bk-date').value = currentDate;
+  document.getElementById('bk-time').value = '';
+  document.getElementById('bk-covers').value = '';
+  document.getElementById('bk-name').value = '';
+  document.getElementById('bk-phone').value = '';
+  document.getElementById('bk-email').value = '';
+  document.getElementById('bk-notes').value = '';
+  document.getElementById('bk-st-acts').style.display = 'none';
+  document.getElementById('bk-cancel').style.display = 'none';
+  document.getElementById('bk-err').style.display = 'none';
+  document.getElementById('bk-overlay').style.display = 'flex';
+}
+
+function openEdit(b) {
+  editId = b.id;
+  document.getElementById('bk-modal-title').textContent = 'Edit Booking';
+  document.getElementById('bk-date').value = b.date;
+  document.getElementById('bk-time').value = b.time_slot;
+  document.getElementById('bk-covers').value = b.covers;
+  document.getElementById('bk-name').value = b.name;
+  document.getElementById('bk-phone').value = b.phone;
+  document.getElementById('bk-email').value = b.email ?? '';
+  document.getElementById('bk-notes').value = b.notes ?? '';
+  const active = b.status !== 'cancelled';
+  document.getElementById('bk-st-acts').style.display = active ? 'grid' : 'none';
+  document.getElementById('bk-cancel').style.display = active ? 'block' : 'none';
+  document.getElementById('bk-err').style.display = 'none';
+  document.getElementById('bk-overlay').style.display = 'flex';
+}
+
+// Quick status buttons
+document.querySelectorAll('[data-set-status]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!editId) return;
+    await fetch(`${API}/api/bookings/${editId}`, {
+      method: 'PATCH', headers: authH(), body: JSON.stringify({ status: btn.dataset.setStatus }),
+    });
+    closeModal();
+    loadBookings();
+  });
+});
+
+// Save booking
+document.getElementById('bk-save').addEventListener('click', async () => {
+  const body = {
+    date:      document.getElementById('bk-date').value,
+    time_slot: document.getElementById('bk-time').value,
+    covers:    parseInt(document.getElementById('bk-covers').value),
+    name:      document.getElementById('bk-name').value.trim(),
+    phone:     document.getElementById('bk-phone').value.trim(),
+    email:     document.getElementById('bk-email').value.trim(),
+    notes:     document.getElementById('bk-notes').value.trim(),
+  };
+  const errEl = document.getElementById('bk-err');
+  if (!body.date || !body.time_slot || !body.covers || !body.name || !body.phone) {
+    errEl.textContent = 'Date, time, covers, name and phone are required.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+  const btn = document.getElementById('bk-save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    const url = editId ? `${API}/api/bookings/${editId}` : `${API}/api/bookings`;
+    const method = editId ? 'PATCH' : 'POST';
+    const res = await fetch(url, { method, headers: authH(), body: JSON.stringify(body) });
+    const data = await res.json();
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Failed to save.';
+      errEl.style.display = 'block';
+    } else {
+      closeModal();
+      loadBookings();
+    }
+  } catch {
+    errEl.textContent = 'Network error.';
+    errEl.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Save Booking';
+});
+
+// Cancel booking
+document.getElementById('bk-cancel').addEventListener('click', async () => {
+  if (!editId || !confirm('Cancel this booking?')) return;
+  await fetch(`${API}/api/bookings/${editId}`, { method: 'DELETE', headers: authH() });
+  closeModal();
+  loadBookings();
+});
+
+// ── Settings modal ────────────────────────────────────────────────────────────
+document.getElementById('settings-btn').addEventListener('click', openSettings);
+document.getElementById('set-close').addEventListener('click', () => {
+  document.getElementById('set-overlay').style.display = 'none';
+});
+document.getElementById('set-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('set-overlay')) document.getElementById('set-overlay').style.display = 'none';
+});
+
+async function openSettings() {
+  document.getElementById('set-overlay').style.display = 'flex';
+  try {
+    const res = await fetch(`${API}/api/settings`, { headers: { Authorization: `Bearer ${token}` } });
+    const d = await res.json();
+    document.getElementById('s-name').value = d.restaurant_name ?? '';
+    document.getElementById('s-email').value = d.booking_email ?? '';
+    document.getElementById('s-open').value = d.opening_time ?? '11:00';
+    document.getElementById('s-close').value = d.closing_time ?? '22:00';
+    document.getElementById('s-interval').value = d.slot_interval_mins ?? '30';
+    document.getElementById('s-max').value = d.max_covers_per_slot ?? '40';
+  } catch {}
+}
+
+document.getElementById('s-save').addEventListener('click', async () => {
+  const body = {
+    restaurant_name:    document.getElementById('s-name').value.trim(),
+    booking_email:      document.getElementById('s-email').value.trim(),
+    opening_time:       document.getElementById('s-open').value,
+    closing_time:       document.getElementById('s-close').value,
+    slot_interval_mins: document.getElementById('s-interval').value,
+    max_covers_per_slot:document.getElementById('s-max').value,
+  };
+  const newPin = document.getElementById('s-pin').value;
+  if (newPin) {
+    body.staff_pin_hash = await sha256(newPin);
+  }
+
+  const btn = document.getElementById('s-save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  await fetch(`${API}/api/settings`, { method: 'PUT', headers: authH(), body: JSON.stringify(body) });
+
+  if (newPin) {
+    token = body.staff_pin_hash;
+    localStorage.setItem('staff_token', token);
+  }
+
+  document.getElementById('set-overlay').style.display = 'none';
+  document.getElementById('s-pin').value = '';
+  btn.disabled = false; btn.textContent = 'Save Settings';
+});
+</script>
+</body>
+</html>
