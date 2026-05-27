@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bon Appétit Inspiration Board · Summer Menu Refresh</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F7F2EA;
+      color: #1A1A1A;
+      line-height: 1.5;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: #1A1008;
+      color: #F7F2EA;
+      padding: 72px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, #3D1A08 0%, #1A1008 65%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #C96000;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: normal;
+      line-height: 1.05;
+      margin-bottom: 18px;
+      color: #F7F2EA;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: #B8A88A;
+      margin-bottom: 48px;
+      font-style: italic;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-subtitle em { color: #E8A040; font-style: normal; font-weight: 600; }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+
+    .stat-number {
+      display: block;
+      font-family: Georgia, serif;
+      font-size: 32px;
+      color: #F0A500;
+      font-weight: bold;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #857565;
+    }
+
+    /* ── FILTER BAR ── */
+    .filters-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #211408;
+      border-bottom: 1px solid #2D1E0E;
+    }
+
+    .filters-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .filters-inner::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      padding: 14px 22px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      background: transparent;
+      color: #7A6A5A;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.15s;
+      border-bottom: 2px solid transparent;
+      position: relative;
+      top: 1px;
+    }
+
+    .filter-btn:hover { color: #C8B89A; }
+
+    .filter-btn.active { color: #F7F2EA; border-bottom-color: #F0A500; }
+
+    /* ── MAIN WRAP ── */
+    .main-wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-block { margin-top: 60px; }
+    .section-block:first-child { margin-top: 0; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+    }
+
+    .section-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .badge-on-the-line { background: #B5101C; }
+    .badge-street-eats  { background: #C96000; }
+    .badge-best-new     { background: #1E6645; }
+
+    .section-desc {
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+      margin-left: auto;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 22px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12), 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .card-stripe { height: 4px; }
+    .stripe-on-the-line { background: linear-gradient(90deg, #B5101C, #E03040); }
+    .stripe-street-eats  { background: linear-gradient(90deg, #C96000, #F07820); }
+    .stripe-best-new     { background: linear-gradient(90deg, #1E6645, #2D9460); }
+
+    .card-body {
+      padding: 20px 20px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 13px;
+      flex-wrap: wrap;
+    }
+
+    .series-pill {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 3px;
+      color: white;
+    }
+
+    .pill-on-the-line { background: #B5101C; }
+    .pill-street-eats  { background: #C96000; }
+    .pill-best-new     { background: #1E6645; }
+
+    .cuisine-pill {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 2px 9px;
+      border-radius: 3px;
+      background: #F0EBE0;
+      color: #5A4530;
+    }
+
+    .card-name {
+      font-family: Georgia, serif;
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 4px;
+      color: #1A1A1A;
+    }
+
+    .card-location {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #999;
+      margin-bottom: 11px;
+    }
+
+    .card-concept {
+      font-size: 13.5px;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.55;
+    }
+
+    .card-dishes { margin-bottom: 16px; flex: 1; }
+
+    .dishes-label {
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #BBB;
+      margin-bottom: 7px;
+    }
+
+    .dishes-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .dish-tag {
+      font-size: 12px;
+      padding: 3px 10px;
+      background: #F7F2EA;
+      border-radius: 4px;
+      color: #4A3A2A;
+      line-height: 1.4;
+    }
+
+    /* ── SUMMER TAKE ── */
+    .summer-take {
+      background: #FFFBEE;
+      border-left: 3px solid #F0A500;
+      border-radius: 0 6px 6px 0;
+      padding: 13px 14px;
+      margin-bottom: 18px;
+    }
+
+    .summer-take-label {
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #C07000;
+      margin-bottom: 6px;
+    }
+
+    .summer-take-text {
+      font-size: 13px;
+      color: #3D2800;
+      line-height: 1.55;
+    }
+
+    /* ── CARD FOOTER ── */
+    .card-footer {
+      padding: 0 20px 18px;
+    }
+
+    .watch-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #B5101C;
+      text-decoration: none;
+      padding: 7px 14px;
+      border: 1.5px solid #B5101C;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .watch-link:hover { background: #B5101C; color: white; }
+
+    /* ── HIDDEN STATE ── */
+    .card.hidden { display: none; }
+
+    .section-block.hidden { display: none; }
+
+    /* ── PAGE FOOTER ── */
+    .page-footer {
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 12.5px;
+      color: #AAA;
+      border-top: 1px solid #EDE6D8;
+    }
+
+    .page-footer a { color: #B5101C; text-decoration: none; }
+    .page-footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .hero { padding: 56px 20px 44px; }
+      .hero-stats { gap: 28px; }
+      .grid { grid-template-columns: 1fr; }
+      .section-desc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<header class="hero">
+  <p class="hero-eyebrow">Bon Appétit YouTube</p>
+  <h1>Restaurant<br>Inspiration Board</h1>
+  <p class="hero-subtitle">
+    Restaurants, cafés &amp; eateries from <em>On The Line</em>, <em>Street Eats</em>
+    &amp; <em>Best New Restaurants</em> — curated for the summer menu refresh
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-number" id="stat-count">29</span>
+      <span class="stat-label">Restaurants</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">3</span>
+      <span class="stat-label">BA Series</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">15+</span>
+      <span class="stat-label">Cities</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">29</span>
+      <span class="stat-label">Summer Takeaways</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ FILTERS ═══════════════════════════ -->
+<nav class="filters-wrap" aria-label="Filter by series">
+  <div class="filters-inner">
+    <button class="filter-btn active" data-filter="all">All Restaurants</button>
+    <button class="filter-btn" data-filter="on-the-line">On The Line</button>
+    <button class="filter-btn" data-filter="street-eats">Street Eats</button>
+    <button class="filter-btn" data-filter="best-new">Best New 2024</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ CONTENT ═══════════════════════════ -->
+<div class="main-wrap">
+
+  <!-- ─────────── ON THE LINE ─────────── -->
+  <div class="section-block" data-section="on-the-line">
+    <div class="section-header">
+      <h2 class="section-title">On The Line</h2>
+      <span class="section-badge badge-on-the-line">Series</span>
+      <span class="section-desc">A day on the line at the world's best kitchens · 10 restaurants</span>
+    </div>
+    <div class="grid">
+
+      <!-- Tatiana -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Afro-Caribbean</span>
+          </div>
+          <h3 class="card-name">Tatiana by Kwame Onwuachi</h3>
+          <p class="card-location">New York City · Lincoln Center</p>
+          <p class="card-concept">NYC's hardest reservation — Afro-Caribbean tradition fused with the swagger and energy of New York. Chef Kwame Onwuachi's love letter to his heritage.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Egusi Stew</li>
+              <li class="dish-tag">Jerk Lamb</li>
+              <li class="dish-tag">Suya Beef</li>
+              <li class="dish-tag">Nigerian Fried Rice</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Afro-Caribbean spice profiles — egusi, jerk, suya — are peak summer. Bold, tropical, bright. Layer Caribbean heat with citrus and fresh herbs. Jerk-spiced chicken or suya-rubbed grilled meats would sing on a summer menu.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=krfFV3vyGy8" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Le Chêne -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Modern French</span>
+          </div>
+          <h3 class="card-name">Le Chêne</h3>
+          <p class="card-location">New York City</p>
+          <p class="card-concept">NYC's most exciting French restaurant — Chef Alexia Duchêne brings Parisian precision with neighbourhood warmth. Seasonal, approachable, quietly brilliant.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Daily plat du jour</li>
+              <li class="dish-tag">Seasonal French cooking</li>
+              <li class="dish-tag">Classic technique</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The French bistro model — approachable luxury with a daily specials board and produce leading every decision. What's your plat du jour this summer? A rotating weekly special keeps regulars returning and showcases what's best right now.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=vKPbL3_xEAw" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Osip -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">British Farm-to-Table</span>
+          </div>
+          <h3 class="card-name">Osip</h3>
+          <p class="card-location">Bruton, Somerset · England</p>
+          <p class="card-concept">A Michelin star inside a 300-year-old country house — where the farm, not the chef, writes the menu. People travel across countries for dinner here.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Weekly-changing tasting menu</li>
+              <li class="dish-tag">Foraged ingredients</li>
+              <li class="dish-tag">Zero-waste philosophy</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Let the season write the menu — not the other way around. Summer is the peak of everything. Build your menu around what's available <em>this week</em>, not this month. The constraint forces creativity and creates a compelling story for guests.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=lHhqCyH_NP8" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Dunsmoor -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">American Live Fire</span>
+          </div>
+          <h3 class="card-name">Dunsmoor</h3>
+          <p class="card-location">Los Angeles, CA</p>
+          <p class="card-concept">One of LA's best restaurants — zero electricity in the kitchen. Every dish cooked over open wood fire. No blenders, no food processors, no stand mixers. Just fire.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">All live fire cooking</li>
+              <li class="dish-tag">Wood-smoked meats</li>
+              <li class="dish-tag">Hearth-roasted vegetables</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Everything over fire. The no-electricity philosophy returns cooking to its fundamentals. For summer: what if the grill and smoker became the stars? Move more of the menu outdoors. Charcoal-roasted courgette, wood-smoked fish, live-fire flatbreads.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=Kr9EulEgBI4" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Antico Nuovo -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Ancient Italian</span>
+          </div>
+          <h3 class="card-name">Antico Nuovo</h3>
+          <p class="card-location">Los Angeles, CA</p>
+          <p class="card-concept">Bringing ancient Italian cooking to LA — Chef Arturo Rojas draws on centuries-old fermentation and preservation techniques to create dishes of surprising depth.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">House-fermented chilli</li>
+              <li class="dish-tag">Handmade pasta</li>
+              <li class="dish-tag">Slow-cooked braises</li>
+              <li class="dish-tag">Preserved citrus</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Ancient Italian preservation — fermented chilli, preserved lemon, house-cured meats — creates the depth that makes bright summer produce pop. Start fermenting now for ready-in-August complexity. Preserved lemon butter on grilled fish is a summer masterclass.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=gIxKuoW_5-0" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Huso -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">New American</span>
+          </div>
+          <h3 class="card-name">Huso</h3>
+          <p class="card-location">New York City</p>
+          <p class="card-concept">Hidden inside a caviar shop — Chef Lois Picken earned a Michelin star in just 9 months. Intimate, surprising, and entirely impossible to pigeonhole.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Caviar service</li>
+              <li class="dish-tag">Michelin star in 9 months</li>
+              <li class="dish-tag">Intimate tasting menu</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The "hidden restaurant" concept — an extraordinary experience tucked behind the ordinary. Could you host an intimate summer pop-up? A back-room chef's table night, a secret summer tasting menu announced only by word of mouth?</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=RwYossga_jI" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Corima -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Modern Mexican</span>
+          </div>
+          <h3 class="card-name">Corima</h3>
+          <p class="card-location">New York City</p>
+          <p class="card-concept">NYC's hottest Mexican restaurant — Chef Fidel Caballero built the entire menu around hand-pressed tortillas from in-house nixtamalised heritage corn. The tortilla IS the point.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Heritage corn tortillas</li>
+              <li class="dish-tag">In-house nixtamal</li>
+              <li class="dish-tag">Modern Mexican tasting</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The "perfect base" as the whole story — everything is built on the tortilla. What's your version? A perfect house focaccia, a perfect flatbread, a perfect brioche bun? Make the foundation the feature of your summer bread programme.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=J6KnuGWs7fw" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Tempura Matsui -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Japanese</span>
+          </div>
+          <h3 class="card-name">Tempura Matsui</h3>
+          <p class="card-location">New York City</p>
+          <p class="card-concept">America's only Michelin-starred tempura restaurant — Chef Koichi Endo has elevated a single technique to an unrepeatable art form. One thing, done perfectly.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Seasonal vegetable tempura</li>
+              <li class="dish-tag">Seafood tempura</li>
+              <li class="dish-tag">Counter omakase</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Single-technique mastery. Lightly-battered summer ingredients — courgette flowers, samphire, broad beans — or soft-shell crab can be a summer starter centrepiece. Perfect batter, peak-season produce, that's it. Nothing else needed.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=1byuDovVkWw" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Dōgon -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">Afro-Caribbean Fine Dining</span>
+          </div>
+          <h3 class="card-name">Dōgon</h3>
+          <p class="card-location">Washington, DC</p>
+          <p class="card-concept">Acclaimed as one of America's best new restaurants — Chef Martel Stone celebrates African culinary heritage through the language of fine dining. Heritage as innovation.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Plantain</li>
+              <li class="dish-tag">Spiced stews</li>
+              <li class="dish-tag">Okra</li>
+              <li class="dish-tag">Heritage grains</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Celebrating heritage through food — plantain, okra, vibrant spiced sauces. Summer is the time to tell your sourcing and origin story. Where does your food come from? What's the history behind your menu? Make that the summer narrative.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=8IuwPb6g5Bg" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- The Eighty Six -->
+      <article class="card" data-series="on-the-line">
+        <div class="card-stripe stripe-on-the-line"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-on-the-line">On The Line</span>
+            <span class="cuisine-pill">American Steakhouse</span>
+          </div>
+          <h3 class="card-name">The Eighty Six</h3>
+          <p class="card-location">New York City</p>
+          <p class="card-concept">North America's #1 steakhouse — only 10 tables, no online menu, no social media presence. Chef Michael Vignola. Scarcity as the ultimate hospitality statement.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Dry-aged beef</li>
+              <li class="dish-tag">10 covers only</li>
+              <li class="dish-tag">Word-of-mouth only</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Scarcity as luxury. 10 tables, nearly impossible to book, no online presence — the anticipation is the experience. For summer: introduce a limited-seats chef's table evening or a "summer tasting only" night that creates genuine, buzzy exclusivity.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=ZcGIsiBdlH0" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- ─────────── STREET EATS ─────────── -->
+  <div class="section-block" data-section="street-eats">
+    <div class="section-header">
+      <h2 class="section-title">Street Eats</h2>
+      <span class="section-badge badge-street-eats">Series</span>
+      <span class="section-desc">The world's most legendary street food and hawker kitchens · 7 spots</span>
+    </div>
+    <div class="grid">
+
+      <!-- Hill Street Tai Hwa -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Singaporean Hawker</span>
+          </div>
+          <h3 class="card-name">Hill Street Tai Hwa Pork Noodle</h3>
+          <p class="card-location">Singapore</p>
+          <p class="card-concept">An 80-year-old family recipe, one Michelin star, sold from a hawker stall. The most compelling argument for legacy and consistency over novelty.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Bak chor mee</li>
+              <li class="dish-tag">Pork mince noodles</li>
+              <li class="dish-tag">Vinegar-chilli sauce</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Legacy wins. An 80-year-old recipe earning a Michelin star — your most classic dish is your strongest. Highlight your origins this summer. What's the dish that's been on the menu longest? Feature it front and centre, tell its story.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=OdbSrx4l8rM" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Fuhang Soy Milk -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Taiwanese Breakfast</span>
+          </div>
+          <h3 class="card-name">Fuhang Soy Milk</h3>
+          <p class="card-location">Taipei, Taiwan</p>
+          <p class="card-concept">Taipei's most iconic breakfast spot — serves 1,000 people per hour. The queue starts before dawn. Simple ingredients, total conviction, absolute consistency.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Fresh soy milk</li>
+              <li class="dish-tag">Fried dough (youtiao)</li>
+              <li class="dish-tag">Scallion pancakes</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The power of ritual — people queue from 4am for simple food done perfectly. What's the one dish on your summer menu that creates that kind of devotion? Find it, simplify it, execute it flawlessly every single service.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=zQfEE6X0qjs" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Al-Bake -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">North Indian Street Food</span>
+          </div>
+          <h3 class="card-name">Al-Bake</h3>
+          <p class="card-location">Delhi, India</p>
+          <p class="card-concept">Delhi's legendary shawarma — spiced meat roasted over charcoal on a vertical spit, carved fresh to order, wrapped in soft-baked bread. The original al fresco fire-cooked sandwich.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Charcoal shawarma</li>
+              <li class="dish-tag">Fresh-baked khubz</li>
+              <li class="dish-tag">Garlic sauce</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Vertical charcoal-roasted meat + fresh flatbread = summer dining at its most elemental. The shawarma model works brilliantly as a summer event special — a spit over coals, carved fresh at service, with flatbreads hot off the grill.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=dI_xuwQqmSg" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Aslam Chicken -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Mughal / Indian</span>
+          </div>
+          <h3 class="card-name">Aslam Chicken</h3>
+          <p class="card-location">Chandni Chowk, Delhi, India</p>
+          <p class="card-concept">Delhi's most beloved butter chicken — a Chandni Chowk institution. Everyone tries to copy it. Nobody replicates it. The definitive argument for owning a signature dish.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Original butter chicken</li>
+              <li class="dish-tag">Secret spice blend</li>
+              <li class="dish-tag">Yoghurt marinade</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Own your signature — Aslam's butter chicken is theirs, uncopyable and undeniable. What's the one dish on your summer menu that's completely, unmistakably yours? The dish people come specifically for. Protect it, perfect it, make it the hero.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=uIXXQ4e36fA" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Mumbai Biryani -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Mughal / Biryani</span>
+          </div>
+          <h3 class="card-name">Mumbai Street Biryani</h3>
+          <p class="card-location">Mumbai, India</p>
+          <p class="card-concept">Cooking biryani for 300 people on the street — a pre-dawn operation, wood-fired, sealed with dough. Communal cooking as theatre and as ritual.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Dum biryani (300 portions)</li>
+              <li class="dish-tag">Wood-fire sealed pots</li>
+              <li class="dish-tag">Communal feast dining</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Sharing dishes and communal cooking as spectacle. Summer outdoor dining is perfect for a "big pot" moment — a slow-cooked sharing dish that arrives as a theatrical centrepiece. A whole fish, a leg of lamb, a pot of clams. Cook for a crowd, make it a show.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=UfhVuZyhIxA" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Mumbai Vada Pav -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Mumbai Street Food</span>
+          </div>
+          <h3 class="card-name">Mumbai Vada Pav</h3>
+          <p class="card-location">Mumbai, India</p>
+          <p class="card-concept">Mumbai's #1 street food — a spiced potato fritter in a soft bread roll with three chutneys. Mumbai's answer to the burger: 10p, a million memories.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Vada (spiced potato fritter)</li>
+              <li class="dish-tag">Pav (soft roll)</li>
+              <li class="dish-tag">Green chutney</li>
+              <li class="dish-tag">Tamarind chutney</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The perfect handheld. Vada pav is Mumbai's burger — cheap, fast, brilliant. For summer: a great handheld drives bar and terrace sales. What's your version? A bold summer bar snack that people rave about, that's easy to eat standing up, that pairs perfectly with a cold pint.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=m3nvefwqWW0" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+      <!-- Chengdu No-Menu -->
+      <article class="card" data-series="street-eats">
+        <div class="card-stripe stripe-street-eats"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-street-eats">Street Eats</span>
+            <span class="cuisine-pill">Sichuan / Chinese</span>
+          </div>
+          <h3 class="card-name">Chengdu No-Menu Restaurant</h3>
+          <p class="card-location">Chengdu, China</p>
+          <p class="card-concept">No printed menu — the chef announces what's cooking based on the day's best ingredients. Legendary regulars, legendary food. Radical seasonal eating made real.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Daily-changing dishes</li>
+              <li class="dish-tag">Sichuan home cooking</li>
+              <li class="dish-tag">Chef's market selection</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">No menu — the chef decides. What if you had a daily "chef's selection" that's never printed, only announced by the server? Creates genuine excitement, reduces waste, and lets you chase what's brilliant <em>today</em>. The ultimate seasonal commitment.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=KQIBDOXwe_I" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Watch Episode
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- ─────────── BEST NEW RESTAURANTS 2024 ─────────── -->
+  <div class="section-block" data-section="best-new">
+    <div class="section-header">
+      <h2 class="section-title">Best New Restaurants 2024</h2>
+      <span class="section-badge badge-best-new">BA's Pick</span>
+      <span class="section-desc">12 highlights from Bon Appétit's definitive list of America's best new restaurants</span>
+    </div>
+    <div class="grid">
+
+      <!-- Agni -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Bengali-American</span>
+          </div>
+          <h3 class="card-name">Agni</h3>
+          <p class="card-location">Columbus, OH</p>
+          <p class="card-concept">Chef Avishar Barua's wood-fired prix fixe tasting menu — Bengali heritage meets Midwest ingredients, cooked over open flame, layered with spice and personality.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Wood-fired tasting menu</li>
+              <li class="dish-tag">Bengali spice layering</li>
+              <li class="dish-tag">Panch phoron, mustard oil</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Bengali spice layering (mustard seed, panch phoron, turmeric) applied to wood-grilled proteins. Fenugreek and mustard oil on grilled fish, panch phoron butter on sweetcorn — these are unexpected summer flavour combinations that genuinely surprise.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Akahoshi Ramen -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Japanese Ramen</span>
+          </div>
+          <h3 class="card-name">Akahoshi Ramen</h3>
+          <p class="card-location">Chicago, IL</p>
+          <p class="card-concept">Chef Mike Satinover spent 12 years posting about broth on r/ramen before opening. Uses a refractometer to measure broth viscosity. Obsession as a founding story.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Miso ramen</li>
+              <li class="dish-tag">Broth measured to tolerance</li>
+              <li class="dish-tag">Hand-pulled noodles</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">The obsessive perfectionist origin story is irresistible. For summer: cold ramen (hiyashi chuka) or dipping ramen (tsukemen) using the same intensely crafted broth, served chilled. Craft over convenience. The backstory of how a dish was perfected is the best marketing you have.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Four Kings -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Japanese Izakaya</span>
+          </div>
+          <h3 class="card-name">Four Kings</h3>
+          <p class="card-location">San Francisco, CA · Chinatown</p>
+          <p class="card-concept">A Japanese izakaya inside San Francisco's Chinatown — chili-crisp pig head, snails, milk bread, natural wine. Small plates built for drinking alongside.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Chili-crisp pig head</li>
+              <li class="dish-tag">Fluffy milk bread</li>
+              <li class="dish-tag">Natural wine list</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Izakaya logic for summer — small, bold plates designed to be eaten alongside cocktails and natural wine. Build a summer "snacks + drinks" bar menu: punchy little bites, long drinks, slow evenings on the terrace. The pub menu, elevated and unexpected.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Azizam -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Persian</span>
+          </div>
+          <h3 class="card-name">Azizam</h3>
+          <p class="card-location">Los Angeles, CA</p>
+          <p class="card-concept">Persian home cooking elevated to fast-casual fine dining — saffron, rose water, pomegranate, dried fruit. Flavours simultaneously ancient and entirely fresh.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Kofteh tabrizi</li>
+              <li class="dish-tag">Mast o mousir</li>
+              <li class="dish-tag">Saffron rice pudding</li>
+              <li class="dish-tag">Persian herb frittata</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Persian flavours are made for summer — rose water, saffron, pomegranate molasses, stone fruit, dried barberries. A Persian-inspired dessert (rose ice cream, saffron panna cotta) or a sharbat-style house mocktail would be a refreshing summer menu addition.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Popoca -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Salvadoran × California</span>
+          </div>
+          <h3 class="card-name">Popoca</h3>
+          <p class="card-location">Oakland, CA</p>
+          <p class="card-concept">Salvadoran heritage meets California's peak produce — pupusas stuffed with what's seasonal and local. The heritage × local formula at its most delicious.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Seasonal pupusas</li>
+              <li class="dish-tag">Pollo campero</li>
+              <li class="dish-tag">Yuca con chicharrón</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Heritage × local produce — ancestral recipes with peak-season ingredients. Summer: translate a classic dish on your menu by stuffing or serving it with what's brilliant right now. Squash blossoms, sweetcorn, heirloom tomatoes. The dish stays, the filling changes.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- TÂM TÂM -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Vietnamese</span>
+          </div>
+          <h3 class="card-name">TÂM TÂM</h3>
+          <p class="card-location">Miami, FL</p>
+          <p class="card-concept">Vietnamese × natural wine bar — light, acidic, fermented, refreshing. The most compelling summer dining concept: everything bright and alive.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Fermented fish sauce dressings</li>
+              <li class="dish-tag">Natural wine pairings</li>
+              <li class="dish-tag">Pickled vegetables</li>
+              <li class="dish-tag">Fresh herb platters</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Vietnamese natural wine bar is the ultimate summer menu template — pickled, fermented, acidic, light. Fish sauce caramel, pickled cucumbers, nuoc cham dressings, cold-smoked fish. A summer menu built around brightness and acid is endlessly refreshing when it's hot.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- SẮP SỬA -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Vietnamese-Inspired</span>
+          </div>
+          <h3 class="card-name">SẮP SỬA</h3>
+          <p class="card-location">Denver, CO</p>
+          <p class="card-concept">Vietnamese-inspired café culture — desserts, cold drinks, and light bites that bring the breezy, bright energy of a Saigon street café to the American West.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Vietnamese iced coffee</li>
+              <li class="dish-tag">Che (sweet soup)</li>
+              <li class="dish-tag">Pandan desserts</li>
+              <li class="dish-tag">Fresh spring rolls</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Vietnamese café energy for summer — condensed milk iced coffee, pandan ice cream, cold spring rolls. A lighter daytime offer or early-evening snack menu inspired by Southeast Asian café culture sits beautifully alongside a main menu in warmer months.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Pasar -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Southeast Asian</span>
+          </div>
+          <h3 class="card-name">Pasar</h3>
+          <p class="card-location">Portland, OR</p>
+          <p class="card-concept">A Southeast Asian night market brought indoors — communal, festive, loud, joyful. "Pasar" means market in Malay. The atmosphere is inseparable from the food.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Night market sharing plates</li>
+              <li class="dish-tag">Grilled satay</li>
+              <li class="dish-tag">Roti canai</li>
+              <li class="dish-tag">Rojak salad</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Night market as dining concept — outdoor tables, small sharing plates, festive energy. Can your summer outdoor setup feel like a market? Communal tables, string lights, a rotating selection of small plates and grilled things. The vibe IS the menu.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- BARBS B Q -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Central Texas BBQ</span>
+          </div>
+          <h3 class="card-name">BARBS B Q</h3>
+          <p class="card-location">Lockhart, TX — BBQ Capital of the World</p>
+          <p class="card-concept">Opening in Lockhart, the BBQ capital of the world, and earning national recognition. Post oak smoke, brisket, ribs. The definitive argument for summer cooking.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Post oak smoked brisket</li>
+              <li class="dish-tag">Pork ribs</li>
+              <li class="dish-tag">Jalapeño cheddar sausage</li>
+              <li class="dish-tag">Smoked sides</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Central Texas BBQ is the gold standard for summer — low-and-slow, post oak wood smoke, beef fat rendered over 12 hours. A summer smoked brisket special, a weekend smoke event, or even a smoked-butter finishing technique can bring this depth to your summer menu.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Kisser -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Modern American</span>
+          </div>
+          <h3 class="card-name">Kisser</h3>
+          <p class="card-location">Nashville, TN</p>
+          <p class="card-concept">Nashville's buzziest new dining room — Southern hospitality with global ambition. Tennessee terroir without being trapped in tradition. A room that crackles with energy.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Seasonal Southern menu</li>
+              <li class="dish-tag">Tennessee whiskey cocktails</li>
+              <li class="dish-tag">Garden vegetables</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Southern hospitality meets global influence — local produce with unexpected references. What grows near you that isn't on your summer menu yet? Pair a familiar local ingredient with a global technique or flavour to create something genuinely new and yours.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- BINTÜ ATELIER -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">West African × Southern</span>
+          </div>
+          <h3 class="card-name">BINTÜ ATELIER</h3>
+          <p class="card-location">Charleston, SC</p>
+          <p class="card-concept">Charleston's Lowcountry meets West Africa — okra, sweet potato, collard greens reimagined through the African diaspora lens. Unmissable, unreplicable.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">Okra in tomato sauce</li>
+              <li class="dish-tag">Groundnut stew</li>
+              <li class="dish-tag">Smoked collard greens</li>
+              <li class="dish-tag">Sweet potato</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">West African × Lowcountry Southern — okra at peak summer season, sweet potato, smoked greens. July is the best time for these. Reimagine classic side dishes through a West African lens: okra with berbere butter, charred sweetcorn with groundnut sauce.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+      <!-- Sophon -->
+      <article class="card" data-series="best-new">
+        <div class="card-stripe stripe-best-new"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="series-pill pill-best-new">Best New 2024</span>
+            <span class="cuisine-pill">Thai-Pacific Northwest</span>
+          </div>
+          <h3 class="card-name">Sophon</h3>
+          <p class="card-location">Seattle, WA</p>
+          <p class="card-concept">Pacific Northwest ingredients through a Southeast Asian lens — lemongrass, galangal, and fish sauce applied to local salmon, Dungeness crab, and wild berries.</p>
+          <div class="card-dishes">
+            <div class="dishes-label">Known for</div>
+            <ul class="dishes-list">
+              <li class="dish-tag">PNW salmon with Thai aromatics</li>
+              <li class="dish-tag">Dungeness crab</li>
+              <li class="dish-tag">Wild berry desserts</li>
+            </ul>
+          </div>
+          <div class="summer-take">
+            <div class="summer-take-label">Summer Menu Take</div>
+            <p class="summer-take-text">Seasonal × global: your best local summer ingredient + an unexpected Asian aromatic. Grilled fish with lemongrass-coconut butter. Strawberries with pandan and coconut. The formula is simple — find what's best locally this summer, then ask: what South or Southeast Asian flavour makes it extraordinary?</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener" class="watch-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit Channel
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer class="page-footer">
+  Compiled from <a href="https://www.youtube.com/playlist?list=PLKtIunYVkv_Qzb47KYxPxtmaOB5T1M8HH" target="_blank" rel="noopener">On The Line</a>,
+  <a href="https://www.youtube.com/playlist?list=PLKtIunYVkv_Q7ELnShlyIfKr1Vm3ZvTeJ" target="_blank" rel="noopener">Street Eats</a>
+  &amp; Best New Restaurants 2024 ·
+  <a href="https://www.youtube.com/channel/UCbpMy0Fg74eXXkvxJrtEn3w" target="_blank" rel="noopener">Bon Appétit on YouTube</a>
+</footer>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const allCards = document.querySelectorAll('.card');
+  const allSections = document.querySelectorAll('.section-block');
+  const statCount = document.getElementById('stat-count');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      allCards.forEach(card => {
+        if (filter === 'all' || card.dataset.series === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      allSections.forEach(section => {
+        if (filter === 'all' || section.dataset.section === filter) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+
+      const visible = document.querySelectorAll('.card:not(.hidden)').length;
+      if (statCount) statCount.textContent = visible;
+    });
+  });
+</script>
+
+</body>
+</html>
