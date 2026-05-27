@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Menu Inspiration Board · Brunch, Pizza &amp; Seasonal</title>
+  <title>Menu Inspiration Board · The Taproom</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,19 +17,17 @@
     /* ── HERO ── */
     .hero {
       background: #1A1008;
-      padding: 64px 24px 52px;
+      padding: 56px 24px 44px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
-
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background: radial-gradient(ellipse at 50% 0%, #3A1A08 0%, #1A1008 65%);
     }
-
     .hero::after {
       content: '';
       position: absolute;
@@ -37,57 +35,49 @@
       background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
       background-size: 28px 28px;
     }
-
     .hero > * { position: relative; z-index: 1; }
-
     .hero-eyebrow {
       font-size: 11px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #C96000;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       font-weight: 700;
     }
-
     .hero h1 {
       font-family: Georgia, serif;
-      font-size: clamp(34px, 5.5vw, 64px);
+      font-size: clamp(30px, 5vw, 58px);
       font-weight: normal;
       line-height: 1.08;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       color: #F7F2EA;
       letter-spacing: -0.02em;
     }
-
     .hero-subtitle {
-      font-size: 15px;
+      font-size: 14px;
       color: #A89878;
-      margin-bottom: 44px;
-      max-width: 560px;
+      margin-bottom: 36px;
+      max-width: 520px;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
     }
-
     .hero-stats {
       display: flex;
       justify-content: center;
-      gap: 40px;
+      gap: 32px;
       flex-wrap: wrap;
     }
-
     .stat { text-align: center; }
-
     .stat-number {
       display: block;
       font-family: Georgia, serif;
-      font-size: 30px;
+      font-size: 28px;
       color: #F0A500;
       font-weight: bold;
       line-height: 1;
       margin-bottom: 4px;
     }
-
     .stat-label {
       font-size: 10px;
       text-transform: uppercase;
@@ -97,20 +87,18 @@
 
     /* ── SOURCE LEGEND ── */
     .source-legend {
-      background: #211408;
-      border-bottom: 1px solid #301E0A;
-      padding: 10px 24px;
+      background: #1C1108;
+      border-bottom: 1px solid #2A1A08;
+      padding: 9px 24px;
     }
-
     .source-legend-inner {
       max-width: 1440px;
       margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 6px 16px;
+      gap: 5px 14px;
       flex-wrap: wrap;
     }
-
     .legend-label {
       font-size: 9px;
       text-transform: uppercase;
@@ -119,7 +107,6 @@
       font-weight: 700;
       margin-right: 4px;
     }
-
     .legend-dot {
       display: inline-flex;
       align-items: center;
@@ -127,20 +114,19 @@
       font-size: 10px;
       color: #8A7A68;
     }
-
     .legend-dot::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
     }
-
     .ld-topjaw::before  { background: #1A7A5C; }
     .ld-ba::before      { background: #B5101C; }
     .ld-gfg::before     { background: #1E4799; }
     .ld-gbc::before     { background: #7B2D91; }
     .ld-trend::before   { background: #C07000; }
+    .ld-timeout::before { background: #D93820; }
 
     /* ── FILTER BAR ── */
     .filters-wrap {
@@ -150,7 +136,6 @@
       background: #211408;
       border-bottom: 2px solid #301E0A;
     }
-
     .filters-inner {
       max-width: 1440px;
       margin: 0 auto;
@@ -159,11 +144,9 @@
       overflow-x: auto;
       scrollbar-width: none;
     }
-
     .filters-inner::-webkit-scrollbar { display: none; }
-
     .filter-btn {
-      padding: 14px 20px;
+      padding: 13px 18px;
       font-size: 11.5px;
       font-weight: 700;
       letter-spacing: 0.07em;
@@ -178,60 +161,42 @@
       position: relative;
       top: 2px;
     }
-
     .filter-btn:hover { color: #C8B89A; }
     .filter-btn.active { color: #F7F2EA; border-bottom-color: #F0A500; }
+    .filter-btn.filter-quickwin.active { border-bottom-color: #2ABA5C; color: #7AEBA4; }
+    .filter-sep { width: 1px; background: #302010; margin: 10px 6px; flex-shrink: 0; }
 
-    .filter-sep {
-      width: 1px;
-      background: #302010;
-      margin: 10px 4px;
-      flex-shrink: 0;
-    }
-
-    /* ── MAIN WRAP ── */
+    /* ── MAIN ── */
     .main-wrap {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 48px 24px 96px;
+      padding: 44px 24px 88px;
     }
 
     /* ── SECTION BLOCK ── */
-    .section-block { margin-top: 64px; }
+    .section-block { margin-top: 60px; }
     .section-block:first-child { margin-top: 0; }
-
     .section-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
-      padding-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
       border-bottom: 2px solid #E8E0D0;
       flex-wrap: wrap;
     }
-
-    .section-icon {
-      font-size: 22px;
-      line-height: 1;
-    }
-
+    .section-icon { font-size: 20px; line-height: 1; }
     .section-title {
       font-family: Georgia, serif;
-      font-size: 24px;
+      font-size: 22px;
       font-weight: normal;
     }
-
-    .section-count {
-      font-size: 12px;
-      color: #999;
-      font-style: italic;
-    }
-
+    .section-count { font-size: 12px; color: #999; font-style: italic; }
     .section-desc {
-      font-size: 13px;
-      color: #777;
+      font-size: 12.5px;
+      color: #888;
       margin-left: auto;
-      max-width: 380px;
+      max-width: 360px;
       text-align: right;
       line-height: 1.45;
     }
@@ -239,155 +204,182 @@
     /* ── GRID ── */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
     }
 
     /* ── CARD ── */
     .card {
-      background: #FFFFFF;
+      background: #FFF;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.18s, box-shadow 0.18s;
       display: flex;
       flex-direction: column;
     }
-
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.11), 0 12px 36px rgba(0,0,0,0.07);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1), 0 10px 32px rgba(0,0,0,0.06);
     }
-
     .card.card-trend {
       background: #FAFAF8;
-      border: 1.5px dashed #D8D0C0;
+      border: 1.5px dashed #D4CCC0;
     }
+    .card.card-trend:hover { transform: translateY(-3px); }
+    .card-wrap { display: flex; flex: 1; }
 
-    .card-wrap {
-      display: flex;
-      flex: 1;
-    }
-
-    /* left bar: one colour per menu section */
     .card-bar { width: 4px; flex-shrink: 0; }
     .bar-brunch   { background: linear-gradient(180deg, #D4880A, #F0A500); }
     .bar-pizza    { background: linear-gradient(180deg, #B5101C, #D84030); }
     .bar-seasonal { background: linear-gradient(180deg, #2A7A3C, #3E9F54); }
 
     .card-content {
-      padding: 20px 20px 18px;
+      padding: 18px 18px 16px;
       flex: 1;
       display: flex;
       flex-direction: column;
     }
 
-    /* ── META ROW ── */
+    /* ── META & TAGS ── */
     .card-meta {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 4px;
+      gap: 5px;
+      margin-bottom: 5px;
       flex-wrap: wrap;
     }
-
     .card-tags {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-bottom: 12px;
+      gap: 4px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
-    /* Source pill */
     .src-pill {
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 2px 8px;
+      letter-spacing: 0.09em;
+      padding: 2px 7px;
       border-radius: 3px;
       color: white;
     }
-
     .src-topjaw  { background: #1A7A5C; }
     .src-ba      { background: #B5101C; }
     .src-gfg     { background: #1E4799; }
     .src-gbc     { background: #7B2D91; }
     .src-trend   { background: #C07000; }
+    .src-timeout { background: #D93820; }
 
-    /* Section pill */
     .sec-pill {
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.09em;
-      padding: 2px 8px;
+      letter-spacing: 0.08em;
+      padding: 2px 7px;
       border-radius: 3px;
       color: white;
     }
-
     .sec-brunch   { background: #D4880A; }
     .sec-pizza    { background: #B5101C; }
     .sec-seasonal { background: #2A7A3C; }
 
-    /* Trend tag */
-    .trend-tag {
-      font-size: 8.5px;
+    .trend-tag, .crowd-tag, .effort-tag {
+      font-size: 8px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 2px 8px;
+      letter-spacing: 0.07em;
+      padding: 2px 7px;
       border-radius: 3px;
       border: 1px solid;
     }
 
-    .tag-timeless   { color: #666; border-color: #CCC; background: #F5F5F5; }
-    .tag-ontrend    { color: #166A35; border-color: #7DC99A; background: #EEF8F2; }
-    .tag-boundary   { color: #6228A0; border-color: #C090E0; background: #F5EEF9; }
+    .tag-timeless  { color: #666; border-color: #CCC; background: #F5F5F5; }
+    .tag-ontrend   { color: #166A35; border-color: #7DC99A; background: #EEF8F2; }
+    .tag-boundary  { color: #6228A0; border-color: #C090E0; background: #F5EEF9; }
 
-    /* Crowd tag */
-    .crowd-tag {
-      font-size: 8.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 2px 8px;
-      border-radius: 3px;
-      border: 1px solid;
+    .tag-pleaser   { color: #1A4A99; border-color: #90B0E8; background: #EEF2FB; }
+    .tag-elevated  { color: #8A5800; border-color: #D4AA50; background: #FDF6E3; }
+    .tag-both      { color: #0D6A5E; border-color: #70C0B0; background: #EEF7F5; }
+
+    .eff-instant   { color: #1A5C35; border-color: #5CC080; background: #EDFAF3; }
+    .eff-week      { color: #4A3800; border-color: #C8A030; background: #FEF8E3; }
+    .eff-plan      { color: #1A2A4A; border-color: #8090CC; background: #EEF0FA; }
+
+    .badge-season  {
+      font-size: 8px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.12em; padding: 2px 7px; border-radius: 3px;
+      background: #D4EFDC; color: #0F5928; border: 1px solid #7DC99A;
     }
-
-    .tag-pleaser  { color: #1A4A99; border-color: #90B0E8; background: #EEF2FB; }
-    .tag-elevated { color: #8A5800; border-color: #D4AA50; background: #FDF6E3; }
-    .tag-both     { color: #0D6A5E; border-color: #70C0B0; background: #EEF7F5; }
 
     .card-name {
       font-family: Georgia, serif;
-      font-size: 19px;
+      font-size: 18px;
       font-weight: bold;
       line-height: 1.2;
       margin-bottom: 2px;
       color: #1A1A1A;
     }
-
     .card-location {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: #AAA;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
-
     .card-concept {
-      font-size: 13px;
+      font-size: 12.5px;
       font-style: italic;
       color: #555;
-      margin-bottom: 16px;
-      line-height: 1.55;
+      margin-bottom: 12px;
+      line-height: 1.5;
     }
 
-    /* ── DISHES / CONTENT SECTION ── */
-    .dishes-section { margin-bottom: 16px; flex: 1; }
+    /* ── QUICK STEAL ── */
+    .quick-steal {
+      background: #F0FFF6;
+      border-left: 3px solid #2A7A3C;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+    }
+    .qs-label {
+      font-size: 9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #166A35;
+      margin-bottom: 4px;
+    }
+    .qs-text {
+      font-size: 12.5px;
+      color: #1A3D25;
+      line-height: 1.45;
+    }
+
+    /* ── DISHES SECTION ── */
+    .dishes-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: 1px solid #E4DCCc;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: border-color 0.15s, color 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .dishes-toggle:hover { border-color: #B8A898; color: #444; }
+
+    .dishes-section { margin-bottom: 14px; }
+    .dishes-section.ds-closed { display: none; }
 
     .dishes-heading {
       font-size: 9px;
@@ -395,140 +387,107 @@
       text-transform: uppercase;
       letter-spacing: 0.18em;
       color: #CCC;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
-
     .dish-item {
-      padding: 8px 0;
+      padding: 7px 0;
       border-bottom: 1px solid #F0EAE0;
     }
-
     .dish-item:last-child { border-bottom: none; }
-
     .dish-name {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #1A1A1A;
       margin-bottom: 2px;
     }
-
     .dish-desc {
       font-size: 12px;
       color: #666;
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
-    /* Trend insight block (for research/trend cards) */
+    /* Calendar blocks */
+    .cal-month { margin-bottom: 10px; }
+    .cal-month-name {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #2A7A3C;
+      margin-bottom: 3px;
+    }
+    .cal-items { font-size: 12px; color: #444; line-height: 1.55; }
+
+    /* Trend insight blocks */
     .trend-block {
       background: #F7F0FA;
       border-radius: 6px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
     }
-
     .trend-block-label {
       font-size: 9px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       color: #8040B0;
-      margin-bottom: 6px;
-    }
-
-    .trend-block-item {
-      font-size: 12.5px;
-      color: #3A2050;
-      line-height: 1.5;
-      padding: 4px 0;
-      border-bottom: 1px solid #E8DCF0;
-    }
-
-    .trend-block-item:last-child { border-bottom: none; }
-
-    /* Calendar block */
-    .cal-month {
-      margin-bottom: 12px;
-    }
-
-    .cal-month-name {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #2A7A3C;
       margin-bottom: 5px;
     }
-
-    .cal-items {
-      font-size: 12.5px;
-      color: #444;
-      line-height: 1.6;
+    .trend-block-item {
+      font-size: 12px;
+      color: #3A2050;
+      line-height: 1.45;
+      padding: 3px 0;
+      border-bottom: 1px solid #E8DCF0;
     }
+    .trend-block-item:last-child { border-bottom: none; }
 
     /* ── MENU APPLICATION ── */
     .menu-app {
       background: #FFFBEE;
       border-left: 3px solid #F0A500;
       border-radius: 0 6px 6px 0;
-      padding: 11px 13px;
-      margin-bottom: 16px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      flex: 1;
     }
-
     .menu-app-label {
       font-size: 9px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       color: #BF7000;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
-
     .menu-app-text {
       font-size: 12.5px;
       color: #3D2800;
-      line-height: 1.55;
+      line-height: 1.5;
     }
 
     /* ── CARD FOOTER ── */
     .card-footer {
-      padding: 0 20px 16px;
+      padding: 0 18px 14px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-
-    .watch-link {
+    .watch-link, .ref-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.04em;
-      color: #B5101C;
       text-decoration: none;
-      padding: 5px 12px;
-      border: 1.5px solid #B5101C;
+      padding: 5px 11px;
+      border: 1.5px solid;
       border-radius: 6px;
       transition: background 0.15s, color 0.15s;
     }
-
+    .watch-link { color: #B5101C; border-color: #B5101C; }
     .watch-link:hover { background: #B5101C; color: white; }
-
-    .ref-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: #1E4799;
-      text-decoration: none;
-      padding: 5px 12px;
-      border: 1.5px solid #1E4799;
-      border-radius: 6px;
-      transition: background 0.15s, color 0.15s;
-    }
-
+    .ref-link { color: #1E4799; border-color: #1E4799; }
     .ref-link:hover { background: #1E4799; color: white; }
 
     /* ── HIDDEN ── */
@@ -538,15 +497,15 @@
     /* ── PAGE FOOTER ── */
     .page-footer {
       text-align: center;
-      padding: 32px 24px;
-      font-size: 12px;
+      padding: 28px 24px;
+      font-size: 11.5px;
       color: #AAA;
       border-top: 1px solid #EDE6D8;
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 760px) {
-      .hero { padding: 52px 20px 40px; }
+    @media (max-width: 720px) {
+      .hero { padding: 48px 18px 36px; }
       .grid { grid-template-columns: 1fr; }
       .section-desc { display: none; }
     }
@@ -554,74 +513,77 @@
 </head>
 <body>
 
-<!-- ═══════════════ HERO ═══════════════ -->
+<!-- ═══════ HERO ═══════ -->
 <header class="hero">
   <p class="hero-eyebrow">The Taproom · Menu Research</p>
   <h1>Menu Inspiration<br>Board</h1>
   <p class="hero-subtitle">
-    Brunch · Pizza · Seasonal — sourced from TopJaw, Bon Appétit, Good Food Guide,
-    Great British Chefs &amp; UK trend research
+    Brunch · Pizza · Seasonal — sourced from TopJaw, Bon Appétit, Time Out,
+    Good Food Guide, Great British Chefs &amp; UK trend research
   </p>
   <div class="hero-stats">
     <div class="stat">
-      <span class="stat-number" id="stat-count">18</span>
+      <span class="stat-number" id="stat-count">22</span>
       <span class="stat-label">Ideas</span>
     </div>
     <div class="stat">
-      <span class="stat-number">5</span>
+      <span class="stat-number" id="stat-quickwins">—</span>
+      <span class="stat-label">Quick Wins</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">6</span>
       <span class="stat-label">Sources</span>
     </div>
     <div class="stat">
       <span class="stat-number">3</span>
       <span class="stat-label">Menu Sections</span>
     </div>
-    <div class="stat">
-      <span class="stat-number">60+</span>
-      <span class="stat-label">Dishes &amp; Trends</span>
-    </div>
   </div>
 </header>
 
-<!-- ═══════════════ SOURCE LEGEND ═══════════════ -->
+<!-- ═══════ SOURCE LEGEND ═══════ -->
 <div class="source-legend">
   <div class="source-legend-inner">
     <span class="legend-label">Sources</span>
     <span class="legend-dot ld-topjaw">TopJaw</span>
     <span class="legend-dot ld-ba">Bon Appétit</span>
+    <span class="legend-dot ld-timeout">Time Out London</span>
     <span class="legend-dot ld-gfg">Good Food Guide</span>
     <span class="legend-dot ld-gbc">Great British Chefs</span>
     <span class="legend-dot ld-trend">Trend Research</span>
   </div>
 </div>
 
-<!-- ═══════════════ FILTERS ═══════════════ -->
+<!-- ═══════ FILTERS ═══════ -->
 <nav class="filters-wrap">
   <div class="filters-inner">
     <button class="filter-btn active" data-filter="all">All</button>
     <div class="filter-sep"></div>
-    <button class="filter-btn" data-filter="brunch">☀️ Brunch</button>
-    <button class="filter-btn" data-filter="pizza">🍕 Pizza</button>
-    <button class="filter-btn" data-filter="seasonal">🌿 Seasonal</button>
+    <button class="filter-btn" data-filter="brunch">Brunch</button>
+    <button class="filter-btn" data-filter="pizza">Pizza</button>
+    <button class="filter-btn" data-filter="seasonal">Seasonal</button>
+    <div class="filter-sep"></div>
+    <button class="filter-btn filter-quickwin" data-filter="quick-wins">Quick Wins Only</button>
   </div>
 </nav>
 
-<!-- ═══════════════ CONTENT ═══════════════ -->
+<!-- ═══════ CONTENT ═══════ -->
 <div class="main-wrap">
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- BRUNCH SECTION                         -->
-  <!-- ═══════════════════════════════════════ -->
+
+  <!-- ══════════════════════════════════════ BRUNCH ══ -->
   <div class="section-block" data-section="brunch">
     <div class="section-header">
       <span class="section-icon">☀️</span>
       <h2 class="section-title">Brunch</h2>
-      <span class="section-count">7 ideas</span>
-      <span class="section-desc">Mon–Sun mornings — pushing the brunch format beyond avocado toast, towards thoughtful, repeatable crowd-pleasers with one show-stopping boundary push</span>
+      <span class="section-count">9 ideas</span>
+      <span class="section-desc">Mon–Sun mornings — crowd-pleasers at the core, with one rotating boundary-push special that gives regulars a reason to come back</span>
     </div>
     <div class="grid">
 
-      <!-- ── 1. Hide, Mayfair ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 1 · Hide, Mayfair -->
+      <article class="card" data-category="brunch" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -632,47 +594,51 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Hide, Mayfair</h3>
             <p class="card-location">Piccadilly, London — Michelin Star</p>
-            <p class="card-concept">Ollie Dabbous's nature-led fine dining restaurant above a bar. The ground-floor brunch is the most achievable entry-point into Hide's philosophy — dishes built around great British produce, treated with exceptional technique but served casually.</p>
+            <p class="card-concept">Ollie Dabbous's nature-led restaurant. Their brunch translates fine-dining thinking into casual formats — the Benedict upgrade that London's been copying for two years.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Whisk a teaspoon of truffle oil or anchovy paste into your next Hollandaise. One ingredient addition lifts the classic Benedict into a signature without changing any other skill.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Lobster Benedict</div>
-                <div class="dish-desc">Whole lobster claw and tail, poached egg, house Hollandaise on a brioche muffin. The Hollandaise is made with lobster butter for depth. The ultimate Benedict upgrade.</div>
+                <div class="dish-desc">Whole lobster claw and tail, poached egg, Hollandaise made with lobster butter on a brioche muffin. The ultimate Benedict upgrade — same architecture, completely different ambition.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Smoked Eel Omelette</div>
-                <div class="dish-desc">Silky, barely-set omelette folded over house-smoked eel, crème fraîche, chive. British fish, French technique — the combination that woke up a generation of brunch chefs.</div>
+                <div class="dish-desc">Barely-set silky omelette folded over house-smoked eel, crème fraîche, chive. British fish, French technique — the combination that woke up a generation of brunch chefs.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Birch Sap &amp; Honey Croissants</div>
-                <div class="dish-desc">Laminated dough enriched with foraged birch sap instead of water. Served with cultured butter and seasonal honey. The narrative is the sell — where did this ingredient come from?</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Acai Bowl with House Granola</div>
-                <div class="dish-desc">Scratch-made granola with British honey and spelt, house-blended acai. The non-savoury option done properly — not a smoothie-bar afterthought.</div>
+                <div class="dish-name">Birch Sap Croissants</div>
+                <div class="dish-desc">Laminated dough enriched with foraged birch sap instead of water. Served with cultured butter and seasonal honey. The ingredient narrative is the sell.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The Lobster Benedict framework (upgrade the protein, upgrade the base, upgrade the sauce) is the one plate that positions you above every brunch spot in town. Even a braised beef cheek Benedict on a house-toasted sourdough muffin with truffle Hollandaise signals "we mean it." Birch sap is too niche — but a foraged honey croissant with cultured butter is entirely achievable and giftable.</p>
+              <p class="menu-app-text">The "Benedict upgrade" framework — premium protein, premium base, upgraded sauce — is your single show-stopper plate. A braised short rib Benedict on a house-toasted sourdough muffin with truffle Hollandaise signals the whole operation in one dish. You don't need the lobster; you need the intention.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.youtube.com/watch?v=2pHXNH5HXUI" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on TopJaw
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            TopJaw
           </a>
         </div>
       </article>
 
-      <!-- ── 2. Fallow, St James's ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 2 · Fallow, St James's -->
+      <article class="card" data-category="brunch" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -683,51 +649,55 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Fallow, St James's</h3>
             <p class="card-location">St James's, London — Michelin Bib Gourmand</p>
-            <p class="card-concept">Jack Croft and Will Murray's waste-first restaurant where every menu item has a "why this exists" story. Their brunch menu is the most-copied by ambitious UK restaurants right now — mixing zero-waste philosophy with dishes that are genuinely fun to eat.</p>
+            <p class="card-concept">Jack Croft and Will Murray's waste-first restaurant. Their brunch menu is the most-copied by ambitious UK restaurants right now — zero-waste thinking meets genuinely fun food.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Swap your English muffin for a house honey waffle on one Benedict this week. Source a local honey, make or buy a quality waffle batter, charge £1.50 more. The sweet-savoury contrast does everything.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Black Pudding Benedict on Honey Waffle</div>
-                <div class="dish-desc">Crispy blood sausage, poached egg and Hollandaise on a house-made honey waffle instead of an English muffin. The waffle is the genius move — sweet-savoury contrast, great texture, and it travels the dish into "you won't find this anywhere else" territory.</div>
+                <div class="dish-desc">Crispy Stornoway black pudding, poached egg and Hollandaise on a house honey waffle. The waffle is the genius move — sweet-savoury contrast, great texture, impossible to find anywhere else.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Hash Browns with Walnut Ketchup</div>
-                <div class="dish-desc">Shredded and pressed potato cakes, perfectly crisp, served with a house walnut ketchup (fermented walnuts, vinegar, spice). Replaces tomato ketchup with something far more interesting.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Mushroom Royale</div>
-                <div class="dish-desc">A croissant bun (baked in-house, pressed before service) filled with a rich mushroom fricassée, topped with a poached egg and mushroom hollandaise. All-day umami satisfaction.</div>
+                <div class="dish-desc">Shredded potato cakes, perfectly crisp, with a house walnut ketchup made from fermented walnuts, vinegar and spice. Replaces tomato ketchup with something far more interesting.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Corn Ribs with Beef Butter</div>
-                <div class="dish-desc">Corn cobs cut into rib-shaped strips, deep-fried until they curl, tossed in beef-fat butter with chilli. Uses whole cob — an Instagram-ready, snackable brunch side.</div>
+                <div class="dish-desc">Corn cobs cut into rib strips, deep-fried until they curl, tossed in beef-fat butter with chilli. Zero-waste, Instagram-ready, addictive brunch side.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Chelsea Tart (from leftover whey)</div>
-                <div class="dish-desc">Classic Chelsea tart dough enriched with the whey left over from making butter. Spiced currants, brown butter glaze. A pastry that tells a story on every menu it appears on.</div>
+                <div class="dish-name">Chelsea Tart from Leftover Whey</div>
+                <div class="dish-desc">Classic Chelsea tart dough enriched with the whey left from making butter. A pastry that turns a kitchen by-product into a talking point.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The honey waffle base for a Benedict is immediately actionable — make it in-house with good local honey and run it as your house Benedict base all season. The corn ribs are a perfect brunch side: cheap, dramatic, addictive. The walnut ketchup could become your house condiment — one fermented sauce that signals the whole ethos. Target one dish from this card, execute it perfectly, own it.</p>
+              <p class="menu-app-text">The honey waffle is immediately actionable this week. The corn ribs are your cheapest, most dramatic August side — buy whole cobs, cut into strips, fry, toss in dripping, charge starter price. The walnut ketchup could become your house condiment — one fermented sauce that signals the whole ethos of the kitchen.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.youtube.com/watch?v=m4sNHBHsgzQ" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on TopJaw
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            TopJaw
           </a>
         </div>
       </article>
 
-      <!-- ── 3. Imad's Syrian Kitchen ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 3 · Imad's Syrian Kitchen -->
+      <article class="card" data-category="brunch" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -738,47 +708,51 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Imad's Syrian Kitchen</h3>
             <p class="card-location">Soho, London</p>
-            <p class="card-concept">Imad Alarnab's Syrian kitchen in Soho, built from zero after Imad fled Damascus. The brunch menu applies Syrian flavour vocabulary to Western brunch formats — the result is the most interesting Benedict riff in London right now.</p>
+            <p class="card-concept">Imad Alarnab's Syrian kitchen applies Middle Eastern flavour vocabulary to Western brunch formats. The result is the most talked-about Benedict riff in London right now.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Toast your crumpets in za'atar butter (za'atar + unsalted butter, warm through). A crumpet + za'atar butter + a fried egg is already a dish. It's also the base of your next Benedict special.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Shawarma Benedict</div>
-                <div class="dish-desc">Za'atar-spiced crumpet as the base, spiced rotisserie chicken thigh, poached egg, house Hollandaise spiked with sumac. The cultural translation of the Benedict formula is flawless — everyone recognises the architecture, but nothing tastes expected.</div>
+                <div class="dish-desc">Za'atar-spiced crumpet base, crispy spiced chicken thigh, poached egg, Hollandaise spiked with sumac. The architecture of a Benedict; nothing tastes expected. Social-media-ready every service.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Ful Medames</div>
-                <div class="dish-desc">Slow-cooked fava beans with olive oil, garlic, cumin and lemon. Topped with a poached egg and crunchy fried onions. Levantine breakfast staple — hearty, healthy, vegan-by-default.</div>
+                <div class="dish-desc">Slow-cooked fava beans with olive oil, garlic, cumin and lemon, poached egg, crispy shallots. Levantine breakfast staple — hearty, healthy, vegan by default, excellent margin.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Knafeh French Toast</div>
-                <div class="dish-desc">Thick brioche soaked in orange blossom custard, fried until crunchy, topped with warm cheese and shredded kadaifi pastry, drizzled with rose syrup. Syrian dessert meets French toast — works brilliantly as a brunch showpiece.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Fattoush with Seasonal British Veg</div>
-                <div class="dish-desc">Toasted sourdough croutons, heritage tomatoes, cucumber, radish, purslane, sumac-spiked dressing. Adapted to use whatever's local. A dish that doesn't belong in a brunch context until it appears on your table and makes total sense.</div>
+                <div class="dish-desc">Thick brioche in orange blossom custard, fried until crunchy, topped with warm cheese, shredded kadaifi pastry and rose syrup. Syrian dessert meets French toast — the brunch showpiece.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The za'atar crumpet base is the single most transferable idea here — make your own crumpets or buy quality ones, toast in za'atar butter, and use as the house Benedict base for your "boundary push" weekly special. The ful medames is a legitimately great, cheap, vegan main that lifts your plant-based offer overnight. Pick the Shawarma Benedict as a weekend special and watch the social media do the work for you.</p>
+              <p class="menu-app-text">The Shawarma Benedict is your monthly rotating special — run it for four weekends, photograph it once, post it. The ful medames is a cheap, vegan-solid, genuinely interesting main that lifts your plant-based offer without compromise. Both dishes cost almost nothing to prep and feel like they came from a restaurant that knows exactly what it's doing.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.youtube.com/watch?v=3bVJXdKlmbo" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on TopJaw
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            TopJaw
           </a>
         </div>
       </article>
 
-      <!-- ── 4. Roe, Canary Wharf ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 4 · Roe, Canary Wharf -->
+      <article class="card" data-category="brunch" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -789,43 +763,226 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Roe, Canary Wharf</h3>
-            <p class="card-location">Canary Wharf, London — Fallow Sister</p>
-            <p class="card-concept">The Fallow team's waterside restaurant, focused on fish, seafood and produce-led dishes. Their brunch is built around the same waste-first thinking as Fallow but leans into British coastal produce. The pressed croissant sandwich format is the move everyone's stealing.</p>
+            <p class="card-location">Canary Wharf, London — Fallow Sister Restaurant</p>
+            <p class="card-concept">The Fallow team's seafood-led sibling restaurant. Their pressed croissant sandwich format is the brunch move most-imitated across London right now.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Use a panini press or heavy cast iron on a quality all-butter croissant filled with portobello mushroom and taleggio. If you don't have taleggio, use gruyère. Test it today — if it works, it's on the menu Monday.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Croissant Royale — Crispy Portobello</div>
-                <div class="dish-desc">A croissant pressed flat (like a panini), filled with whole crispy portobello mushroom, melted taleggio, truffle aioli and pickled shallot. The pressing collapses the layers into something crisp on the outside, molten and layered within.</div>
+                <div class="dish-desc">Croissant pressed flat, filled with whole crispy portobello, melted taleggio, truffle aioli, pickled shallot. Hot and crisp outside, layered and molten within. The elevated toasted sandwich.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Croissant Royale — Salt Cod &amp; Green Sauce</div>
-                <div class="dish-desc">Salt cod, crispy potatoes, house verde sauce (parsley, capers, anchovy, lemon) pressed in a croissant. A brunch that tastes like a Spanish coastal holiday.</div>
+                <div class="dish-desc">Salt cod, crispy potatoes, house verde (parsley, capers, anchovy, lemon) pressed in a croissant. A brunch that tastes like a Spanish coastal holiday.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Cured Salmon, Crème Fraîche &amp; Pickled Cucumber</div>
-                <div class="dish-desc">House 48-hour dry-cured salmon on sourdough rye, house crème fraîche, shaved pickled cucumber and dill oil. Clean, refreshing, premium.</div>
+                <div class="dish-name">House-Cured Salmon on Sourdough Rye</div>
+                <div class="dish-desc">48-hour dry-cured salmon, crème fraîche, shaved pickled cucumber, dill oil. Clean, premium, repeatable.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The pressed croissant format is immediately achievable with any panini press and a quality all-butter croissant. Portobello mushroom + taleggio + truffle aioli as a filling is a lunch and brunch item that works year-round. Upgrade "toasted sandwich" to "pressed croissant" and you shift the entire perception of your light-lunch offer at near zero extra cost.</p>
+              <p class="menu-app-text">Upgrading "toasted sandwich" to "pressed croissant" shifts the entire perception of your light-lunch offer at near-zero extra cost. The mushroom + taleggio filling is vegetarian, year-round, high-margin, and genuinely impressive. This is your lunch crossover dish — works 11am to 3pm without feeling out of place at either end.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.youtube.com/watch?v=WiRDLOqmKps" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on TopJaw
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            TopJaw
           </a>
         </div>
       </article>
 
-      <!-- ── 5. Daisy Green Collective ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 5 · Honey & Co [NEW] -->
+      <article class="card" data-category="brunch" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-brunch"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-timeout">Time Out</span>
+              <span class="sec-pill sec-brunch">Brunch</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-timeless">Timeless</span>
+              <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Honey &amp; Co</h3>
+            <p class="card-location">Bloomsbury, London — Israeli/Palestinian Kitchen</p>
+            <p class="card-concept">Sarit Packer and Itamar Srulovich's landmark Israeli kitchen, consistently named one of London's best brunch spots by Time Out. Their mezze-style sharing brunch proved a Middle Eastern breakfast format travels perfectly to UK all-day dining.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Build one mezze breakfast board: house hummus, warm flatbread (pitta or tear-and-share sourdough), soft-boiled egg, za'atar, pickled cucumber, seasonal veg. Four components, one board, shareable, premium-priced.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Big Breakfast Mezze Board</div>
+                <div class="dish-desc">Shakshuka, creamy hummus, house labneh, warm burekas (filo pastry pockets filled with cheese or spinach), soft-boiled egg, seasonal pickle, fresh flatbread. The whole table sharing one abundant board — the opposite of the individual-plate brunch.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Sabich</div>
+                <div class="dish-desc">Fried aubergine, hard-boiled egg, Israeli salad, tehina, amba (pickled mango sauce) in warm pitta. Tel Aviv street food that works perfectly as a brunch main — hearty, complex, naturally vegan-adaptable.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Creamy Hummus with Green Chilli &amp; Egg</div>
+                <div class="dish-desc">House-blended hummus (silkier and creamier than anything bought), topped with whole soft-boiled egg, green chilli, olive oil, warm flatbread. A brunch main for under £12 that feels like a full experience.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Burekas</div>
+                <div class="dish-desc">Crisp-edged filo parcels filled with cheese (feta + ricotta) or spinach and cheese. Served warm with a small pot of yoghurt. House-made, quick to bake off in a hot oven from prepped raw state.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The mezze brunch board is your most accessible crowd-pleaser addition: hummus, flatbread, egg, za'atar, pickles — all things you either already buy or can make in minutes. For a market-town crowd that knows shakshuka from supermarket recipe kits, your scratch version with proper spicing and house flatbread is transformative. The sharing format also increases covers-per-table time and average spend without adding complexity to service.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://honeyandco.co.uk" target="_blank" rel="noopener" class="ref-link">
+            Honey &amp; Co
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 6 · Martino's 2025 [NEW] -->
+      <article class="card" data-category="brunch" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-brunch"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-timeout">Time Out 2025</span>
+              <span class="sec-pill sec-brunch">Brunch</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-ontrend">On Trend Now</span>
+              <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Martino's</h3>
+            <p class="card-location">Chelsea, London — Opened 2025</p>
+            <p class="card-concept">Named Time Out London's standout new Italian opening of 2025. A 1950s–60s Italian trattoria format running from breakfast through to late dinner — the all-day Italian model proving its appeal with a Millennial and Gen Z crowd who want quality, nostalgia and simplicity in the same room.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Replace your standard pancake batter with ricotta pancakes: same method, same pan, completely different texture — pillowy, rich, slightly tangy. Make the blueberry compote from frozen berries in 10 minutes. Put it on this weekend.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Ricotta Pancakes with Blueberry Compote</div>
+                <div class="dish-desc">Light, pillowy pancakes made with fresh ricotta in the batter — richer and less sweet than standard buttermilk, served with warm blueberry compote and a dusting of icing sugar. The Italian breakfast pancake that feels luxurious without being heavy.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Arrabbiata Baked Eggs on Sourdough</div>
+                <div class="dish-desc">Eggs baked in a spiced tomato arrabbiata sauce, served bubbling in a cast-iron dish with thick-cut toasted sourdough. A shakshuka cousin with an Italian accent — bold, comforting, simple to execute at scale.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Bircher Muesli with Apple, Dates &amp; Hazelnuts</div>
+                <div class="dish-desc">Oats soaked overnight in apple juice, grated apple stirred through, topped with chopped Medjool dates and toasted hazelnuts. Prep-heavy once, zero effort at service. The lighter brunch option done with intention.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">House Cornetto Pastries</div>
+                <div class="dish-desc">Italian-style horn pastry (less rich than French croissant, slightly sweeter), served warm with breakfast. A pastry that signals a different cultural reference and travels well alongside coffee.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The arrabbiata baked eggs is a direct alternative to shakshuka with an Italian angle — if you're leaning into a pizza-brunch identity, the Italian-inflected egg dishes are more coherent on the same menu. The ricotta pancake is a simple swap that gives your pancake stack a story and a texture difference worth paying for. Martino's success proves the Italian all-day model has mass UK appeal — and you're already most of the way there.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.timeout.com/london/restaurants" target="_blank" rel="noopener" class="ref-link">
+            Time Out London
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 7 · Kellogg's Diner -->
+      <article class="card" data-category="brunch" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-brunch"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-ba">Bon Appétit</span>
+              <span class="sec-pill sec-brunch">Brunch</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-timeless">Timeless</span>
+              <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Kellogg's Diner</h3>
+            <p class="card-location">Williamsburg, Brooklyn — Est. 1928</p>
+            <p class="card-concept">A 100-year-old Brooklyn diner revived by chef Jackie Carnesi with Texas roots. Open 24/7 — the ultimate stress test of a brunch menu that actually works. Fine-dining precision applied to diner classics.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Use your braised meat trimmings for a Saturday morning hash. Crisped short rib or pulled pork, diced potato, caramelised onion, fried egg on top. You're already doing the braise — this uses what would otherwise be kitchen waste.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Guajillo Braised Short Rib Hash</div>
+                <div class="dish-desc">Short rib slow-braised in guajillo chilli, shredded and crisped on a flat-top with diced potato and onion. The braising liquor deglazes the whole pan — every bite has depth. The best breakfast hash in New York.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Patty Melt on Rye</div>
+                <div class="dish-desc">Beef patty, slow-griddled white onions and Swiss cheese pressed between marble rye, cooked flat until bronzed. Not a burger. Better than a burger. Absent from almost every British pub brunch menu — that's your gap.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Cornmeal Masa Pancakes</div>
+                <div class="dish-desc">Gluten-free pancakes made with masa harina — buttery, subtly savoury, completely different texture to standard buttermilk pancakes. A pancake with a story.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Chilaquiles Verdes</div>
+                <div class="dish-desc">Fried tortilla chips in bright tomatillo salsa, crema, cotija, fried eggs. Acidic, spicy, textural — the Tex-Mex brunch that's landed in London but is largely absent from market-town menus.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The braised meat hash closes the loop between your pizza-night kitchen and Saturday brunch service — the short rib braise you're already running for a pizza topping becomes your best brunch main the next morning at near-zero marginal cost. The patty melt is a genuinely underserved dish in British pubs — it's not a burger, it's not a sandwich, it's something better. Put it on lunch and watch what happens.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/watch?v=vvCyaJXPLCs" target="_blank" rel="noopener" class="watch-link">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 8 · Daisy Green Collective -->
+      <article class="card" data-category="brunch" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -836,153 +993,114 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
+              <span class="badge-season">In Season Now</span>
             </div>
             <h3 class="card-name">Daisy Green Collective</h3>
             <p class="card-location">Multiple London Sites — Australia-Influenced</p>
-            <p class="card-concept">London's leading Australian-influenced brunch group. The format that redefined British brunch culture: fresh, seasonal, vegetable-forward, uncompromising on ingredients, excellent coffee. Everything aspirational brunch now traces back to this approach.</p>
+            <p class="card-concept">London's defining Australian-influenced brunch group. The format that redefined British brunch culture: seasonal, vegetable-forward, uncompromising on ingredients. Everything aspirational UK brunch traces back to this approach.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Add sweetcorn fritters this weekend — August sweetcorn is extraordinary right now, cheap, and the dish costs almost nothing at scale. Whole corn kernels in a light batter, fried crisp, served with marinated feta and poached eggs. That's the whole dish.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Sweetcorn Fritters with Marinated Feta</div>
-                <div class="dish-desc">Whole corn kernels folded into a light batter, fried into crispy-edged cakes, served with marinated feta, poached eggs, roast cherry tomatoes and chipotle mayo. The dish that launched ten thousand brunch menus and still works.</div>
+                <div class="dish-desc">Whole corn kernels in a light batter, fried into crispy-edged cakes, served with marinated feta, poached eggs, roast cherry tomatoes, chipotle mayo. The dish that launched ten thousand brunch menus — because it works every time.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Smashed Avo with Sumac &amp; Pomegranate</div>
-                <div class="dish-desc">Crushed avocado on house sourdough with sumac, pomegranate seeds, preserved lemon, chilli flakes and optional poached eggs. The extra seasoning is what makes it different.</div>
+                <div class="dish-desc">Crushed avocado on house sourdough with sumac, pomegranate, preserved lemon, chilli flakes, optional eggs. The extra seasoning is what makes it different from the versions people make at home.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Shakshuka with House-Baked Flatbread</div>
-                <div class="dish-desc">Eggs poached in spiced roasted pepper and tomato sauce, with feta and fresh herbs, served with a warm house flatbread for scooping. A guaranteed crowd-pleaser across all demographics.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">House-Made Granola with Seasonal Fruit</div>
-                <div class="dish-desc">Buckwheat, oat and seed granola, toasted in local honey, served with Greek yoghurt and whatever's in season. The lighter brunch option that doesn't feel like a compromise.</div>
+                <div class="dish-name">Shakshuka with House Flatbread</div>
+                <div class="dish-desc">Eggs poached in spiced roasted pepper and tomato sauce, feta, fresh herbs, served with warm house flatbread. Universal crowd-pleaser across all demographics. Make your own flatbread and it's a completely different proposition.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Sweetcorn fritters are peak summer brunch: August sweetcorn is extraordinary right now, and the dish costs almost nothing to produce at scale. For a market town crowd, shakshuka is accessible and comforting — but use your own flatbread (even a par-baked tear-and-share) and it's a completely different proposition to the versions people have at home. These are your volume workhorses; the other cards are your edge.</p>
+              <p class="menu-app-text">Sweetcorn fritters and shakshuka are your volume workhorses — the dishes that keep the crowd happy while the more adventurous plates signal ambition. The key is execution: your scratch Hollandaise, your house flatbread, your marinated feta (not out of a supermarket tub) are what separate you. These are the crowd-pleasers that let you push boundaries on the specials board without losing anyone.</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 6. Kellogg's Diner, Brooklyn ── -->
-      <article class="card" data-category="brunch">
+
+      <!-- 9 · The Benedict Spectrum -->
+      <article class="card card-trend" data-category="brunch" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
             <div class="card-meta">
-              <span class="src-pill src-ba">Bon Appétit</span>
-              <span class="sec-pill sec-brunch">Brunch</span>
-            </div>
-            <div class="card-tags">
-              <span class="trend-tag tag-timeless">Timeless</span>
-              <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
-            </div>
-            <h3 class="card-name">Kellogg's Diner</h3>
-            <p class="card-location">Williamsburg, Brooklyn — Est. 1928</p>
-            <p class="card-concept">A 100-year-old Williamsburg diner revived with Texas roots by chef Jackie Carnesi. Open 24/7 — the ultimate test of a brunch menu that works. Classics executed with fine-dining precision; nothing is an afterthought. The diner format distilled to its highest form.</p>
-
-            <div class="dishes-section">
-              <div class="dishes-heading">Key Dishes</div>
-              <div class="dish-item">
-                <div class="dish-name">Guajillo Braised Short Rib Hash</div>
-                <div class="dish-desc">Short rib slow-braised in guajillo chilli, shredded and crisped on a flat-top with diced potato and onion. Served with eggs your way. The best breakfast hash in New York — braising liquor deglazes the whole pan.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Chilaquiles Verdes</div>
-                <div class="dish-desc">Fried tortilla chips softened just enough in bright tomatillo salsa verde, topped with crema, cotija and fried eggs. Acidic, spicy, textural — the Tex-Mex brunch dish that's had its moment in London and still lands every time.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Patty Melt on Rye</div>
-                <div class="dish-desc">Beef patty, slow-griddled white onions and Swiss cheese pressed between marble rye and cooked on the flat-top until bronzed. Not a burger. Better than a burger.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Cornmeal Masa Pancakes</div>
-                <div class="dish-desc">Gluten-free pancakes made with masa harina — buttery with a subtle savoury note from the corn. Served with maple and whipped butter. A pancake that tastes different to every other pancake.</div>
-              </div>
-            </div>
-
-            <div class="menu-app">
-              <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The braised short rib hash is the perfect brunch main: you're already slow-cooking for mains — use the offcuts and braising liquor for Saturday morning service. The cornmeal pancake is a subtle swap that gives your pancake stack a USP and a story. The patty melt deserves to be on every British pub brunch menu — it isn't yet. That's your gap.</p>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/watch?v=vvCyaJXPLCs" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on Bon Appétit
-          </a>
-        </div>
-      </article>
-
-      <!-- ── 7. The Benedict Spectrum (Trend Card) ── -->
-      <article class="card card-trend" data-category="brunch">
-        <div class="card-wrap">
-          <div class="card-bar bar-brunch"></div>
-          <div class="card-content">
-            <div class="card-meta">
-              <span class="src-pill src-trend">Trend Research</span>
+              <span class="src-pill src-trend">Strategy</span>
               <span class="sec-pill sec-brunch">Brunch</span>
             </div>
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">The Benedict Spectrum</h3>
-            <p class="card-location">Strategy Framework · Not a Restaurant</p>
-            <p class="card-concept">The Eggs Benedict is the most culturally elastic brunch format — it can be a crowd-pleaser or a boundary push depending solely on what you put on top and underneath. The London brunch scene in 2025 is defined by creative Benedict riffs. Here's the full spectrum from accessible to adventurous.</p>
+            <p class="card-location">Strategy Framework — Not a Restaurant</p>
+            <p class="card-concept">The Eggs Benedict is the most culturally elastic brunch format on any menu. The London scene in 2025 is defined by creative Benedict riffs. Here is the full spectrum from accessible to boundary-pushing — all using the same underlying technique.</p>
 
-            <div class="dishes-section">
-              <div class="dishes-heading">The Spectrum — Low to High Boundary Push</div>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Put two Benedicts on the menu: a Classic for the crowd, and one rotating House Benedict that changes monthly. The rotating one gives regulars a reason to come back every month — and gives you a monthly social post that takes 30 seconds to write.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the spectrum <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Low to High Boundary Push</div>
               <div class="dish-item">
-                <div class="dish-name">Classic — English muffin, back bacon or ham, Hollandaise</div>
-                <div class="dish-desc">The baseline. Everyone knows it, everyone orders it. Works everywhere. Your volume dish. Get the Hollandaise perfect and this earns its place every time.</div>
+                <div class="dish-name">Classic — English muffin, back bacon, Hollandaise</div>
+                <div class="dish-desc">Your volume dish. Get the Hollandaise right — from scratch, every time — and this earns its place permanently. Consistency is the product.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Elevated — Honey waffle, black pudding, Hollandaise (Fallow-inspired)</div>
-                <div class="dish-desc">Swap English muffin for a house honey waffle. Swap bacon for Stornoway black pudding. Immediately more interesting. Still totally accessible. The sweet-savoury base does the work.</div>
+                <div class="dish-name">Elevated — Honey waffle, black pudding, Hollandaise</div>
+                <div class="dish-desc">Swap the muffin for a house honey waffle. Swap bacon for Stornoway black pudding. Accessible to anyone, interesting to everyone. The sweet-savoury base does the work.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">On Trend — Za'atar crumpet, spiced chicken, sumac Hollandaise (Imad's-inspired)</div>
-                <div class="dish-desc">House crumpet toasted in za'atar butter. Crispy spiced chicken thigh. Classic Hollandaise spiked with sumac and a pinch of cumin. Familiar architecture, completely fresh flavours. Social-media-ready.</div>
+                <div class="dish-name">On Trend — Za'atar crumpet, spiced chicken, sumac Hollandaise</div>
+                <div class="dish-desc">House crumpet in za'atar butter, crispy spiced chicken thigh, Hollandaise spiked with sumac. Familiar architecture, completely fresh flavours. The social media special.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Boundary Push — House sourdough muffin, 48hr braised beef short rib, truffle Hollandaise</div>
-                <div class="dish-desc">Your "signature" Benedict. Braised beef from the kitchen's own stock. Truffle oil in the Hollandaise. House-baked muffin. The one dish that tells the whole story of what you're trying to do — in a single plate.</div>
+                <div class="dish-name">Boundary Push — Sourdough muffin, 48hr braised short rib, truffle Hollandaise</div>
+                <div class="dish-desc">Your signature dish. House-baked muffin. Short rib from your own braise. Truffle oil in the Hollandaise. The one plate that tells the story of the whole kitchen in a single serving.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Run two Benedicts on the menu at the same time: the Classic for the crowd-pleasers and one "House Benedict" that rotates monthly with the best seasonal flavour combination. Keep the Hollandaise consistent across both — the base is the skill signal. The rotating special gives regulars a reason to come back each month and gives you a social content hook to post about. Your market-town audience will appreciate the classic; your adventurous regulars will come for the special.</p>
+              <p class="menu-app-text">Keep the Hollandaise recipe identical across all variants — the base skill is the signal. Run the Classic as the permanent fixture and one rotating special as your "House Benedict of the Month." Your market-town regulars love the classic; your adventurous guests come for the special; your social media shows the journey. Three things from one menu decision.</p>
             </div>
           </div>
         </div>
       </article>
 
+
     </div>
-  </div><!-- /brunch section -->
+  </div><!-- /brunch -->
 
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- PIZZA SECTION                          -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════ PIZZA ══ -->
   <div class="section-block" data-section="pizza">
     <div class="section-header">
       <span class="section-icon">🍕</span>
       <h2 class="section-title">Pizza</h2>
       <span class="section-count">6 ideas</span>
-      <span class="section-desc">Friday &amp; Saturday nights — a focused pizza operation with a clear point of view, seasonal topping rotations, and one trending format to try</span>
+      <span class="section-desc">Friday &amp; Saturday nights — a focused operation with a clear point of view, seasonal rotations, and one trend format worth testing</span>
     </div>
     <div class="grid">
 
-      <!-- ── 1. Una Pizza Napoletana ── -->
-      <article class="card" data-category="pizza">
+
+      <!-- 1 · Una Pizza Napoletana -->
+      <article class="card" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -993,47 +1111,55 @@
             <div class="card-tags">
               <span class="trend-tag tag-timeless">Timeless</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Una Pizza Napoletana</h3>
             <p class="card-location">Lower East Side, New York City</p>
-            <p class="card-concept">Anthony Mangieri makes four or five pizzas a day, maximum, from 48–72-hour cold-fermented dough. That's it. No sides, no apps, no desserts except a daily sorbetto. The discipline is the product. Best Neapolitan pizza in the US — arguably the world. The philosophy matters as much as the recipe.</p>
+            <p class="card-concept">Anthony Mangieri makes four or five pizzas a day from 48–72hr cold-fermented dough. No sides, no apps. The discipline is the product — and the lesson every pizza operator needs to hear.</p>
 
-            <div class="dishes-section">
-              <div class="dishes-heading">The Four Pizzas</div>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Put a Marinara on the menu this Friday — no cheese, just great San Marzano tomato, garlic, dried oregano, olive oil. If it sells and people love it, your dough and your tomato are good enough to build on.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">The Pizzas</div>
               <div class="dish-item">
                 <div class="dish-name">Marinara — No Cheese</div>
-                <div class="dish-desc">Crushed San Marzano DOP tomato, dried oregano, garlic, olive oil. No cheese. The oldest pizza in Naples — and the truest test of your dough and your tomato. If this is good, everything else is good.</div>
+                <div class="dish-desc">Crushed San Marzano DOP, dried oregano, garlic, olive oil. No cheese. The oldest pizza in Naples and the truest test of dough quality and tomato quality. If this is good, everything is good.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Margherita — The Standard</div>
-                <div class="dish-desc">San Marzano, fior di latte, fresh basil, olive oil. Every decision here — ferment time, water temperature, salt percentage, bake temperature — is non-negotiable. The world's most-ordered pizza done at its absolute best.</div>
+                <div class="dish-desc">San Marzano, fior di latte, fresh basil, olive oil. Every technical decision — ferment time, water temperature, bake temperature — is non-negotiable. The world's most-ordered pizza at its absolute best.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Cosacca — Cheese Without Mozzarella</div>
+                <div class="dish-name">Cosacca — Without Mozzarella</div>
                 <div class="dish-desc">San Marzano, aged pecorino romano, fresh basil, no mozzarella. Saltier, sharper, more complex. A pizza for people who already love pizza.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">48–72hr Cold Fermented Dough</div>
-                <div class="dish-desc">Cold-proving the dough for up to 72 hours develops complex flavour, creates the leopard-spot char on the crust, and makes the dough simultaneously chewy and digestible. This is the single most important decision in making great pizza.</div>
+                <div class="dish-desc">Cold-proving for up to 72 hours develops complex flavour, creates the leopard-spot char, and makes the dough simultaneously chewy and digestible. The single most important process decision in great pizza.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The lesson from Una is discipline: do fewer things better. If you're running pizza two nights a week, you don't need eight pizzas — you need four or five that are genuinely outstanding. Start by mastering your dough ferment time. Cold-prove for at least 48 hours if you're not already. Then put a Marinara on the menu — no cheese, just tomato, garlic, oregano, olive oil. If people order it and love it, your pizza operation has arrived.</p>
+              <p class="menu-app-text">The lesson from Una is discipline: four or five outstanding pizzas beats eight average ones every time. If you're running pizza two nights a week, the constraint is actually your advantage — fewer choices, higher execution. Start with extending your cold ferment to 48+ hours if you're not already there. The Marinara is the benchmark — when it's excellent, add the seasonal specials on top of a solid foundation.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.youtube.com/watch?v=2wJvOpEcfuM" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Watch on Bon Appétit
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Bon Appétit
           </a>
         </div>
       </article>
 
-      <!-- ── 2. Honest Crust ── -->
-      <article class="card" data-category="pizza">
+
+      <!-- 2 · Honest Crust -->
+      <article class="card" data-category="pizza" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1044,30 +1170,38 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+              <span class="badge-season">In Season Now</span>
             </div>
             <h3 class="card-name">Honest Crust</h3>
-            <p class="card-location">Altrincham Market, Greater Manchester</p>
-            <p class="card-concept">Named in the Good Food Guide 2025 as one of the UK's best pizza operations. Started as a market stall, now a permanent fixture. Sourdough base, wood-fired, seasonal British toppings. The UK version of the Neapolitan philosophy — and the most relevant comparator for a market-town operator in the UK.</p>
+            <p class="card-location">Altrincham Market, Greater Manchester — Good Food Guide 2025</p>
+            <p class="card-concept">Named in the Good Food Guide 2025 as one of the UK's best pizza operations. Started as a market stall. Sourdough base, wood-fired, seasonal British toppings. The most relevant UK comparator for a market-town pizza operator.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Build one seasonal white pizza this weekend with whatever British produce is best right now: asparagus ends or broad beans and peas. White base (fior di latte only), seasonal veg, burrata torn on post-bake, lemon zest, olive oil. Run it until the produce runs out.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Asparagus, Burrata &amp; Prosciutto</div>
-                <div class="dish-desc">Seasonal British asparagus spears, torn burrata added post-bake, prosciutto di Parma, lemon zest, good olive oil. White base (fior di latte only). The seasonal pizza that earns the price point and tells the story of the year.</div>
+                <div class="dish-desc">Seasonal British asparagus, torn burrata post-bake, prosciutto di Parma, lemon zest, olive oil on a white base. The seasonal pizza that earns the price point and tells the story of the year.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Wild Garlic Oil Bread</div>
-                <div class="dish-desc">Pizza dough flattened and baked with house wild garlic oil, sea salt, and optional aged parmesan. The table bread that makes everyone order another. Seasonal — only available when wild garlic is running (March–May).</div>
+                <div class="dish-desc">Pizza dough baked flat with house wild garlic oil and sea salt. The table bread that makes everyone order another round. Seasonal (March–May) but any herb-oil flatbread works year-round.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Leopard-Spot Sourdough Base</div>
-                <div class="dish-desc">The hallmark of a properly fermented and properly baked pizza — black blistered spots on the crust from high heat and good sugar development in the dough. If you can achieve the leopard spot consistently, the crust sells itself.</div>
+                <div class="dish-desc">The hallmark of a properly fermented, properly baked pizza. If you can achieve the leopard spot consistently, the crust sells itself — guests notice before they even taste it.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Honest Crust's model is the closest to yours in the UK — market town, sourdough, seasonal, pizza as the evening centrepiece. The asparagus/burrata/prosciutto white pizza is your summer star. Run it in June and July while British asparagus is at its best, then rotate to a courgette flower or sweetcorn version in August. The wild garlic bread is worth noting for spring, but any herb oil flatbread (basil, rosemary, chive) works as a year-round table-bread upgrade that earns its spot on the menu.</p>
+              <p class="menu-app-text">Honest Crust is your closest UK comparator — market town, sourdough, seasonal, pizza as the evening anchor. Their seasonal rotation strategy is the one to copy: one changing pizza per month with the best British produce of that moment, run until it's gone, then change. The scarcity is a feature, not a limitation. Rosemary or basil herb oil flatbread works year-round as your table bread — and every good evening starts with good bread on the table.</p>
             </div>
           </div>
         </div>
@@ -1078,8 +1212,9 @@
         </div>
       </article>
 
-      <!-- ── 3. 'Nduja + Hot Honey Trend ── -->
-      <article class="card card-trend" data-category="pizza">
+
+      <!-- 3 · 'Nduja + Hot Honey -->
+      <article class="card card-trend" data-category="pizza" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1090,37 +1225,45 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">'Nduja + Hot Honey</h3>
-            <p class="card-location">Pizza Trend · 2025 · UK &amp; US</p>
-            <p class="card-concept">The defining pizza flavour combination of 2024–2025. 'Nduja (spreadable, intensely spiced Calabrian cured pork) as a sauce base or topping, finished post-bake with a drizzle of hot honey. Simultaneously spicy, rich, sweet and floral. Now appearing on mainstream UK pizza menus — but still under-represented outside of cities.</p>
+            <p class="card-location">Pizza Trend — 2024–2025 — UK &amp; US</p>
+            <p class="card-concept">The defining pizza combination of the past two years. 'Nduja (spreadable Calabrian cured pork) plus post-bake hot honey — simultaneously spicy, rich, sweet and floral. Mainstream in London; largely absent from market towns.</p>
 
-            <div class="dishes-section">
-              <div class="dishes-heading">The Trend in Detail</div>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Order 'nduja this week (Brindisa or any good deli supplier). Make hot honey tonight: warm honey, steep dried chilli flakes 20 minutes, strain. That's it. Run the pizza this Friday: 'nduja, fior di latte, hot honey post-bake, torn basil.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the trend <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">The Build</div>
               <div class="dish-item">
                 <div class="dish-name">'Nduja as Base Sauce</div>
-                <div class="dish-desc">Spread directly onto stretched dough instead of (or in addition to) tomato. 'Nduja melts and caramelises in the oven, creating a spiced red base with pockets of intense porky flavour throughout the cheese.</div>
+                <div class="dish-desc">Spread directly onto stretched dough in addition to (or instead of) tomato. 'Nduja melts and caramelises in the oven, creating a spiced red base with pockets of intense porky flavour throughout the cheese.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Hot Honey Drizzle — Post Bake</div>
-                <div class="dish-desc">Chilli-infused honey drizzled over a hot pizza straight from the oven. The heat of the pizza activates the chilli further; the honey cools into a sticky glaze. Always added after baking — heat destroys the floral honey notes.</div>
+                <div class="dish-name">Hot Honey — Always Post-Bake</div>
+                <div class="dish-desc">Drizzled over a hot pizza straight from the oven. Heat activates the chilli further; the honey cools into a sticky glaze. Never before baking — it burns and loses its floral notes.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Full Build: 'Nduja, Fior di Latte, Hot Honey, Ashmore Cheddar</div>
-                <div class="dish-desc">Ashmore or Montgomery cheddar adds a British-aged note that balances the 'nduja's heat. A UK-inflected version of the American hot honey pizza that has its own identity.</div>
+                <div class="dish-name">Full Build: 'Nduja, Fior di Latte, Ashmore Cheddar, Hot Honey</div>
+                <div class="dish-desc">Ashmore or Montgomery cheddar adds a British-aged note that balances the 'nduja heat. A UK-inflected version with its own identity — not just copying the American trend.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">'Nduja is available from good suppliers (Brindisa, Natoora) and lasts well. Hot honey takes 30 minutes to make: warm honey, add dried chilli flakes, let steep, strain. Total cost: near zero. Run this as your house signature: 'Nduja, fior di latte, Ashmore cheddar, hot honey, torn basil. Name it something local. It will be your most-ordered pizza within a month. Do not overthink it — the combination is already perfect.</p>
+              <p class="menu-app-text">Total cost to make hot honey: pennies, 20 minutes. Total procurement change: one 'nduja order. Run this as your house signature pizza: 'nduja, fior di latte, Ashmore cheddar, hot honey, torn basil. Name it something local — after the street, the taproom, the town. It will be your most-ordered pizza within a month. Do not overthink it. The combination is already perfect.</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 4. Mortadella & Stracciatella Trend ── -->
-      <article class="card card-trend" data-category="pizza">
+
+      <!-- 4 · Mortadella + Stracciatella -->
+      <article class="card card-trend" data-category="pizza" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1131,41 +1274,49 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Mortadella &amp; Stracciatella</h3>
-            <p class="card-location">Pizza Trend · Italian Fine-Casual · London 2025</p>
-            <p class="card-concept">The "cold-topped" pizza trend, popularised by London Italian restaurants and spreading to independent operators. The base bakes hot; cold, luxurious ingredients are applied immediately after — cold cream cheese, ribbons of cured meat, fresh herbs. The contrast between hot dough and cold topping is the whole point.</p>
+            <p class="card-location">Pizza Trend — Italian Fine-Casual — London 2025</p>
+            <p class="card-concept">The cold-topped pizza trend: the base bakes hot, luxurious cold ingredients are applied immediately after. The contrast between charred dough and cold cream cheese is the entire point. Now spreading from London independents to the wider UK scene.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Make pistachio pesto tonight — pistachios, basil, olive oil, pinch of salt, 10 minutes. Add it to one white pizza this weekend with mortadella and a torn burrata (or just the interior of a burrata — that's stracciatella). Post the photo.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the build <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Build</div>
               <div class="dish-item">
                 <div class="dish-name">White Base — Fior di Latte Only</div>
-                <div class="dish-desc">Simple fior di latte, olive oil, salt on the base. No tomato. This is the canvas — the cold toppings are the painting.</div>
+                <div class="dish-desc">Simple fior di latte, olive oil, salt. No tomato. This is the canvas — the cold toppings are the painting.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Post-Bake: Thick-Cut Mortadella</div>
-                <div class="dish-desc">Lay large thin ribbons (or folded thick-cut rounds) of mortadella immediately after the pizza leaves the oven. The warmth wilts the meat without cooking it — it becomes silky and sweet.</div>
+                <div class="dish-desc">Large thin ribbons laid on immediately after leaving the oven. The warmth wilts the meat without cooking it — it becomes silky and sweet.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Post-Bake: Cold Stracciatella Dolloped On Top</div>
-                <div class="dish-desc">Spoon cold stracciatella (the milky, stringy interior of a burrata) over the mortadella in three or four generous pools. It melts slightly but keeps its fresh dairy character.</div>
+                <div class="dish-name">Post-Bake: Cold Stracciatella</div>
+                <div class="dish-desc">Spoon cold stracciatella (the interior of a burrata) in generous pools over the mortadella. It melts slightly but keeps its fresh dairy character. If unavailable, tear open a burrata.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Finish: Pistachio Pesto &amp; Lemon Zest</div>
-                <div class="dish-desc">A tablespoon of pistachio pesto (pistachios, basil, olive oil, no parmesan) spooned over the top, with fine lemon zest grated across. Bright, nutty, fresh — cuts through the richness of the cheese and meat.</div>
+                <div class="dish-desc">A tablespoon of pistachio pesto spooned over, fine lemon zest grated across. Bright, nutty, fresh — cuts through the richness of the cheese and meat.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">This is your premium Friday/Saturday special pizza — price it £2 higher than your standard range, name it on a chalkboard special, and explain the cold-top concept to staff so they can sell it confidently. Stracciatella is available from Natoora or La Fromagerie; if unavailable, tear open a burrata and use the interior. Mortadella is cheap and widely available. The pistachio pesto can batch-prep for the week and lives in the fridge.</p>
+              <p class="menu-app-text">This is your premium Friday/Saturday special — price it £1.50–2 higher than your standard range, name it on a chalkboard special. Pistachio pesto batches and refrigerates for a week. Mortadella is cheap and widely available. The key is explaining the cold-top concept to staff so they can sell it confidently: "the contrast between the hot dough and cold cheese is the whole idea."</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 5. Seasonal British Pizza Toppings ── -->
-      <article class="card card-trend" data-category="pizza">
+
+      <!-- 5 · Seasonal British Pizza Toppings -->
+      <article class="card card-trend" data-category="pizza" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1176,37 +1327,46 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-instant">Instant</span>
+              <span class="badge-season">In Season Now</span>
             </div>
             <h3 class="card-name">Seasonal British Pizza Toppings</h3>
-            <p class="card-location">Seasonal Rotation Strategy · Summer 2025</p>
-            <p class="card-concept">Run one rotating "seasonal pizza of the month" that changes with the British growing calendar. It signals the whole ethos of the restaurant in one dish: local produce, changing menu, awareness of where food comes from. The best independent UK pizza operations use a seasonal special to drive repeat visits from regulars.</p>
+            <p class="card-location">Seasonal Rotation Strategy — Summer 2025</p>
+            <p class="card-concept">One rotating "Pizza of the Month" using the best British produce of that moment. The best UK independents use this to drive repeat visits from regulars and to signal the whole ethos of the kitchen in a single dish.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">This month: broad beans, fresh peas and ricotta on a white base, mint oil, lemon zest, parmesan shaved post-bake. Every ingredient is in season right now and at peak quality. Run it until they're gone — say so on the menu.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the rotation <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Summer Rotation</div>
               <div class="dish-item">
-                <div class="dish-name">June — British Asparagus, Burrata, Prosciutto</div>
-                <div class="dish-desc">White base, fior di latte, whole British asparagus spears (ends trimmed, run lengthways across the pizza), prosciutto di Parma, torn burrata post-bake, lemon zest, extra virgin olive oil. The window for British asparagus is narrow — make it a "here while it lasts" special.</div>
+                <div class="dish-name">June / Now — Asparagus, Burrata, Prosciutto</div>
+                <div class="dish-desc">White base, fior di latte, British asparagus spears, prosciutto di Parma, torn burrata post-bake, lemon zest, olive oil. Window is narrow — make it a "here while it lasts" special.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">July — Courgette Flower, Stracciatella, Lemon</div>
-                <div class="dish-desc">White base, fior di latte, whole courgette flowers laid flat (stuff with ricotta if budget allows), cold stracciatella post-bake, torn basil, lemon zest, chilli oil. Courgette flowers are the showpiece summer ingredient — people photograph them every time.</div>
+                <div class="dish-desc">White base, fior di latte, whole courgette flowers (stuff with ricotta if budget allows), cold stracciatella post-bake, basil, lemon zest, chilli oil. People photograph courgette flowers every time.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">August — Sweetcorn, Burrata, Hot Honey, 'Nduja</div>
-                <div class="dish-desc">Charred sweetcorn cut from the cob (or whole cob strips as "corn ribs" on the side), 'nduja base, fior di latte, torn burrata post-bake, hot honey drizzle, torn basil. August sweetcorn is extraordinary — sweet, smoky when charred, and pairs perfectly with 'nduja heat.</div>
+                <div class="dish-desc">Charred sweetcorn, 'nduja base, fior di latte, torn burrata post-bake, hot honey drizzle, torn basil. August sweetcorn is extraordinary — sweet, smoky when charred, pairs perfectly with 'nduja heat.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">One seasonal pizza special per month gives you: a social content pillar ("our June pizza is here"), a reason for regulars to return, a differentiated menu that changes without the full overhaul, and a vehicle for buying the best seasonal British produce in small quantities. Photograph it, name it with the month and the hero ingredient ("The June" or "Asparagus Season"), and sell it until the produce runs out. Then move on.</p>
+              <p class="menu-app-text">One seasonal pizza special per month gives you: a social media pillar, a reason for regulars to return, and a vehicle for buying the best seasonal British produce in small quantities with no waste. Photograph it, name it with the month or the hero ingredient ("The June" or "Broad Bean Season"), sell it until the produce runs out. The scarcity is the point.</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 6. Detroit-Style ── -->
-      <article class="card card-trend" data-category="pizza">
+
+      <!-- 6 · Detroit-Style -->
+      <article class="card card-trend" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1217,97 +1377,110 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Detroit-Style</h3>
-            <p class="card-location">Pizza Format · Growing Fast in UK · 2025</p>
-            <p class="card-concept">Thick, rectangular, focaccia-like pizza baked in an oiled blue steel pan until the cheese caramelises against the sides (the "frico crust"). Sauce goes on top, not underneath. Invented in Detroit in 1946; now experiencing a global revival. 2 in 5 UK consumers say they want to try it but haven't yet — the market is wide open outside London.</p>
+            <p class="card-location">Pizza Format — Fastest Growing in UK 2025</p>
+            <p class="card-concept">Rectangular, thick, focaccia-like pizza baked in an oiled steel pan until the cheese caramelises against the sides (the "frico crust"). Sauce on top, not underneath. 2 in 5 UK consumers want to try it but haven't — the market is wide open outside London.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Order one blue steel baking pan (around £15). Use high-hydration dough, press it in, cheese right to the edges, sauce on top, bake until caramelised. Test it on a Tuesday prep session this week — one pan, one test, zero risk.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the format <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Format</div>
               <div class="dish-item">
                 <div class="dish-name">The Pan &amp; The Dough</div>
-                <div class="dish-desc">High-hydration dough pressed into an oiled rectangular blue steel pan. Prove in the pan for 2–4 hours. The oil fries the base and edges as it bakes, creating a crispy-bottomed, airy-centred pizza unlike any other style.</div>
+                <div class="dish-desc">High-hydration dough pressed into an oiled rectangular blue steel pan, proved in the pan 2–4 hours. The oil fries the base and edges as it bakes, creating a crispy-bottomed, airy-centred pizza unlike any other style.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">The Frico Crust — Caramelised Cheese Edges</div>
-                <div class="dish-desc">Brick cheese (or a mix of mozzarella and aged cheddar) pressed right to the edges of the pan, not leaving a "crust rim." In the oven, the cheese melts against the hot pan sides and caramelises into a crispy, savoury cheese crust. This is the signature — and the reason people keep ordering it.</div>
+                <div class="dish-desc">Brick cheese or mozzarella/aged cheddar mix pressed to the edges of the pan. In the oven, the cheese melts against the hot pan sides and caramelises into a crispy savoury crust. This is the signature — and the reason people keep ordering it.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Sauce on Top (Wisconsin-Style)</div>
-                <div class="dish-desc">Thick stripes of san Marzano sauce applied post-cheese, either before or after baking. The sauce sits on top rather than underneath — a deliberate reversal that keeps the base crispy and the sauce bright and fresh.</div>
+                <div class="dish-name">Sauce on Top</div>
+                <div class="dish-desc">Thick stripes of San Marzano sauce applied post-cheese, before or after baking. Sauce on top rather than underneath — keeps the base crispy and the sauce bright.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Detroit-style is an add-on format rather than a replacement — you don't need to change your existing pizza operation. A single blue steel pan (about £15) lets you test one Detroit pizza per service as a "format special." Given that 40% of UK pizza eaters want to try it but haven't, you'd be the first in your market town to offer it — and that gap is your advantage. Start with the simplest build: cheese, sauce, pepperoni. Once the format is right, build seasonal versions.</p>
+              <p class="menu-app-text">Detroit is an add-on format, not a replacement. A single blue steel pan lets you test one Detroit pizza per service as a weekly format special. You'd be the first in your market town to offer it — that gap is your advantage. Start with the simplest possible build: cheese, sauce, pepperoni. Once the format is right, build seasonal versions using the same topping rotation as your Neapolitan menu.</p>
             </div>
           </div>
         </div>
       </article>
 
+
     </div>
-  </div><!-- /pizza section -->
+  </div><!-- /pizza -->
 
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- SEASONAL SECTION                       -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════ SEASONAL ══ -->
   <div class="section-block" data-section="seasonal">
     <div class="section-header">
       <span class="section-icon">🌿</span>
       <h2 class="section-title">Seasonal</h2>
-      <span class="section-count">5 ideas</span>
-      <span class="section-desc">The philosophy behind the menu — produce-led thinking, zero-waste techniques, sharing formats &amp; desserts that become the last thing guests talk about</span>
+      <span class="section-count">7 ideas</span>
+      <span class="section-desc">The philosophy beneath the menu — produce calendars, zero-waste technique, wood-fire thinking, sharing formats and desserts guests walk home talking about</span>
     </div>
     <div class="grid">
 
-      <!-- ── 1. British Summer Produce Calendar ── -->
-      <article class="card card-trend" data-category="seasonal">
+
+      <!-- 1 · British Summer Produce Calendar -->
+      <article class="card card-trend" data-category="seasonal" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
             <div class="card-meta">
-              <span class="src-pill src-trend">Trend Research</span>
+              <span class="src-pill src-trend">Reference</span>
               <span class="sec-pill sec-seasonal">Seasonal</span>
             </div>
             <div class="card-tags">
               <span class="trend-tag tag-timeless">Timeless</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+              <span class="badge-season">In Season Now</span>
             </div>
             <h3 class="card-name">British Summer Produce Calendar</h3>
-            <p class="card-location">Reference Guide · June – August</p>
-            <p class="card-concept">The foundation beneath every seasonal decision. Knowing what's at peak quality each month — and building dishes around that — is what separates a reactive menu from an intentional one. When produce is at its best, it costs less, tastes better, and the dish writes itself.</p>
+            <p class="card-location">Reference Guide — June through August</p>
+            <p class="card-concept">The foundation beneath every seasonal decision. When produce is at peak quality it costs less, tastes better, and the dish writes itself. Three hero ingredients per month — one for brunch, one for pizza, one for a bread or starter — without a full menu rewrite.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Order courgette flowers and broad beans from your veg supplier for this week. They move fast at peak season. Courgette flowers: pizza topping or brunch garnish. Broad beans: blitzed into a spread or left whole on a white pizza base.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show calendar <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Peak Produce by Month</div>
-
               <div class="cal-month">
-                <div class="cal-month-name">June</div>
-                <div class="cal-items">British asparagus (end of season — buy now), peas &amp; broad beans (first flush), elderflower (peak — cordial, syrup, fritters), Jersey Royal potatoes, strawberries (first), radishes, spring onions, new season garlic, watercress</div>
+                <div class="cal-month-name">June / Now</div>
+                <div class="cal-items">British asparagus (end of season — last chance), peas &amp; broad beans (first flush, excellent), elderflower (peak — make cordial now), Jersey Royals, first strawberries, radishes, new-season garlic, watercress</div>
               </div>
-
               <div class="cal-month">
                 <div class="cal-month-name">July</div>
-                <div class="cal-items">Courgettes &amp; courgette flowers, heritage tomatoes (early), sweetcorn (early), cucumber, runner beans, French beans, chanterelle mushrooms, gooseberries, raspberries, summer blackcurrants, British cheese peak (soft)</div>
+                <div class="cal-items">Courgettes &amp; courgette flowers, heritage tomatoes (early), sweetcorn (early), cucumber, runner beans, French beans, chanterelles, gooseberries, raspberries, blackcurrants</div>
               </div>
-
               <div class="cal-month">
                 <div class="cal-month-name">August</div>
-                <div class="cal-items">Sweetcorn (peak), heritage &amp; heirloom tomatoes (peak), peaches &amp; nectarines, figs (early), plums, blackberries, late courgette flowers, corn-on-the-cob, borlotti beans, early autumn squash, Victoria plums</div>
+                <div class="cal-items">Sweetcorn (peak), heritage &amp; heirloom tomatoes (peak), peaches &amp; nectarines, figs (early), plums &amp; Victoria plums, blackberries, late courgette flowers, borlotti beans</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Build your menu refresh around three "hero ingredients" per month — one for brunch, one for pizza, one for the table bread or a starter. In June: asparagus leads. In July: courgette flower. In August: sweetcorn and heritage tomatoes. You don't need to change the whole menu — changing one or two items per month with the season creates the perception of a constantly evolving, engaged kitchen without the overhead of a full rewrite.</p>
+              <p class="menu-app-text">Pick three hero ingredients per month: one leads brunch, one leads pizza, one leads a bread or starter. June: asparagus. July: courgette flower. August: sweetcorn and heritage tomato. You don't need to rewrite the whole menu — changing two items per month with the season creates the perception of a constantly engaged kitchen at minimal overhead. When the ingredient is gone, say so. The scarcity is honest and it's compelling.</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 2. Fallow — Waste-Driven Specials ── -->
-      <article class="card" data-category="seasonal">
+
+      <!-- 2 · Fallow Waste-Driven Specials -->
+      <article class="card" data-category="seasonal" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
@@ -1318,46 +1491,174 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Fallow — Waste-First Specials</h3>
             <p class="card-location">St James's, London — Michelin Bib Gourmand</p>
-            <p class="card-concept">Fallow's entire menu exists as an answer to one question: what can we make with what we have? Every dish has a waste narrative — not as a marketing gimmick but as a genuine operational discipline that produces more interesting food at lower cost. Great British Chefs profiled their approach as one of the most influential in the current UK scene.</p>
+            <p class="card-concept">Fallow's entire menu exists as the answer to "what can we make with what we have?" Every dish has a waste narrative — not as marketing but as genuine operational discipline. Great British Chefs profiled their approach as the most influential in the current UK scene.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Save your corn cobs this August, cut lengthways into four strips, deep-fry until they curl, toss in beef dripping with smoked paprika. Corn ribs cost almost nothing and sell at full starter price. That's zero-waste thinking making you money.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Zero-Waste Playbook</div>
               <div class="dish-item">
                 <div class="dish-name">Mushroom Parfait</div>
-                <div class="dish-desc">Foraged and cultivated mushrooms blended with butter and cream into a silky, spreadable parfait. Works as a starter, a canapé on pizza bread, or a sauce component. A technique that turns a cheap ingredient into something luxurious.</div>
+                <div class="dish-desc">Forager's mushrooms blended with butter and cream into a silky spreadable parfait. Works as a starter, a canapé on pizza bread, or a sauce component. Turns a cheap ingredient into something luxurious through technique.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Corn Ribs — The Cob Reinvented</div>
-                <div class="dish-desc">Corn on the cob cut lengthways into four rib-shaped strips, deep-fried until they curl dramatically, tossed in beef-fat butter, smoked paprika, and lime. The whole cob used, zero waste, Instagram-ready, the best snack on any menu.</div>
+                <div class="dish-desc">Corn on the cob cut lengthways into four rib strips, deep-fried until they curl dramatically, tossed in beef-fat butter, smoked paprika, lime. Zero waste, Instagram-ready, the best snack on any menu.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Chelsea Tart from Leftover Whey</div>
-                <div class="dish-desc">The butter-making process produces gallons of whey — Fallow enriches Chelsea tart dough with it instead of discarding it. The result is a slightly tangy, complex pastry that has its own identity. Waste as flavour.</div>
+                <div class="dish-desc">Butter-making produces litres of whey — Fallow enriches Chelsea tart dough with it instead of discarding it. A slightly tangy, complex pastry that has its own identity. Waste as flavour.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Guinness Soft-Serve</div>
-                <div class="dish-desc">Leftover Guinness from the bar blended into an ice cream base and served through a soft-serve machine. The bitter-sweet, roasted flavour of stout in a soft-serve is unexpectedly brilliant — and the story writes the menu note.</div>
+                <div class="dish-desc">Leftover Guinness from the bar blended into an ice cream base, served through a soft-serve machine. Bitter-sweet, roasted, unexpectedly brilliant — and the story writes the menu note for you.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">You are already running a bar. You have spent Guinness, leftover bread, vegetable trimmings, whey from butter, and braising liquids that most kitchens throw away. Start with the corn ribs — available as a pizza side from August, requiring only corn, beef dripping (or chicken fat), and seasoning. Then think about your bar: what leftover spirits or beer could become a dessert component? The "waste story" turns a cheap process decision into a talking point on every table. This is where craft restaurants beat chains — chains never do this.</p>
+              <p class="menu-app-text">You run a bar. You have spent Guinness, leftover bread, vegetable trimmings, whey from butter-making, braising liquids. The Guinness soft-serve is your low-hanging fruit — it's a talking point on every table and costs you almost nothing. The corn ribs are your August move. The "waste story" turns a cheap process decision into a competitive advantage that chains can never replicate, because they don't have your leftovers.</p>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <a href="https://www.greatbritishchefs.com/chefs/jack-croft-chef" target="_blank" rel="noopener" class="ref-link">
-            Read on Great British Chefs
+            Great British Chefs
           </a>
         </div>
       </article>
 
-      <!-- ── 3. Osip, Somerset ── -->
-      <article class="card" data-category="seasonal">
+
+      <!-- 3 · Brat, Shoreditch [NEW] -->
+      <article class="card" data-category="seasonal" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-seasonal"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gbc">Great British Chefs</span>
+              <span class="sec-pill sec-seasonal">Seasonal</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-boundary">Boundary Push</span>
+              <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Brat, Shoreditch</h3>
+            <p class="card-location">Shoreditch, London — Michelin Star, Tomos Parry</p>
+            <p class="card-concept">Tomos Parry's Basque-inspired, fire-led restaurant named after the Welsh word for skate (the fish). The philosophy: find the best seasonal British ingredient, apply the right heat, then get out of the way. The most influential cooking philosophy for UK seasonal restaurants right now.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Take one vegetable you're already ordering and char it directly on your grill or under your pizza oven broiler until genuinely blackened on the outside. Slice, dress with warm vinaigrette. Charred leeks, courgettes, spring onions — any of them. The char is the flavour. No extra seasoning required.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Whole Turbot — Grilled in a Basket</div>
+                <div class="dish-desc">A whole turbot grilled over lumpwood charcoal in a hand-made wire basket, basted with butter as it cooks. Tableside presentation, shared between two. The most dramatic sharing plate in London — the whole fish, the smoke, the ritual.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Leek Vinaigrette</div>
+                <div class="dish-desc">Young leeks charred whole until blackened on the outside, then dressed warm with a house vinaigrette (sherry vinegar, Dijon, olive oil, capers). Costs pennies, looks and tastes extraordinary. The dish that made Brat famous on opening week.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Burnt Basque Cheesecake</div>
+                <div class="dish-desc">Deeply caramelised exterior, molten cream cheese interior. No base, no fuss. Baked very hot, very briefly, until the top blackens deliberately. The dessert that proves restraint is a technique.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Spider Crab Toast</div>
+                <div class="dish-desc">Whole dressed spider crab meat on char-grilled sourdough with brown butter, lemon and chives. The simplest luxury starter — one great ingredient treated with perfect respect.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The leek vinaigrette is immediately actionable with zero procurement change — you're already ordering leeks. Char them whole in your pizza oven's residual heat before service, slice and dress. That's a seasonal starter or side at near-zero cost that signals exactly the right kitchen philosophy. The Basque cheesecake is your summer dessert centrepiece — bake it dark, serve it slightly warm, explain the deliberate char. It costs less than a tarte tatin and it converts every table to dessert orders.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.greatbritishchefs.com/chefs/tomos-parry" target="_blank" rel="noopener" class="ref-link">
+            Great British Chefs
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 4 · St JOHN [NEW] -->
+      <article class="card" data-category="seasonal" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-seasonal"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gbc">Great British Chefs</span>
+              <span class="sec-pill sec-seasonal">Seasonal</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-timeless">Timeless</span>
+              <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">St JOHN, Smithfield</h3>
+            <p class="card-location">Smithfield, London — Est. 1994, Fergus Henderson</p>
+            <p class="card-concept">Fergus Henderson's 30-year institution that essentially invented nose-to-tail eating as a philosophy. The menu changes twice daily, based on what's available. No ceremony, no garnish, no apology — just honest British cooking at its most confident.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Put Welsh Rarebit on as a brunch side this week: aged cheddar, Worcestershire, English mustard, a splash of beer, on thick-cut toasted sourdough. Completely from your existing pantry. British, cheap, universally loved, and it signals a confident kitchen that isn't trying too hard.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes &amp; Principles</div>
+              <div class="dish-item">
+                <div class="dish-name">Bone Marrow with Parsley Salad on Toast</div>
+                <div class="dish-desc">Roasted marrow bones, plain parsley and caper salad, thick-cut toast, sea salt. The St JOHN signature — zero technique flex, maximum flavour. A starter that costs almost nothing and becomes the thing people talk about for a week.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Devilled Kidneys on Toast</div>
+                <div class="dish-desc">Lamb kidneys in a devilled sauce (Worcestershire, English mustard, Cayenne, cream), on thick toast. Classic British offal brunch — hearty, cheap, and the most powerful signal of a kitchen that's not afraid of anything.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Welsh Rarebit</div>
+                <div class="dish-desc">Aged cheddar, Worcestershire, mustard, Guinness, egg yolk on thick sourdough toast. A national dish elevated to its full potential. Available from your existing pantry.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Eccles Cake with Lancashire Cheese</div>
+                <div class="dish-desc">Buttery flaky Eccles cake served warm alongside a sharp, crumbly Lancashire cheese. Sweet and savoury, British as it gets. A dessert or a cheese course — or both at the same time.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">The Menu-Change Philosophy</div>
+                <div class="dish-desc">The menu at St JOHN changes twice a day based on what's in season and what's arrived. One constant: a potato dish, a greens dish, and a roast. Everything else moves. The restraint of the fixed items makes the changing items feel more deliberate.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The St JOHN lesson isn't to put kidneys on your menu — it's to be confident enough to put something on the menu that not every customer will order, because the customers who do will never stop talking about it. One "brave" dish on every service — a devilled something, a rarebit, a bone marrow starter — is the thing that separates a pub restaurant from a restaurant that happens to be in a pub. Welsh rarebit is where you start: it's already in your kitchen, it costs almost nothing, and it's completely honest.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.greatbritishchefs.com/chefs/fergus-henderson" target="_blank" rel="noopener" class="ref-link">
+            Great British Chefs
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 5 · Osip, Somerset -->
+      <article class="card" data-category="seasonal" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
@@ -1368,43 +1669,45 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Osip, Bruton</h3>
-            <p class="card-location">Bruton, Somerset — Michelin Star</p>
-            <p class="card-concept">Merlin Labron-Johnson's farm-to-table restaurant in Bruton, Somerset — one of the most important restaurants in the UK right now. The menu is entirely dictated by the farm delivery that week. No menu is planned more than a few days out. Featured in Bon Appétit's Best New Restaurants list as a global reference point for produce-led cooking.</p>
+            <p class="card-location">Bruton, Somerset — Michelin Star, Merlin Labron-Johnson</p>
+            <p class="card-concept">The menu is entirely dictated by what the farm delivers that week. No advance planning beyond knowing what's growing. Featured in Bon Appétit's global best restaurants list as the reference point for produce-led cooking in the UK.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Spend two hours this week making one batch preservation: elderflower cordial (in season right now), pickled radishes, or a roasted tomato conserva. That's one future menu ingredient created from what's cheapest right now, extending summer into October.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show philosophy <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Philosophy in Practice</div>
               <div class="dish-item">
                 <div class="dish-name">Farm-Dictated Weekly Menu</div>
-                <div class="dish-desc">The kitchen receives a farm delivery, then builds the menu from what arrived. This forces creative problem-solving, ensures peak-season quality on every plate, and creates a menu that can never be copied — because it won't exist next week.</div>
+                <div class="dish-desc">The kitchen receives the farm delivery, then builds the menu from what arrived. Forces creative problem-solving, ensures peak-season quality on every plate, creates a menu that can never be copied because it won't exist next week.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Preserving Summer for Winter</div>
+                <div class="dish-desc">In summer, Osip pickles, ferments and preserves at scale. Tomatoes preserved in July appear on the January menu. Elderflower cordial from June becomes a dessert component in December. The seasonal menu extends well beyond the season itself.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Whole Animal + Root to Leaf</div>
-                <div class="dish-desc">Every cut of meat, every vegetable trim, every bone, every herb stem finds its way onto a plate. The charcuterie board uses offcuts from the week's protein; the sauces are built from the bones; the salads use the outer leaves.</div>
-              </div>
-              <div class="dish-item">
-                <div class="dish-name">Preserved Summer for Winter Menus</div>
-                <div class="dish-desc">In summer, Osip pickles, ferments and preserves at scale. Tomatoes preserved in July appear on the January menu. Elderflower cordial made in June becomes a dessert component in December. The seasonal menu extends well beyond the season itself.</div>
+                <div class="dish-desc">Every cut of meat, every vegetable trim, every bone, every herb stem finds its way onto a plate. The charcuterie board uses offcuts; the sauces are built from bones; the salads use the outer leaves. Nothing is wasted.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">You don't need to go full Osip — but the preserving practice is immediately applicable. When June elderflowers are free and abundant, make a batch of cordial and syrup for the bar and the dessert menu. When August tomatoes are at peak glut, roast and preserve a batch for October pizza sauce. When summer berries overflow, make compotes and jams that extend well beyond their season. This approach costs almost nothing extra and gives your winter menu access to summer's best flavours — at a fraction of the cost of buying them out of season.</p>
+              <p class="menu-app-text">You don't need to go full Osip — but the preserving practice is immediately applicable and highly cost-effective. When elderflowers are free and abundant right now, make a batch of cordial for the bar and dessert menu. When August tomatoes are at peak glut, roast and preserve for October pizza sauce at a fraction of the out-of-season cost. Each preservation is one future menu ingredient you're making for almost nothing. Over a season, this adds up to a genuinely different pantry — and a genuinely different menu.</p>
             </div>
           </div>
         </div>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/watch?v=OsipSomerset" target="_blank" rel="noopener" class="watch-link">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Bon Appétit Feature
-          </a>
-        </div>
       </article>
 
-      <!-- ── 4. Summer Sharing Starters ── -->
-      <article class="card" data-category="seasonal">
+
+      <!-- 6 · Summer Sharing Starters -->
+      <article class="card" data-category="seasonal" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
@@ -1415,121 +1718,184 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
             </div>
             <h3 class="card-name">Summer Sharing Starters</h3>
-            <p class="card-location">Antico Nuovo (SF) + Manteca (London) · Bon Appétit</p>
-            <p class="card-concept">Sharing tables built around bread, fat and fire — the two restaurants Bon Appétit used as the archetype for the best-value, highest-repeat summer dining experience. The shared principle: arrive with something hot on the table within five minutes, and the whole meal is set up for success.</p>
+            <p class="card-location">Antico Nuovo (SF) + Manteca (London) — Bon Appétit</p>
+            <p class="card-concept">The two restaurants Bon Appétit used as the archetype for the best-value, highest-repeat summer dining experience. Shared principle: put something hot on the table within five minutes of sitting down, and the rest of the meal is already working in your favour.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Serve fresh focaccia with cultured butter as a table arrival this weekend. Bake a batch, serve it warm, charge for it. The table is immediately happier, stays longer, and orders more. This is your highest-ROI menu change — costs pence, changes everything.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">Key Dishes</div>
               <div class="dish-item">
                 <div class="dish-name">Hot Focaccia with Cultured Butter &amp; Sea Salt</div>
-                <div class="dish-desc">Fresh from the oven, rosemary-dimpled, generous with good olive oil. Cultured butter (tangier, more complex than regular) in a ramekin, Maldon sea salt. Arrives in under 3 minutes. The table is immediately happy. The bill is higher because people are immediately comfortable.</div>
+                <div class="dish-desc">Fresh from the oven, rosemary-dimpled, generous with olive oil, cultured butter (tangier and more complex than regular), Maldon salt. Arrives within 3 minutes. The table is immediately happy. The bill goes up because people immediately feel comfortable.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">'Nduja Mussels with Grilled Bread</div>
-                <div class="dish-desc">Fresh mussels steamed open in a 'nduja and white wine broth, finished with cream and parsley. Served with thick-cut grilled bread for scooping. Summer, spicy, dramatic — and done in under 8 minutes.</div>
+                <div class="dish-desc">Fresh mussels in a 'nduja and white wine broth, finished with cream and parsley, with thick-cut grilled bread for scooping. A Friday/Saturday starter that moves product from your pizza prep ('nduja already on order). Done in under 8 minutes.</div>
               </div>
               <div class="dish-item">
                 <div class="dish-name">Duck Liver Parfait on Toast</div>
-                <div class="dish-desc">Silky duck liver parfait, slightly sweet from a port reduction, on charred sourdough toast with cornichons and pickled shallot. The most profitable starter on any menu — cheap to make, premium to eat, completely seasonal-agnostic.</div>
+                <div class="dish-desc">Silky duck liver parfait, slightly sweet from port, on charred sourdough with cornichons and pickled shallot. The most profitable starter on any menu — cheap to make, premium to eat, seasonal-agnostic.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Hot Tomato Focaccia (August special)</div>
-                <div class="dish-desc">Focaccia topped with halved heritage cherry tomatoes pressed into the dough, finishing with sea salt and good olive oil. August only — when British tomatoes are sweet enough to not need any sauce at all. The focaccia becomes the pizza and the side in one.</div>
+                <div class="dish-name">Hot Tomato Focaccia (August Special)</div>
+                <div class="dish-desc">Focaccia with halved heritage cherry tomatoes pressed into the dough, sea salt, olive oil. August only — when British tomatoes are sweet enough to need no sauce at all. The bread becomes the pizza.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">The focaccia-with-butter arrival is your highest-ROI menu change — it costs almost nothing to produce at scale, immediately elevates the dining experience, and sets the tone for the whole meal. If you are not already doing this, start now. The duck liver parfait is your most profitable starter and deserves permanent status. The 'nduja mussels are a perfect Friday/Saturday evening starter that moves product from the pizza prep (you already have 'nduja). Three dishes, all interconnected, all reinforcing the same kitchen philosophy.</p>
+              <p class="menu-app-text">The focaccia arrival is your single highest-ROI change — it costs almost nothing to produce at scale, immediately elevates the experience, and sets the tone for everything that follows. The duck liver parfait is your most profitable starter and deserves permanent status. The 'nduja mussels use what you're already ordering for pizza, so there's no new procurement. Three dishes, all interconnected, all reinforcing the same kitchen identity.</p>
             </div>
           </div>
         </div>
       </article>
 
-      <!-- ── 5. Summer Dessert Strategy ── -->
-      <article class="card card-trend" data-category="seasonal">
+
+      <!-- 7 · Summer Dessert Strategy -->
+      <article class="card card-trend" data-category="seasonal" data-effort="instant">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
             <div class="card-meta">
-              <span class="src-pill src-trend">Trend Research</span>
+              <span class="src-pill src-trend">Strategy</span>
               <span class="sec-pill sec-seasonal">Seasonal</span>
             </div>
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-both">Both</span>
+              <span class="effort-tag eff-instant">Instant</span>
+              <span class="badge-season">In Season Now</span>
             </div>
             <h3 class="card-name">Summer Dessert Strategy</h3>
-            <p class="card-location">Dessert Menu Framework · Summer 2025</p>
-            <p class="card-concept">The dessert menu is the last thing guests eat and the thing they talk about on the walk home. A summer dessert menu built around British seasonal fruit — strawberries, peaches, plums, blackberries — with one show-stopping centrepiece and two simpler crowd-pleasing options is all you need.</p>
+            <p class="card-location">Dessert Menu Framework — Summer 2025</p>
+            <p class="card-concept">The dessert is the last thing guests eat and the first thing they talk about on the walk home. Three desserts built around British seasonal fruit — one tart (rotating monthly), one hot dessert, one show-stopper — is all you need.</p>
 
-            <div class="dishes-section">
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Make a strawberry tart this week: clotted cream whisked with vanilla into a custard, topped with glazed British strawberries in a bought shortcrust case. June strawberries are extraordinary right now. This is your dessert of the month. It takes 30 minutes.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show the roster <span>▼</span></button>
+            <div class="dishes-section ds-closed">
               <div class="dishes-heading">The Summer Dessert Roster</div>
               <div class="dish-item">
                 <div class="dish-name">British Strawberry Tart with Clotted Cream Custard</div>
-                <div class="dish-desc">Shortcrust pastry case, clotted cream custard filling (use actual clotted cream for the custard — it's incomparably rich), glazed British strawberries, optional elderflower jelly. The dessert of the British summer. Only worth making when British strawberries are at peak (June–July).</div>
+                <div class="dish-desc">Shortcrust case, clotted cream custard filling (use actual clotted cream — it's incomparably rich), glazed British strawberries. Optional elderflower jelly. June–July only — when British strawberries are at peak and the dish writes itself.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Peach Melba French Toast</div>
-                <div class="dish-desc">Thick-cut brioche soaked overnight in vanilla custard, fried until bronzed and custardy, topped with grilled peach halves, raspberry sauce and a scoop of vanilla ice cream. A modern riff on an Escoffier classic — recognisable, nostalgic, and more interesting than it sounds. August hero.</div>
+                <div class="dish-name">Burnt Basque Cheesecake</div>
+                <div class="dish-desc">Deliberately blackened exterior, molten cream cheese interior, no base. Baked very hot and briefly. Looks dramatic, costs almost nothing, converts the whole table to dessert orders. Year-round anchor — doesn't need seasonal fruit.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Baked Alaska — The Show-Stopper</div>
-                <div class="dish-desc">Sponge base, seasonal sorbet or ice cream centre (strawberry in June, raspberry in July, peach in August), encased in Italian meringue and torched at the table. The one dessert that makes the whole restaurant look up when it arrives. Reserve for weekend nights — it requires prep but produces maximum impact.</div>
+                <div class="dish-name">Peach Melba French Toast — August</div>
+                <div class="dish-desc">Thick-cut brioche soaked in vanilla custard, fried until bronzed, topped with grilled peach halves, raspberry sauce, vanilla ice cream. A modern Escoffier riff — recognisable, nostalgic, more interesting than it sounds. August is the window.</div>
               </div>
               <div class="dish-item">
-                <div class="dish-name">Sourdough Waffle, Stone Fruit Compote, Clotted Cream</div>
-                <div class="dish-desc">House sourdough batter in a waffle iron, served with a warm plum or peach compote and a generous spoon of clotted cream. Simple, British, deeply satisfying. Works as a brunch dessert AND an evening one. Uses one waffle iron — the most versatile piece of equipment in the kitchen.</div>
+                <div class="dish-name">Sourdough Waffle with Stone Fruit Compote</div>
+                <div class="dish-desc">Sourdough batter in a waffle iron, warm plum or peach compote, clotted cream. Works as brunch AND evening dessert from the same waffle iron — the most versatile piece of equipment in the kitchen. No dedicated pastry section needed.</div>
               </div>
             </div>
 
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
-              <p class="menu-app-text">Three desserts is enough for a seasonal menu: one tart (changes monthly), one hot dessert (French toast or waffle with seasonal fruit), and one "event" dessert (Baked Alaska) that you flame at the table on weekends. The Baked Alaska is your biggest talking point — one meringue-and-torch drama per evening is worth more in word-of-mouth than five understated plated desserts. The sourdough waffle crosses the brunch/dinner divide, which saves equipment and prep. British strawberries in June, peaches in August — let the fruit calendar drive the menu, not the other way around.</p>
+              <p class="menu-app-text">Three desserts is the right number: one rotating tart (changes monthly with the season), one permanent show-stopper (Basque cheesecake — bake it dark, serve slightly warm, explain the deliberate char), one hot dessert (French toast or waffle with seasonal fruit). The Basque cheesecake crosses brunch and dinner with zero effort. The sourdough waffle uses one waffle iron and no dedicated pastry skill. The fruit tart changes monthly and gives you a social content hook every time. Start with the strawberry tart this week — the season is now.</p>
             </div>
           </div>
         </div>
       </article>
 
+
     </div>
-  </div><!-- /seasonal section -->
+  </div><!-- /seasonal -->
 
 </div><!-- /main-wrap -->
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer class="page-footer">
-  The Taproom Menu Research Tool &nbsp;·&nbsp; Sources: TopJaw, Bon Appétit On The Line, Good Food Guide 2025, Great British Chefs, UK Trend Research &nbsp;·&nbsp; Updated May 2025
+  The Taproom Menu Research Tool &nbsp;·&nbsp;
+  Sources: TopJaw · Bon Appétit · Time Out London · Good Food Guide 2025 · Great British Chefs · UK Trend Research &nbsp;·&nbsp;
+  Updated May 2025
 </footer>
 
 <script>
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const allCards   = document.querySelectorAll('.card');
-  const allBlocks  = document.querySelectorAll('.section-block');
-  const statCount  = document.getElementById('stat-count');
+  (function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const allCards   = document.querySelectorAll('.card');
+    const allBlocks  = document.querySelectorAll('.section-block');
+    const statCount  = document.getElementById('stat-count');
+    const statQW     = document.getElementById('stat-quickwins');
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
+    // Collapse all dish sections on load
+    document.querySelectorAll('.dishes-section').forEach(s => s.classList.add('ds-closed'));
 
-      allCards.forEach(card => {
-        const match = filter === 'all' || card.dataset.category === filter;
-        card.classList.toggle('hidden', !match);
+    // Count quick wins on load
+    function countVisible() {
+      return document.querySelectorAll('.card:not(.hidden)').length;
+    }
+    function countQuickWins() {
+      return document.querySelectorAll('.card:not(.hidden)[data-effort="instant"]').length;
+    }
+
+    // Update hero stats
+    function updateStats() {
+      if (statCount) statCount.textContent = countVisible();
+      if (statQW) statQW.textContent = countQuickWins();
+    }
+    updateStats();
+
+    // Dish toggle
+    document.querySelectorAll('.dishes-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const section = btn.nextElementSibling;
+        const closed = section.classList.toggle('ds-closed');
+        btn.setAttribute('aria-expanded', !closed);
+        btn.innerHTML = (closed ? 'Show ' : 'Hide ') +
+          (btn.textContent.replace(/Show |Hide /, '').trim().split(' ')[0] + ' <span>' + (closed ? '▼' : '▲') + '</span>');
       });
-
-      allBlocks.forEach(block => {
-        const match = filter === 'all' || block.dataset.section === filter;
-        block.classList.toggle('hidden', !match);
-      });
-
-      if (statCount) {
-        statCount.textContent = document.querySelectorAll('.card:not(.hidden)').length;
-      }
     });
-  });
+
+    // Filter logic
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+
+        allCards.forEach(card => {
+          let visible;
+          if (filter === 'all') {
+            visible = true;
+          } else if (filter === 'quick-wins') {
+            visible = card.dataset.effort === 'instant';
+          } else {
+            visible = card.dataset.category === filter;
+          }
+          card.classList.toggle('hidden', !visible);
+        });
+
+        // For section blocks: hide if no visible cards inside, except for quick-wins (show all sections)
+        allBlocks.forEach(block => {
+          if (filter === 'all') {
+            block.classList.remove('hidden');
+          } else if (filter === 'quick-wins') {
+            const hasVisible = block.querySelector('.card:not(.hidden)');
+            block.classList.toggle('hidden', !hasVisible);
+          } else {
+            block.classList.toggle('hidden', block.dataset.section !== filter);
+          }
+        });
+
+        updateStats();
+      });
+    });
+  })();
 </script>
 
 </body>
