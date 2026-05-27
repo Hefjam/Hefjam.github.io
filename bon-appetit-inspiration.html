@@ -273,6 +273,7 @@
     .src-gbc     { background: #7B2D91; }
     .src-trend   { background: #C07000; }
     .src-timeout { background: #D93820; }
+    .src-tout    { background: #D93820; }
 
     .sec-pill {
       font-size: 8px;
@@ -297,13 +298,17 @@
       border: 1px solid;
     }
 
-    .tag-timeless  { color: #666; border-color: #CCC; background: #F5F5F5; }
-    .tag-ontrend   { color: #166A35; border-color: #7DC99A; background: #EEF8F2; }
-    .tag-boundary  { color: #6228A0; border-color: #C090E0; background: #F5EEF9; }
+    .tag-timeless   { color: #666; border-color: #CCC; background: #F5F5F5; }
+    .tag-ontrend    { color: #166A35; border-color: #7DC99A; background: #EEF8F2; }
+    .tag-boundary   { color: #6228A0; border-color: #C090E0; background: #F5EEF9; }
 
-    .tag-pleaser   { color: #1A4A99; border-color: #90B0E8; background: #EEF2FB; }
-    .tag-elevated  { color: #8A5800; border-color: #D4AA50; background: #FDF6E3; }
-    .tag-both      { color: #0D6A5E; border-color: #70C0B0; background: #EEF7F5; }
+    .tag-pleaser    { color: #1A4A99; border-color: #90B0E8; background: #EEF2FB; }
+    .tag-elevated   { color: #8A5800; border-color: #D4AA50; background: #FDF6E3; }
+    .tag-both       { color: #0D6A5E; border-color: #70C0B0; background: #EEF7F5; }
+    .tag-provenance { color: #5A3600; border-color: #C49060; background: #FBF3E8; }
+    .tag-technique  { color: #1A3A5A; border-color: #7098C4; background: #EEF3FA; }
+    .tag-regular    { color: #2A4A1A; border-color: #80B060; background: #F0F7EB; }
+    .tag-format     { color: #6A1A3A; border-color: #C070A0; background: #F9EEF4; }
 
     .eff-instant   { color: #1A5C35; border-color: #5CC080; background: #EDFAF3; }
     .eff-week      { color: #4A3800; border-color: #C8A030; background: #FEF8E3; }
@@ -3086,20 +3091,35 @@
     const statCount  = document.getElementById('stat-count');
     const statQW     = document.getElementById('stat-quickwins');
     const statSaved  = document.getElementById('stat-saved');
+    const slBtn      = document.querySelector('.filter-btn[data-filter="shortlist"]');
+
+    let activeFilter = 'all';
 
     // Collapse all dish sections on load
     document.querySelectorAll('.dishes-section').forEach(s => s.classList.add('ds-closed'));
 
     // ── BOOKMARK BUTTONS ──────────────────────────────────────────
+    const SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>';
     allCards.forEach((card, i) => {
       const btn = document.createElement('button');
       btn.className = 'bookmark-btn';
-      btn.setAttribute('aria-label', 'Save to shortlist');
-      btn.title = 'Save to shortlist';
-      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>';
+      btn.innerHTML = SVG;
+      const updateBtnLabel = () => {
+        const saved = card.classList.contains('saved');
+        btn.setAttribute('aria-label', saved ? 'Remove from shortlist' : 'Save to shortlist');
+        btn.setAttribute('aria-pressed', String(saved));
+        btn.title = saved ? 'Remove from shortlist' : 'Save to shortlist';
+      };
+      updateBtnLabel();
       btn.addEventListener('click', e => {
         e.stopPropagation();
         card.classList.toggle('saved');
+        updateBtnLabel();
+        if (activeFilter === 'shortlist') {
+          card.classList.toggle('hidden', !card.classList.contains('saved'));
+          updateSectionVisibility();
+          updateEmptyState();
+        }
         saveShortlist();
         updateStats();
       });
@@ -3124,14 +3144,11 @@
     function countSaved()     { return document.querySelectorAll('.card.saved').length; }
 
     function updateStats() {
+      const n = countSaved();
       if (statCount) statCount.textContent = countVisible();
       if (statQW)    statQW.textContent    = countQuickWins();
-      if (statSaved) statSaved.textContent = countSaved();
-      const slBtn = document.querySelector('.filter-btn[data-filter="shortlist"]');
-      if (slBtn) {
-        const n = countSaved();
-        slBtn.textContent = n > 0 ? '★ Shortlist (' + n + ')' : '★ Shortlist';
-      }
+      if (statSaved) statSaved.textContent = n;
+      if (slBtn)     slBtn.textContent     = n > 0 ? '★ Shortlist (' + n + ')' : '★ Shortlist';
     }
     updateStats();
 
@@ -3147,32 +3164,48 @@
       });
     });
 
+    // ── SECTION VISIBILITY ────────────────────────────────────────
+    function updateSectionVisibility() {
+      allBlocks.forEach(block => {
+        if (activeFilter === 'all') {
+          block.classList.remove('hidden');
+        } else {
+          block.classList.toggle('hidden', !block.querySelector('.card:not(.hidden)'));
+        }
+      });
+    }
+
+    // ── EMPTY STATE ───────────────────────────────────────────────
+    const emptyState = document.createElement('p');
+    emptyState.id = 'empty-state';
+    emptyState.style.cssText = 'text-align:center;color:#AAA;font-size:14px;padding:60px 20px;display:none;';
+    emptyState.textContent = 'No saved ideas yet — click the bookmark on any card to save it here.';
+    document.querySelector('.main-wrap').appendChild(emptyState);
+
+    function updateEmptyState() {
+      const noCards = countVisible() === 0 && activeFilter === 'shortlist';
+      emptyState.style.display = noCards ? 'block' : 'none';
+    }
+
     // ── FILTER ────────────────────────────────────────────────────
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const filter = btn.dataset.filter;
+        activeFilter = btn.dataset.filter;
 
         allCards.forEach(card => {
           let visible;
-          if      (filter === 'all')        visible = true;
-          else if (filter === 'quick-wins') visible = card.dataset.effort === 'instant';
-          else if (filter === 'shortlist')  visible = card.classList.contains('saved');
-          else                              visible = card.dataset.category === filter;
+          if      (activeFilter === 'all')        visible = true;
+          else if (activeFilter === 'quick-wins') visible = card.dataset.effort === 'instant';
+          else if (activeFilter === 'shortlist')  visible = card.classList.contains('saved');
+          else                                    visible = card.dataset.category === activeFilter;
           card.classList.toggle('hidden', !visible);
         });
 
-        allBlocks.forEach(block => {
-          if (filter === 'all') {
-            block.classList.remove('hidden');
-          } else {
-            const hasVisible = block.querySelector('.card:not(.hidden)');
-            block.classList.toggle('hidden', !hasVisible);
-          }
-        });
-
+        updateSectionVisibility();
         updateStats();
+        updateEmptyState();
       });
     });
   })();
