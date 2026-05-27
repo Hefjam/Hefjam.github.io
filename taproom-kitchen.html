@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Taproom Pizza Kitchen</title>
+<style>
+:root {
+  --bg:#0f0e0c; --bg2:#1a1815; --bg3:#242018; --card:#1e1c18;
+  --border:#2e2a22; --fire:#f97316; --fire2:#ef4444; --gold:#f59e0b;
+  --green:#22c55e; --teal:#14b8a6; --purple:#a855f7;
+  --text:#f5f0e8; --text2:#a89f8c; --text3:#6b6357;
+  --r:12px; --nav:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+#hdr{padding:12px 14px 10px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+#hdr h1{font-size:16px;font-weight:700}
+#hdr h1 span{color:var(--fire)}
+#mode-toggle{display:flex;background:var(--bg3);border-radius:8px;border:1px solid var(--border);overflow:hidden;flex-shrink:0}
+#mode-toggle button{border:none;background:none;color:var(--text2);font-size:11px;font-weight:700;padding:5px 10px;cursor:pointer;transition:all .15s}
+#mode-toggle button.active{background:var(--fire);color:#fff}
+#content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav) + 8px);scrollbar-width:none}
+#content::-webkit-scrollbar{display:none}
+#nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--text3);cursor:pointer;border:none;background:none;transition:color .15s;padding:4px 2px}
+.nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nb.active{color:var(--fire)}
+.nb.hidden{display:none}
+.tab{display:none;padding:12px 12px 0}
+.tab.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.ct{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.ir:last-child{border-bottom:none}
+.ir .k{font-size:13px;color:var(--text2)}
+.ir .v{font-size:13px;font-weight:600}
+
+/* 86 board */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.p86{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;transition:all .2s;-webkit-user-select:none;user-select:none;min-height:72px;display:flex;flex-direction:column;justify-content:space-between}
+.p86.out{background:#1a0a0a;border-color:#5a1a1a}
+.p86 .pn{font-size:13px;font-weight:700;line-height:1.3}
+.p86.out .pn{color:var(--text3);text-decoration:line-through}
+.p86 .pp{font-size:14px;font-weight:800;color:var(--gold);margin-top:4px}
+.p86.out .pp{color:#5a3a2a}
+.p86 .pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:#1a3a1a;color:var(--green)}
+.p86.out .pill{background:#3a1a1a;color:var(--fire2)}
+.eighty6-warn{background:#2a1010;border:1px solid #6a2020;border-radius:var(--r);padding:10px 12px;margin-bottom:10px;font-size:13px;color:var(--fire2);font-weight:600;display:none}
+.eighty6-warn.show{display:block}
+
+/* covers counter */
+.ctr{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.ctr-row{display:flex;align-items:center;justify-content:space-between}
+.ctr-label{font-size:13px;color:var(--text2);font-weight:600}
+.ctr-btns{display:flex;align-items:center;gap:0}
+.ctr-btn{width:44px;height:44px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.ctr-btn:first-child{border-radius:8px 0 0 8px}
+.ctr-btn:last-child{border-radius:0 8px 8px 0}
+.ctr-btn:active{background:var(--border)}
+.ctr-num{width:52px;height:44px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--text)}
+
+/* editable special */
+.special-box{background:linear-gradient(135deg,#1a0a2a,#220a3a);border:1px solid #4a2a6a;border-radius:var(--r);padding:14px;margin-bottom:10px}
+.special-box .slabel{font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.special-box .slabel .edit-hint{font-size:10px;color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0}
+.special-name{font-size:17px;font-weight:700;color:var(--text);min-height:26px;cursor:pointer}
+.special-name:hover{color:var(--purple)}
+.special-input{display:none;width:100%;background:var(--bg3);border:1px solid var(--purple);border-radius:6px;color:var(--text);font-size:16px;font-weight:700;padding:6px 8px;outline:none}
+.special-price{font-size:13px;color:var(--text2);margin-top:4px}
+.dome-check{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-user-select:none;user-select:none}
+.dome-check.done{border-color:#1e3a1e;background:#101a10}
+.dome-check .dc-label{font-size:14px;font-weight:600}
+.dome-check .dc-label .dc-sub{font-size:12px;color:var(--text2);font-weight:400;margin-top:2px}
+.dome-toggle{width:34px;height:20px;border-radius:10px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0}
+.dome-check.done .dome-toggle{background:var(--green)}
+.dome-toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s}
+.dome-check.done .dome-toggle::after{transform:translateX(14px)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sb{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px}
+.sb .sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.sb .sv{font-size:22px;font-weight:800;margin-top:2px}
+.sb .ss{font-size:11px;color:var(--text2);margin-top:2px}
+.notes-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.notes-box .nt{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.notes-ta{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:10px;resize:none;outline:none;font-family:inherit;min-height:72px}
+.notes-ta:focus{border-color:var(--fire)}
+
+/* checklist */
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pl{font-size:13px;font-weight:600}
+.pc{font-size:13px;color:var(--fire);font-weight:700}
+.pb{height:6px;background:var(--bg3);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--fire),var(--gold));transition:width .3s ease}
+.cg{margin-bottom:12px}
+.cg-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:0 2px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.cg-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--fire)}
+.cg-title.done-group{color:var(--green)}
+.cg-meta{display:flex;align-items:center;gap:6px}
+.cg-count{font-size:11px;color:var(--text3);font-weight:600}
+.cg-count.done-count{color:var(--green)}
+.cg-toggle{font-size:14px;color:var(--text3);transition:transform .2s}
+.cg.collapsed .cg-toggle{transform:rotate(-90deg)}
+.cg-items{overflow:hidden;transition:max-height .25s ease}
+.cg.collapsed .cg-items{max-height:0!important}
+.ci{display:flex;align-items:flex-start;gap:0;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;overflow:hidden}
+.ci.done{background:#141f14;border-color:#1e3a1e}
+.ci-tap{flex:1;display:flex;align-items:flex-start;gap:12px;padding:12px}
+.cb{width:24px;height:24px;border-radius:6px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:0;transition:all .15s}
+.ci.done .cb{background:var(--green);border-color:var(--green)}
+.ck{display:none;width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none}
+.ci.done .ck{display:block}
+.cib{flex:1;min-width:0}
+.ct2{font-size:14px;font-weight:500;line-height:1.3}
+.ci.done .ct2{color:var(--text3);text-decoration:line-through}
+.cn{font-size:13px;color:var(--text2);margin-top:3px;line-height:1.5}
+.ci.done .cn{color:var(--text3)}
+.cbadge{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px}
+.bq{background:#1e2a3a;color:#60a5fa}
+.bw{background:#2a1a0e;color:var(--fire)}
+.reset-btn{width:100%;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text2);font-size:13px;cursor:pointer;margin-top:6px;margin-bottom:16px}
+.reset-btn:active{background:var(--border)}
+
+/* menu */
+.af{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.af-chip{font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none}
+.af-chip.active{background:var(--fire2);border-color:var(--fire2);color:#fff}
+.pz{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;transition:all .2s}
+.pz.filtered{opacity:.25}
+.pz.out-item{opacity:.35;border-color:#3a1a1a}
+.pz-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.pz-name{font-size:16px;font-weight:700}
+.pz-diet{font-size:11px;font-weight:500;color:var(--teal);margin-left:4px}
+.pz-price{font-size:18px;font-weight:800;color:var(--gold)}
+.pz-build{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.pz-build strong{color:var(--text);font-weight:600}
+.pb-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;background:#2a1e0a;color:var(--gold);border:1px solid #4a3010;margin:0 2px;white-space:nowrap}
+.pz-meta{display:flex;flex-wrap:wrap;gap:5px}
+.at{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#2a1f1a;color:#fb923c;border:1px solid #4a2a1a}
+.gpt{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:#141f14;color:var(--green);border:1px solid #1e3a1e}
+.out-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:#3a1010;color:var(--fire2);border:1px solid #5a1a1a}
+
+/* order */
+.sup-block{margin-bottom:16px}
+.sup-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sup-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sup-name{font-size:14px;font-weight:700}
+.sup-via{font-size:11px;color:var(--text2)}
+.or{display:flex;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:5px;gap:10px}
+.oi{flex:1;font-size:13px}
+.osku{font-size:10px;color:var(--text3);font-family:monospace}
+.op{font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap}
+.olk{font-size:10px;color:var(--green);margin-left:4px}
+.oos{font-size:10px;color:var(--fire2);margin-left:4px}
+
+/* specs */
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.sh{padding:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.st{font-size:14px;font-weight:700}
+.sm{display:flex;gap:6px;align-items:center}
+.sy{font-size:11px;color:var(--text2)}
+.ss2{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+.locked{background:#141f14;color:var(--green)}
+.draft{background:#2a1a0e;color:var(--fire)}
+.schev{font-size:16px;color:var(--text3);transition:transform .2s}
+.sc.open .schev{transform:rotate(90deg)}
+.sb2{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+.sc.open .sb2{display:block}
+.spt{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.spt th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);font-weight:600;padding:4px 0;border-bottom:1px solid var(--border)}
+.spt td{padding:6px 0;border-bottom:1px solid #1e1c18;color:var(--text);vertical-align:top}
+.spt td:last-child{text-align:right;color:var(--text2);font-weight:600}
+.sm2 ol{padding-left:18px;margin-top:8px}
+.sm2 li{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:4px}
+.scost{display:inline-block;font-size:11px;font-weight:700;color:var(--gold);background:#2a2010;border-radius:4px;padding:3px 8px;margin-top:8px}
+.snote{font-size:11px;color:var(--text3);background:var(--bg3);border-left:3px solid var(--border);padding:8px 10px;border-radius:0 6px 6px 0;margin-top:8px;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="hdr">
+  <h1>🔥 Taproom <span>Pizza</span></h1>
+  <div id="mode-toggle">
+    <button id="btn-service" class="active" onclick="setMode('service')">SERVICE</button>
+    <button id="btn-setup" onclick="setMode('setup')">SETUP</button>
+  </div>
+</div>
+
+<div id="content">
+
+<!-- ═══ SERVICE HOME ═══ -->
+<div class="tab active" id="tab-home">
+  <div id="eighty6-warn" class="eighty6-warn">⚠ Pizzas 86'd — check the board</div>
+
+  <div class="special-box">
+    <div class="slabel">Tonight's Special <span class="edit-hint">tap name to edit</span></div>
+    <div class="special-name" id="special-display" onclick="editSpecial()"></div>
+    <input class="special-input" id="special-input" type="text" placeholder="Special name…" onblur="saveSpecial()" onkeydown="if(event.key==='Enter')saveSpecial()">
+    <div class="special-price">Rotating · £14</div>
+  </div>
+
+  <div class="dome-check" id="dome-check" onclick="toggleDome()">
+    <div class="dc-label">Gozney Dome
+      <div class="dc-sub">Target 450–500°C · Use IR gun before opening</div>
+    </div>
+    <div class="dome-toggle"></div>
+  </div>
+
+  <div class="ctr">
+    <div class="ctr-row">
+      <div class="ctr-label">Covers out tonight</div>
+      <div class="ctr-btns">
+        <button class="ctr-btn" onclick="covers(-1)">−</button>
+        <div class="ctr-num" id="covers-num">0</div>
+        <button class="ctr-btn" onclick="covers(1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="sb"><div class="sl">Service</div><div class="sv" style="color:var(--fire)">3–9pm</div><div class="ss">Last pizza 8:30</div></div>
+    <div class="sb"><div class="sl">Avg GP</div><div class="sv" style="color:var(--green)">~80%</div><div class="ss">Menu average</div></div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Quick ref</div>
+    <div class="ir"><span class="k">Dough balls</span><span class="v">Pan Artisan 210g · £0.47</span></div>
+    <div class="ir"><span class="k">Dome condiments</span><span class="v" style="font-size:11px">Chilli oil · Garlic mayo · Hot honey · Flakes · Parm</span></div>
+    <div class="ir"><span class="k">Last pizza</span><span class="v" style="color:var(--fire)">8:30pm hard cut</span></div>
+    <div class="ir"><span class="k">Allergen sheet</span><span class="v" style="color:var(--gold)">⚠ Confirm gochujang</span></div>
+  </div>
+
+  <div class="notes-box">
+    <div class="nt">Service notes</div>
+    <textarea class="notes-ta" id="notes-ta" placeholder="Jot anything down — portions left, complaints, 86 reasons…" oninput="saveNotes()"></textarea>
+  </div>
+</div>
+
+<!-- ═══ 86 BOARD ═══ -->
+<div class="tab" id="tab-86">
+  <p style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.5">Tap a pizza to 86 it. 86'd items show greyed out on the menu tab and trigger a warning on the service screen.</p>
+  <div class="grid2" id="board-86"></div>
+  <button class="reset-btn" onclick="reset86()">Bring everything back</button>
+</div>
+
+<!-- ═══ MISE EN PLACE ═══ -->
+<div class="tab" id="tab-mise">
+  <div class="ph"><span class="pl">Mise en Place</span><span class="pc" id="mise-count">0 / 0</span></div>
+  <div class="pb"><div class="pf" id="mise-bar" style="width:0%"></div></div>
+  <div id="mise-groups"></div>
+  <button class="reset-btn" onclick="confirmReset('mise')">Reset mise en place</button>
+</div>
+
+<!-- ═══ PREP ═══ -->
+<div class="tab" id="tab-prep">
+  <div class="ph"><span class="pl">Prep List</span><span class="pc" id="prep-count">0 / 0</span></div>
+  <div class="pb"><div class="pf" id="prep-bar" style="width:0%"></div></div>
+  <div id="prep-groups"></div>
+  <button class="reset-btn" onclick="confirmReset('prep')">Reset prep list</button>
+</div>
+
+<!-- ═══ MENU ═══ -->
+<div class="tab" id="tab-menu">
+  <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Filter by allergen</div>
+  <div class="af" id="allergen-filters"></div>
+  <div id="pizza-list"></div>
+</div>
+
+<!-- ═══ ORDER ═══ -->
+<div class="tab" id="tab-order">
+
+  <div class="sup-block">
+    <div class="sup-hdr"><div class="sup-dot" style="background:#3b82f6"></div><div class="sup-name">Bidfood Direct <span class="sup-via">TAPROOM account</span></div></div>
+    <div class="or"><div class="oi">Pan Artisan Sourdough Balls 80×210g<div class="osku">56003</div></div><div><div class="op">£37.31<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£0.466/ball</div></div></div>
+    <div class="or"><div class="oi">Pettinicchio Fior Di Latte 2.5kg<div class="osku">24125</div></div><div><div class="op">£19.96<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£7.98/kg</div></div></div>
+    <div class="or"><div class="oi">Violife Vegan Mozzarella 1kg<div class="osku">13529</div></div><div><div class="op">£8.70</div></div></div>
+    <div class="or"><div class="oi">Arrigoni Taleggio 8×200g<div class="osku">22804</div></div><div><div class="op">£23.11<span class="oos">⚠OOS</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£14.44/kg</div></div></div>
+    <div class="or"><div class="oi">Galbani Mascarpone 2kg<div class="osku">02869</div></div><div><div class="op">£16.23<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£8.12/kg</div></div></div>
+    <div class="or"><div class="oi">Zanetti Parmigiano PDO Flakes 500g<div class="osku">50781</div></div><div><div class="op">£17.60</div><div style="font-size:10px;color:var(--text3);text-align:right">£35.20/kg</div></div></div>
+    <div class="or"><div class="oi">Gustoso Grana Padano Wedge 1kg<div class="osku">03087</div></div><div><div class="op">£20.18</div></div></div>
+    <div class="or"><div class="oi">La Pedriza EVOO 5L<div class="osku">00068</div></div><div><div class="op">£31.06<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£6.21/L</div></div></div>
+    <div class="or"><div class="oi">Tramontana Sherry Vinegar 750ml<div class="osku">80178</div></div><div><div class="op">£3.88</div></div></div>
+    <div class="or"><div class="oi">Ajumma Republic Gochujang 6×500g<div class="osku">29752</div></div><div><div class="op">£15.83</div><div style="font-size:10px;color:var(--text3);text-align:right">£5.28/kg ⚠allergens</div></div></div>
+    <div class="or"><div class="oi">Paris Brown Chestnut Mushrooms 3kg<div class="osku">76566</div></div><div><div class="op">£12.43</div><div style="font-size:10px;color:var(--text3);text-align:right">£4.14/kg</div></div></div>
+    <div class="or"><div class="oi">Wild Roquette Rocket 500g<div class="osku">74849</div></div><div><div class="op">£3.90</div></div></div>
+    <div class="or"><div class="oi">Casa De Mare Artichokes 12×396g<div class="osku">36328</div></div><div><div class="op">£25.69</div><div style="font-size:10px;color:var(--text3);text-align:right">£5.41/jar</div></div></div>
+    <div class="or"><div class="oi">Casa De Mare Baby Capers 975g<div class="osku">89461</div></div><div><div class="op">£7.85</div></div></div>
+    <div class="or"><div class="oi">Sapori D'Italia Semi-Dried Cherry 1kg<div class="osku">36006</div></div><div><div class="op">£16.24</div></div></div>
+    <div class="or"><div class="oi">EF Clear Honey 3.17kg<div class="osku">61367</div></div><div><div class="op">£14.05</div><div style="font-size:10px;color:var(--text3);text-align:right">£4.43/kg</div></div></div>
+    <div class="or"><div class="oi">EF Crushed Chillies 300g<div class="osku">30144</div></div><div><div class="op">£5.22</div></div></div>
+    <div class="or"><div class="oi">EF Dry Oregano 100g<div class="osku">30142</div></div><div><div class="op">£3.12</div></div></div>
+  </div>
+
+  <div class="sup-block">
+    <div class="sup-hdr"><div class="sup-dot" style="background:#f97316"></div><div class="sup-name">Infusions4Chefs</div></div>
+    <div class="or"><div class="oi">Magna San Marzano 2.55kg<div class="osku">24094</div></div><div><div class="op">£6.99<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£2.74/kg</div></div></div>
+    <div class="or"><div class="oi">Greek Olive Co. Nocellara 1.4kg<div class="osku">22191</div></div><div><div class="op">£22.59<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£16.14/kg</div></div></div>
+    <div class="or"><div class="oi">Perello Guindilla Chillies 2kg</div></div><div><div class="op">£16.99<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£8.50/kg</div></div></div>
+    <div class="or"><div class="oi">Marinated Anchovies 1kg</div><div><div class="op">£18.99</div></div></div>
+    <div class="or"><div class="oi">Pistachio Kernels 1kg</div><div><div class="op">£32.89</div><div style="font-size:10px;color:var(--text3);text-align:right">cheaper than Bidfood</div></div></div>
+  </div>
+
+  <div class="sup-block">
+    <div class="sup-hdr"><div class="sup-dot" style="background:#22c55e"></div><div class="sup-name">Burtons Catering Butchers <span class="sup-via">via Fresho</span></div></div>
+    <div class="or"><div class="oi">Pepperoni Sticks<div class="osku">PROV148</div></div><div><div class="op">£9.90/kg<span class="olk">✓</span></div></div></div>
+    <div class="or"><div class="oi">Nduja<div class="osku">PROV167</div></div><div><div class="op">£21.99/kg</div></div></div>
+    <div class="or"><div class="oi">Parma Ham Whole boneless<div class="osku">PROV162</div></div><div><div class="op">£12.99/kg</div></div></div>
+    <div class="or"><div class="oi">Beef Shin Boneless<div class="osku">BEEF158</div></div><div><div class="op">£13.99/kg<span class="olk">✓</span></div></div></div>
+    <div class="or"><div class="oi">Ox Cheek Scotch<div class="osku">BEEF179</div></div><div><div class="op">£19.90/kg</div></div></div>
+    <div class="or"><div class="oi">Chicken Fillet Skinless<div class="osku">CHICK160</div></div><div><div class="op">£8.99/kg</div></div></div>
+  </div>
+
+  <div class="sup-block">
+    <div class="sup-hdr"><div class="sup-dot" style="background:#14b8a6"></div><div class="sup-name">Fisher & Woods <span class="sup-via">via Fresho</span></div></div>
+    <div class="or"><div class="oi">Black Tiger Prawns 16/20 1kg<div class="osku">ZRAWPE3</div></div><div><div class="op">£9.00/kg<span class="olk">✓</span></div></div></div>
+    <div class="or"><div class="oi">Fresh Squid 1kg<div class="osku">FSQUID</div></div><div><div class="op">£12.75/kg<span class="olk">✓</span></div></div></div>
+    <div class="or"><div class="oi">Gorgonzola Dolce DOP 1.5kg<div class="osku">CHE-GORGON1</div></div><div><div class="op">£15.88<span class="olk">✓</span></div><div style="font-size:10px;color:var(--text3);text-align:right">£10.59/kg</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ SPECS ═══ -->
+<div class="tab" id="tab-specs">
+
+  <div class="sc" id="sp1">
+    <div class="sh" onclick="toggleSpec('sp1')"><div><div class="st">Pistachio Salsa</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Tenderstem · 35g/pizza</div></div><div class="sm"><span class="sy">~400g</span><span class="ss2 locked">✓ LOCKED</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Toasted pistachios, crushed</td><td>200g</td></tr><tr><td>EVOO</td><td>150ml</td></tr><tr><td>Lemon juice</td><td>30ml</td></tr><tr><td>Flat-leaf parsley, chopped</td><td>10g</td></tr><tr><td>Garlic clove, minced</td><td>1 (~5g)</td></tr><tr><td>Sea salt</td><td>5g</td></tr></table><div class="sm2"><ol><li>Toast pistachios lightly until fragrant. Cool, crush coarsely — do not powder.</li><li>Mix all ingredients. Chunky and spoonable.</li><li>Season, film to surface.</li></ol></div><div class="scost">£20.21/kg — pistachios drive 80% of cost</div></div>
+  </div>
+
+  <div class="sc" id="sp2">
+    <div class="sh" onclick="toggleSpec('sp2')"><div><div class="st">White Miso 'Nduja (vegan)</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Tenderstem · 25g/pizza · holds 2 weeks</div></div><div class="sm"><span class="sy">~800g</span><span class="ss2 locked">✓ LOCKED</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>White miso paste</td><td>200g</td></tr><tr><td>Sun-dried tomatoes in oil (reserve oil)</td><td>350g</td></tr><tr><td>Garlic cloves</td><td>15 (~75g)</td></tr><tr><td>Dried chilli flake mix</td><td>5 tbsp (~50g)</td></tr><tr><td>Smoked paprika</td><td>3 tbsp (~24g)</td></tr><tr><td>Dried basil</td><td>2 tbsp (~6g)</td></tr><tr><td>Red wine vinegar</td><td>75ml</td></tr><tr><td>Reserved tomato oil</td><td>100–150ml</td></tr></table><div class="sm2"><ol><li>Soak chilli flakes in vinegar 10 mins.</li><li>Blitz tomatoes, garlic, miso, paprika, basil, chilli in robot coupe — coarse paste.</li><li>Motor running: stream in oil until glossy and spoonable.</li><li>Store with oil film on surface.</li></ol></div><div class="scost">£12.55/kg</div><div class="snote">Allergens: Soy, Sulphites</div></div>
+  </div>
+
+  <div class="sc" id="sp3">
+    <div class="sh" onclick="toggleSpec('sp3')"><div><div class="st">Salsa Verde</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Prawn & Squid · 15g/pizza · make day-of</div></div><div class="sm"><span class="sy">~1065g</span><span class="ss2 locked">✓ LOCKED</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Flat-leaf parsley, picked</td><td>180g</td></tr><tr><td>Mint leaves</td><td>60g</td></tr><tr><td>Basil leaves</td><td>60g</td></tr><tr><td>Capers, drained</td><td>90g</td></tr><tr><td>Cornichons</td><td>90g</td></tr><tr><td>Garlic cloves</td><td>3 (~15g)</td></tr><tr><td>Dijon mustard</td><td>30g</td></tr><tr><td>Red wine vinegar</td><td>90ml</td></tr><tr><td>EVOO</td><td>450ml</td></tr><tr><td>Sea salt</td><td>15g</td></tr></table><div class="sm2"><ol><li>Finely chop herbs, capers, cornichons, garlic by hand — or very brief pulse. <strong>DO NOT blitz smooth.</strong></li><li>Stir in mustard, vinegar, oil. Adjust acidity.</li><li>Film to surface.</li></ol></div><div class="scost">£11.40/kg</div><div class="snote">Allergens: Mustard, Sulphites. Vegetarian.</div></div>
+  </div>
+
+  <div class="sc" id="sp4">
+    <div class="sh" onclick="toggleSpec('sp4')"><div><div class="st">Agrodolce Peppers</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Diavola · 30g/pizza</div></div><div class="sm"><span class="sy">~600g</span><span class="ss2 locked">✓ LOCKED</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Bell peppers (red + yellow), strips</td><td>600g</td></tr><tr><td>EVOO</td><td>100ml</td></tr><tr><td>White wine vinegar</td><td>100ml</td></tr><tr><td>Caster sugar</td><td>50g</td></tr><tr><td>Garlic cloves</td><td>2 (~10g)</td></tr><tr><td>Sea salt</td><td>5g</td></tr><tr><td>Fresh oregano</td><td>10g</td></tr></table><div class="sm2"><ol><li>Sauté peppers and garlic in EVOO until softened.</li><li>Add vinegar and sugar. Simmer 12 mins until syrupy and glossy.</li><li>Stir in oregano. Season.</li></ol></div><div class="scost">£6.37/kg</div></div>
+  </div>
+
+  <div class="sc" id="sp5">
+    <div class="sh" onclick="toggleSpec('sp5')"><div><div class="st">Beef Shin, Cheek & Sausage Ragù</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Beef Ragù pizza · 90g/pizza · 5–6hr braise</div></div><div class="sm"><span class="sy">~6.5kg</span><span class="ss2 locked">✓ LOCKED</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Bone-in beef shin</td><td>3.5kg</td></tr><tr><td>Beef cheek, trimmed</td><td>3kg</td></tr><tr><td>Pork sausage, casing removed</td><td>1kg</td></tr><tr><td>White onion, finely diced</td><td>3 (~600g)</td></tr><tr><td>Carrots, finely diced</td><td>3 (~300g)</td></tr><tr><td>Celery, finely diced</td><td>4 sticks (~200g)</td></tr><tr><td>Garlic cloves, minced</td><td>8 (~40g)</td></tr><tr><td>Tomato paste</td><td>200g</td></tr><tr><td>Tinned chopped tomatoes</td><td>800g</td></tr><tr><td>Red wine</td><td>750ml</td></tr><tr><td>Beef stock</td><td>1L</td></tr><tr><td>Bay leaves</td><td>4</td></tr><tr><td>Fresh thyme</td><td>6 sprigs</td></tr></table><div class="sm2"><ol><li>Season and sear shin and cheek in batches — deep mahogany. Remove.</li><li>Brown crumbled sausage in same pan. Remove, reserve.</li><li>Soffritto: onion, carrot, celery 15 mins until soft. Add garlic 2 mins.</li><li>Cook tomato paste 3 mins. Deglaze with wine, reduce by half. Add tomatoes, stock, herbs. Return all meat.</li><li>Cover. Braise 140°C for 5–6 hours. Remove bones. Shred. Fold in sausage.</li><li>Reduce if too loose. Cool before portioning.</li></ol></div><div class="scost">£19.53/kg cooked · 73.6% GP at £15</div><div class="snote">⚠ Sausage is kitchen-only — not on menu wording. Allergens: Gluten, Celery, Sulphites. Weigh first cooked batch to verify yield.</div></div>
+  </div>
+
+  <div class="sc" id="sp6">
+    <div class="sh" onclick="toggleSpec('sp6')"><div><div class="st">Confit Garlic & Rosemary Cream</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Garlic Bread + Potato & Prosciutto · 3-day hold</div></div><div class="sm"><span class="sy">~1kg</span><span class="ss2 draft">DRAFT</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Mascarpone (Galbani)</td><td>700g</td></tr><tr><td>Garlic, peeled (for confit)</td><td>100g</td></tr><tr><td>Rosemary-infused EVOO</td><td>100g</td></tr><tr><td>Fresh rosemary</td><td>10g</td></tr><tr><td>Lemon zest</td><td>1 lemon</td></tr><tr><td>Sea salt</td><td>5g</td></tr></table><div class="sm2"><ol><li>Confit: submerge garlic in EVOO with rosemary at 85–90°C for 30 mins. Cool. Reserve oil.</li><li>Blitz cooled garlic with 50g oil to smooth purée.</li><li>Whisk mascarpone smooth. Fold in purée, lemon zest, salt, and 50g rosemary oil.</li><li>Hold covered. Make every 3 days.</li></ol></div><div class="scost">£7.85/kg</div><div class="snote">⚠ DRAFT — confirm ratios and hold time. 50:50 mascarpone/crème fraîche if you want a tangier note.</div></div>
+  </div>
+
+  <div class="sc" id="sp7">
+    <div class="sh" onclick="toggleSpec('sp7')"><div><div class="st">Hot Honey</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Diavola + dome condiment · steep overnight</div></div><div class="sm"><span class="sy">~1kg</span><span class="ss2 draft">DRAFT</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Clear honey (Bidfood 61367)</td><td>950g</td></tr><tr><td>Crushed chillies</td><td>50g</td></tr></table><div class="sm2"><ol><li>Warm honey to 60°C. <strong>DO NOT exceed 70°C.</strong></li><li>Stir in chillies. Hold 20 mins at 60°C.</li><li>Cool completely with chillies in.</li><li>Strain into dome drizzle bottle. Leave chillies in batch tub for deeper flavour.</li></ol></div><div class="scost">£5.08/kg</div><div class="snote">⚠ DRAFT — 50g/kg is moderate heat. Push to 100g/kg for more. Steep overnight Thursday for Friday service.</div></div>
+  </div>
+
+  <div class="sc" id="sp8">
+    <div class="sh" onclick="toggleSpec('sp8')"><div><div class="st">House Garlic Mayo</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Dome condiment · 5-day fridge</div></div><div class="sm"><span class="sy">~1.1kg</span><span class="ss2 draft">DRAFT</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>Whole free-range eggs</td><td>2</td></tr><tr><td>Free-range egg yolks</td><td>4</td></tr><tr><td>Dijon mustard</td><td>30g</td></tr><tr><td>White wine vinegar</td><td>30g</td></tr><tr><td>Lemon juice</td><td>30g</td></tr><tr><td>Confit garlic purée</td><td>80g</td></tr><tr><td>Raw garlic, micro-grated</td><td>6g</td></tr><tr><td>Fine sea salt</td><td>12g</td></tr><tr><td>Caster sugar</td><td>5g</td></tr><tr><td>Neutral oil (rapeseed)</td><td>750g</td></tr><tr><td>EVOO</td><td>100g</td></tr></table><div class="sm2"><ol><li>Blitz eggs, yolks, mustard, vinegar, lemon, both garlics, salt and sugar 30 secs until pale.</li><li>Motor running: drizzle neutral oil very slowly until emulsion takes. Then faster. Finish with EVOO.</li><li>Adjust salt and acidity. Loosen with cold water if too tight.</li><li>Squeezy bottle. Label. 5 days fridge.</li></ol></div><div class="snote">⚠ DRAFT — confirm against your existing house garlic sauce recipe.</div></div>
+  </div>
+
+  <div class="sc" id="sp9">
+    <div class="sh" onclick="toggleSpec('sp9')"><div><div class="st">House Italian Chilli Oil w/ Szechuan</div><div style="font-size:11px;color:var(--text2);margin-top:2px">Dome condiment · 4 weeks ambient</div></div><div class="sm"><span class="sy">~1.1L</span><span class="ss2 draft">DRAFT</span><span class="schev">›</span></div></div>
+    <div class="sb2"><table class="spt"><tr><th>Ingredient</th><th>Qty</th></tr><tr><td>EVOO (La Pedriza)</td><td>800ml</td></tr><tr><td>Neutral oil (rapeseed)</td><td>200ml</td></tr><tr><td>Dried Calabrian chilli flakes</td><td>60g</td></tr><tr><td>Dried whole bird's eye chillies</td><td>8g</td></tr><tr><td>Szechuan peppercorns, crushed</td><td>25g</td></tr><tr><td>Smoked paprika</td><td>5g</td></tr><tr><td>Garlic cloves, smashed</td><td>30g</td></tr><tr><td>Fresh rosemary</td><td>6g</td></tr><tr><td>Bay leaves</td><td>2</td></tr><tr><td>Fennel seeds, toasted</td><td>6g</td></tr><tr><td>Fine sea salt</td><td>8g</td></tr></table><div class="sm2"><ol><li>Combine oils, garlic, rosemary, bay, fennel, Szechuan in heavy pan.</li><li>Heat slowly to <strong>80°C</strong> — DO NOT exceed 90°C. Hold 15 mins.</li><li>Off heat. Add chilli flakes, whole chillies, paprika, salt. Residual heat blooms without scorching.</li><li>Cool uncovered. Strain half for dome bottle; leave half rustic.</li><li>Dark glass. 4 weeks ambient, 8 weeks fridge.</li></ol></div><div class="snote">⚠ DRAFT — confirm spice ratios. Can simplify to oil + flakes + Szechuan for dome.</div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<nav id="nav">
+  <button class="nb active" id="nav-home" onclick="switchTab('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    Service
+  </button>
+  <button class="nb" id="nav-86" onclick="switchTab('86')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+    86 Board
+  </button>
+  <button class="nb" id="nav-mise" onclick="switchTab('mise')">
+    <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    Mise
+  </button>
+  <button class="nb" id="nav-prep" onclick="switchTab('prep')">
+    <svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+    Prep
+  </button>
+  <button class="nb" id="nav-menu" onclick="switchTab('menu')">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 10c-2.21 0-4-1.79-4-4h8c0 2.21-1.79 4-4 4z"/></svg>
+    Menu
+  </button>
+  <button class="nb hidden" id="nav-order" onclick="switchTab('order')">
+    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    Order
+  </button>
+  <button class="nb hidden" id="nav-specs" onclick="switchTab('specs')">
+    <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    Specs
+  </button>
+</nav>
+</div>
+
+<script>
+const SK = 'taproom_v2';
+function load() { try { return JSON.parse(localStorage.getItem(SK)) || {}; } catch { return {}; } }
+function save(s) { try { localStorage.setItem(SK, JSON.stringify(s)); } catch {} }
+
+// ── MODE ──
+function setMode(m) {
+  const s = load(); s.mode = m; save(s);
+  document.getElementById('btn-service').classList.toggle('active', m==='service');
+  document.getElementById('btn-setup').classList.toggle('active', m==='setup');
+  const serviceOnly = ['nav-86'];
+  const setupOnly = ['nav-order','nav-specs'];
+  serviceOnly.forEach(id => document.getElementById(id).classList.toggle('hidden', m==='setup'));
+  setupOnly.forEach(id => document.getElementById(id).classList.toggle('hidden', m==='service'));
+  if (m==='service' && ['order','specs'].includes(currentTab)) switchTab('home');
+  if (m==='setup' && currentTab==='86') switchTab('home');
+}
+
+// ── TAB ──
+let currentTab = 'home';
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const nb = document.getElementById('nav-'+name);
+  if (nb) nb.classList.add('active');
+  document.getElementById('content').scrollTop = 0;
+  currentTab = name;
+  if (name==='prep') autoScrollPrep();
+}
+
+// ── SPEC ACCORDION ──
+function toggleSpec(id) { document.getElementById(id).classList.toggle('open'); }
+
+// ── SPECIAL ──
+function editSpecial() {
+  const d = document.getElementById('special-display');
+  const i = document.getElementById('special-input');
+  i.value = d.textContent;
+  d.style.display='none'; i.style.display='block'; i.focus(); i.select();
+}
+function saveSpecial() {
+  const d = document.getElementById('special-display');
+  const i = document.getElementById('special-input');
+  const v = i.value.trim() || 'Smoked Chicken & Gochujang';
+  d.textContent = v; d.style.display='block'; i.style.display='none';
+  const s = load(); s.special = v; save(s);
+}
+
+// ── DOME ──
+function toggleDome() {
+  const el = document.getElementById('dome-check');
+  el.classList.toggle('done');
+  const s = load(); s.dome = el.classList.contains('done'); save(s);
+}
+
+// ── COVERS ──
+function covers(delta) {
+  const s = load();
+  s.covers = Math.max(0, (s.covers||0) + delta);
+  save(s);
+  document.getElementById('covers-num').textContent = s.covers;
+}
+
+// ── NOTES ──
+function saveNotes() {
+  const s = load(); s.notes = document.getElementById('notes-ta').value; save(s);
+}
+
+// ── 86 BOARD ──
+const PIZZAS = [
+  {id:'garlic',name:'Garlic Bread',price:'£6'},
+  {id:'marinara',name:'Marinara',price:'£10'},
+  {id:'margherita',name:'Margherita',price:'£12'},
+  {id:'pepperoni',name:'Pepperoni',price:'£13'},
+  {id:'diavola',name:'Diavola',price:'£14'},
+  {id:'ragu',name:'Beef Ragù',price:'£15'},
+  {id:'mushroom',name:'Mushroom & Taleggio',price:'£14'},
+  {id:'potato',name:'Potato & Prosciutto',price:'£14'},
+  {id:'tenderstem',name:'Tenderstem & Vegan Nduja',price:'£13'},
+  {id:'prawn',name:'Prawn & Squid',price:'£16'},
+  {id:'special',name:'Special',price:'£14'},
+];
+
+function build86Board() {
+  const s = load();
+  const out = s.out86 || [];
+  const board = document.getElementById('board-86');
+  board.innerHTML = '';
+  PIZZAS.forEach(p => {
+    const isOut = out.includes(p.id);
+    const div = document.createElement('div');
+    div.className = 'p86' + (isOut ? ' out' : '');
+    div.innerHTML = `<div class="pn">${p.name}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><div class="pp">${p.price}</div><div class="pill">${isOut?'86\'D':'ON'}</div></div>`;
+    div.onclick = () => toggle86(p.id);
+    board.appendChild(div);
+  });
+  update86Warn();
+  updateMenuOut();
+}
+
+function toggle86(id) {
+  const s = load();
+  s.out86 = s.out86 || [];
+  const idx = s.out86.indexOf(id);
+  if (idx>=0) s.out86.splice(idx,1); else s.out86.push(id);
+  save(s);
+  build86Board();
+}
+
+function reset86() {
+  if (!confirm('Bring all pizzas back on?')) return;
+  const s = load(); s.out86 = []; save(s);
+  build86Board();
+}
+
+function update86Warn() {
+  const s = load();
+  const out = s.out86 || [];
+  const w = document.getElementById('eighty6-warn');
+  if (out.length) {
+    const names = out.map(id => PIZZAS.find(p=>p.id===id)?.name||id).join(', ');
+    w.textContent = `⚠ 86'd: ${names}`;
+    w.classList.add('show');
+  } else {
+    w.classList.remove('show');
+  }
+}
+
+function updateMenuOut() {
+  const s = load();
+  const out = s.out86 || [];
+  document.querySelectorAll('.pz').forEach(el => {
+    const pid = el.dataset.pid;
+    el.classList.toggle('out-item', out.includes(pid));
+    const badge = el.querySelector('.out-badge');
+    if (badge) badge.style.display = out.includes(pid) ? 'inline-block' : 'none';
+  });
+}
+
+// ── CHECKLIST ──
+const MISE_DATA = [
+  { group:'1 · Station & Equipment', id:'mg1', items:[
+    {id:'m1',t:'Gozney Dome — fired and at temp',n:'450–500°C floor · IR gun check · 60–90 min warm-up'},
+    {id:'m2',t:'Launching peel — clean, dry, semolina dusted'},
+    {id:'m3',t:'Turning peel to hand'},
+    {id:'m4',t:'Prep bench — dusted with 00 flour + semolina'},
+    {id:'m5',t:'Dough balls portioned and proofed',n:'Covered in trays · Out of fridge by 1pm · 2hr room temp'},
+    {id:'m6',t:'Pizza boxes / boards stacked'},
+    {id:'m7',t:'Order system / tickets confirmed'},
+    {id:'m8',t:'Fire extinguisher checked & accessible'},
+    {id:'m9',t:'Waste bins lined and positioned'},
+    {id:'m10',t:'Side towels — min 6 clean cloths at station'},
+  ]},
+  { group:'2 · Sauces & Bases', id:'mg2', items:[
+    {id:'m11',t:'San Marzano tomato base',n:'Hand crush · salt + EVOO + pinch sugar · DO NOT cook · into tub/bottle'},
+    {id:'m12',t:'Confit garlic & rosemary cream',n:'Spreadable · Garlic Bread + Potato & Prosciutto'},
+    {id:'m13',t:'Pistachio pesto / salsa',n:'Chunky, spoonable · check salt & oil · Tenderstem pizza · 35g/pizza'},
+    {id:'m14',t:'Salsa verde',n:'Hand-chopped ONLY — never blitz smooth · check acidity · 15g/pizza'},
+    {id:'m15',t:'Sherry vinegar glaze',n:'For Mushroom & Taleggio post-bake drizzle'},
+    {id:'m16',t:'Hot honey — strained into squeeze bottle',n:'For Diavola post-bake'},
+    {id:'m17',t:'EVOO in pourer for finishing'},
+  ]},
+  { group:'3 · Cheeses', id:'mg3', items:[
+    {id:'m18',t:'Fior di latte — sliced or torn, drained',n:'Even pieces · drain moisture · most pizzas'},
+    {id:'m19',t:'Taleggio — sliced, kept cold',n:'⚠ WAS OOS — confirm stock · Mushroom & Taleggio'},
+    {id:'m20',t:'Gorgonzola — crumbled into pieces',n:'F&W Dolce DOP · Mushroom & Taleggio'},
+    {id:'m21',t:'Parmesan — grated into tub + wedge at station',n:'~300g pre-grated · Zanetti PDO finish · allergen labelled'},
+  ]},
+  { group:'4 · Proteins & Charcuterie', id:'mg4', items:[
+    {id:'m22',t:'Pepperoni — sliced, in tub',n:'Pepperoni + Diavola'},
+    {id:'m23',t:'Nduja — softened to room temp',n:'Portion by teaspoon · Diavola'},
+    {id:'m24',t:'White miso \'nduja — softened',n:'25g/pizza · Tenderstem pizza'},
+    {id:'m25',t:'Beef ragù — warm in bain-marie',n:'90g/pizza · season check · don\'t boil'},
+    {id:'m26',t:'Prosciutto crudo — cold, sliced thin',n:'⚠ ADD POST-BAKE · Potato & Prosciutto'},
+    {id:'m27',t:'Prawns — cleaned, deveined, dry',n:'Black Tiger 16/20 · Prawn & Squid'},
+    {id:'m28',t:'Squid — cleaned, scored or rings, dry',n:'Fresh from F&W · Prawn & Squid'},
+  ]},
+  { group:'5 · Vegetables & Toppings', id:'mg5', items:[
+    {id:'m29',t:'Chestnut mushrooms — roasted, cooled',n:'200°C+ until golden · ~60g/pizza'},
+    {id:'m30',t:'Potato slices — mandoline, blanched, dried',n:'Dress EVOO + salt · Potato & Prosciutto'},
+    {id:'m31',t:'Guindillas — drained, in tub',n:'Perello from Infusions · Potato & Prosciutto'},
+    {id:'m32',t:'Tenderstem — blanched, ice bath, trimmed'},
+    {id:'m33',t:'Artichokes — halved/quartered, drained',n:'Casa De Mare · Tenderstem pizza'},
+    {id:'m34',t:'Nocellara olives — pitted, in tub',n:'Tenderstem pizza'},
+    {id:'m35',t:'Sun-blushed tomatoes — drained, halved',n:'Tenderstem pizza'},
+    {id:'m36',t:'Agrodolce peppers — drained, in tub',n:'~30g/pizza · Diavola'},
+  ]},
+  { group:'6 · Garnishes & Dome Station', id:'mg6', items:[
+    {id:'m37',t:'Fresh basil — picked in cold water',n:'Margherita · Diavola · Beef Ragù'},
+    {id:'m38',t:'Fresh parsley — finely chopped',n:'Garlic Bread'},
+    {id:'m39',t:'Rocket — washed & dried',n:'⚠ ADD POST-BAKE · Tenderstem pizza'},
+    {id:'m40',t:'Dried oregano in shaker',n:'Marinara · Pepperoni · dome condiment'},
+    {id:'m41',t:'Lemon wedges cut',n:'Prawn & Squid'},
+    {id:'m42',t:'Dome condiment station filled',n:'Chilli oil · Garlic mayo · Hot honey · Chilli flakes · Parmesan'},
+    {id:'m43',t:'Allergen sheet printed & at pass',n:'⚠ Confirm gochujang allergens before placing'},
+  ]},
+];
+
+const PREP_DATA = [
+  { group:'Thursday — Slow Preps', id:'pg1', items:[
+    {id:'p1',t:'⚠ Pizza dough — make & ball',n:'70 dough balls · cold-proof Thursday · pull 1pm Friday · CRITICAL PATH', warn:true},
+    {id:'p2',t:'Beef Ragù — braise',n:'Half batch ~3kg yield · 5–6hrs at 140°C · shred into liquor · cool before portioning · 90g/pizza', qty:'~3kg'},
+  ]},
+  { group:'Thursday — Make-Ahead', id:'pg2', items:[
+    {id:'p3',t:'Confit garlic batch',n:'100g cloves + 50g for mayo · 85–90°C for 30 mins in EVOO + rosemary · reserve all oil · covers garlic cream, mayo, chilli oil', qty:'150g'},
+    {id:'p4',t:'White Miso \'Nduja',n:'Holds 2 weeks · Robot coupe · covers this Friday + next service', qty:'800g yield'},
+    {id:'p5',t:'House Chilli Oil',n:'Heat to 80°C (don\'t exceed 90°C) · bloom chillies + Szechuan in residual heat · strain half for dome bottle', qty:'~1.1L'},
+    {id:'p6',t:'Hot Honey',n:'Warm honey to 60°C · stir in chillies · steep overnight · strain into drizzle bottle Friday', qty:'500g'},
+  ]},
+  { group:'Friday Morning', id:'pg3', items:[
+    {id:'p7',t:'San Marzano tomato base',n:'~38 pizzas need base · hand crush, season salt + EVOO · DO NOT blitz smooth · taste & adjust', qty:'~3.5kg'},
+    {id:'p8',t:'Confit Garlic & Rosemary Cream',n:'Whip mascarpone · fold in confit purée + rosemary EVOO + lemon zest + salt · holds 3 days', qty:'1kg'},
+    {id:'p9',t:'Garlic Mayo',n:'Yolk-up emulsion using Thursday\'s confit purée · squeezy bottle · label', qty:'~1.1kg'},
+  ]},
+  { group:'Friday 12–1pm', id:'pg4', items:[
+    {id:'p10',t:'Agrodolce Peppers',n:'Sauté peppers + garlic · deglaze wine vinegar + sugar · reduce 12 mins syrupy · ~8 Diavola at 30g', qty:'600g'},
+    {id:'p11',t:'Pistachio Salsa',n:'Toast pistachios · crush coarsely · mix EVOO + lemon + parsley + garlic · DON\'T over-process · 35g/pizza', qty:'400g'},
+    {id:'p12',t:'Salsa Verde',n:'HAND-CHOP ONLY — never blitz smooth · make fresh day-of for best colour · 15g/pizza', qty:'400g'},
+    {id:'p13',t:'Roasted Chestnut Mushrooms',n:'200°C+ until golden · ~60g/pizza · 5 Mushroom & Taleggio orders', qty:'650g → ~325g'},
+    {id:'p14',t:'Potato slices',n:'Mandoline thin · dress EVOO + salt · par-cook briefly', qty:'~800g'},
+    {id:'p15',t:'Beef Ragù — heat & portion',n:'Gently — don\'t boil · bain marie for service · 90g/pizza', qty:'~450g min'},
+  ]},
+  { group:'Friday 1pm — Fire Up', id:'pg5', items:[
+    {id:'p16',t:'⚠ Light the Gozney Dome',n:'Target 450–500°C · 60–90 mins · IR gun before opening', warn:true},
+    {id:'p17',t:'Pull all dough from fridge',n:'2hrs at room temp to relax gluten · out by 1pm = ready by 3pm'},
+    {id:'p18',t:'Portion & label all toppings',n:'Fior di latte · Taleggio · Gorgonzola · Pepperoni · Nduja · Prosciutto · Prawns · Squid · Tenderstem · Artichokes · Olives · Sun-blushed tomato · Guindillas · Rocket'},
+    {id:'p19',t:'Fill dome condiment station',n:'Chilli oil · Garlic mayo · Hot honey · Chilli flakes · Parmesan'},
+    {id:'p20',t:'Print allergen sheet & place at pass',n:'⚠ Confirm gochujang allergens first'},
+  ]},
+];
+
+function buildChecklists() {
+  buildList('mise', MISE_DATA, 'mise-groups');
+  buildList('prep', PREP_DATA, 'prep-groups');
+}
+
+function buildList(listKey, data, containerId) {
+  const s = load();
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  data.forEach(group => {
+    const div = document.createElement('div');
+    div.className = 'cg';
+    div.id = 'grp-' + group.id;
+    const done = group.items.filter(i => s[i.id]).length;
+    const total = group.items.length;
+    const allDone = done === total;
+    div.innerHTML = `
+      <div class="cg-hdr" onclick="toggleGroup('${group.id}')">
+        <div class="cg-title ${allDone?'done-group':''}">${group.group}</div>
+        <div class="cg-meta">
+          <span class="cg-count ${allDone?'done-count':''}">${done}/${total}</span>
+          <span class="cg-toggle">›</span>
+        </div>
+      </div>
+      <div class="cg-items" id="items-${group.id}">
+        ${group.items.map(item => `
+          <div class="ci ${s[item.id]?'done':''}" data-list="${listKey}" data-id="${item.id}" onclick="toggleCheck(this)">
+            <div class="ci-tap">
+              <div class="cb"><svg class="ck" viewBox="0 0 12 12"><polyline points="1,6 4.5,9.5 11,2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="cib">
+                <div class="ct2">${item.t}${item.qty?`<span class="cbadge bq">${item.qty}</span>`:''}${item.warn?`<span class="cbadge bw">CRITICAL</span>`:''}</div>
+                ${item.n?`<div class="cn">${item.n}</div>`:''}
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(div);
+    const itemsEl = div.querySelector('.cg-items');
+    itemsEl.style.maxHeight = itemsEl.scrollHeight + 'px';
+    if (allDone) {
+      div.classList.add('collapsed');
+      itemsEl.style.maxHeight = '0px';
+    }
+  });
+  updateProgress(listKey);
+}
+
+function toggleGroup(groupId) {
+  const grp = document.getElementById('grp-' + groupId);
+  const items = document.getElementById('items-' + groupId);
+  const isCollapsed = grp.classList.contains('collapsed');
+  if (isCollapsed) {
+    grp.classList.remove('collapsed');
+    items.style.maxHeight = items.scrollHeight + 'px';
+  } else {
+    grp.classList.add('collapsed');
+    items.style.maxHeight = '0px';
+  }
+}
+
+function toggleCheck(el) {
+  const s = load();
+  const id = el.dataset.id;
+  const listKey = el.dataset.list;
+  s[id] = !el.classList.contains('done');
+  save(s);
+  el.classList.toggle('done', s[id]);
+  updateGroupHeader(el, listKey);
+  updateProgress(listKey);
+}
+
+function updateGroupHeader(el, listKey) {
+  const grp = el.closest('.cg');
+  if (!grp) return;
+  const s = load();
+  const items = grp.querySelectorAll('.ci');
+  const done = Array.from(items).filter(i => i.classList.contains('done')).length;
+  const total = items.length;
+  const allDone = done === total;
+  const titleEl = grp.querySelector('.cg-title');
+  const countEl = grp.querySelector('.cg-count');
+  titleEl.classList.toggle('done-group', allDone);
+  countEl.classList.toggle('done-count', allDone);
+  countEl.textContent = `${done}/${total}`;
+  if (allDone) {
+    const itemsEl = grp.querySelector('.cg-items');
+    setTimeout(() => {
+      grp.classList.add('collapsed');
+      itemsEl.style.maxHeight = '0px';
+    }, 600);
+  }
+}
+
+function updateProgress(listKey) {
+  const items = document.querySelectorAll(`[data-list="${listKey}"]`);
+  const done = Array.from(items).filter(el => el.classList.contains('done')).length;
+  const total = items.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const c = document.getElementById(listKey+'-count');
+  const b = document.getElementById(listKey+'-bar');
+  if (c) c.textContent = `${done} / ${total}`;
+  if (b) b.style.width = pct+'%';
+}
+
+function confirmReset(listKey) {
+  if (!confirm(`Reset all ${listKey === 'mise' ? 'mise en place' : 'prep'} ticks? This cannot be undone.`)) return;
+  const s = load();
+  const data = listKey === 'mise' ? MISE_DATA : PREP_DATA;
+  data.forEach(g => g.items.forEach(i => { s[i.id] = false; }));
+  save(s);
+  buildChecklists();
+}
+
+// ── MENU + ALLERGEN FILTER ──
+const MENU = [
+  {id:'garlic',name:'Garlic Bread',diet:'v',price:'£6',
+   build:'<strong>Confit garlic & rosemary cream</strong> → bake → <strong>parsley</strong>',
+   allergens:['Gluten','Dairy']},
+  {id:'marinara',name:'Marinara',diet:'ve',price:'£10',
+   build:'<strong>San Marzano</strong> → garlic → oregano → EVOO (no cheese)',
+   allergens:['Gluten']},
+  {id:'margherita',name:'Margherita',diet:'v',price:'£12',
+   build:'<strong>San Marzano</strong> → <strong>fior di latte</strong> → bake → fresh basil + EVOO',
+   allergens:['Gluten','Dairy']},
+  {id:'pepperoni',name:'Pepperoni',diet:'',price:'£13',
+   build:'<strong>San Marzano</strong> → <strong>fior di latte</strong> → <strong>pepperoni</strong> → bake → dried oregano',
+   allergens:['Gluten','Dairy']},
+  {id:'diavola',name:'Diavola',diet:'',price:'£14',
+   build:'<strong>San Marzano</strong> → <strong>fior di latte</strong> → pepperoni → <strong>nduja</strong> → <strong>agrodolce peppers</strong> → bake → <span class="pb-tag">POST-BAKE</span> <strong>hot honey</strong> + basil',
+   allergens:['Gluten','Dairy','Sulphites']},
+  {id:'ragu',name:'Beef Ragù',diet:'',price:'£15',gp:'73.6%',
+   build:'<strong>San Marzano</strong> → <strong>fior di latte</strong> → <strong>beef ragù (90g)</strong> → bake → Parmesan + basil',
+   allergens:['Gluten','Dairy','Celery','Sulphites']},
+  {id:'mushroom',name:'Mushroom & Taleggio',diet:'v',price:'£14',
+   build:'<strong>Fior di latte</strong> → <strong>taleggio</strong> → <strong>roasted mushrooms</strong> → <strong>gorgonzola</strong> → bake → Parmesan → <span class="pb-tag">POST-BAKE</span> sherry vinegar glaze',
+   allergens:['Gluten','Dairy'],warn:'⚠ Taleggio OOS?'},
+  {id:'potato',name:'Potato & Prosciutto',diet:'',price:'£14',
+   build:'<strong>Confit garlic & rosemary cream</strong> → <strong>potato slices</strong> → guindillas → bake → <span class="pb-tag">POST-BAKE</span> <strong>prosciutto crudo</strong> → Parmesan',
+   allergens:['Gluten','Dairy']},
+  {id:'tenderstem',name:'Tenderstem & Vegan Nduja',diet:'ve',price:'£13',gp:'70.7%',
+   build:'<strong>Pistachio pesto (35g)</strong> → <strong>tenderstem</strong> → <strong>vegan nduja (25g)</strong> → artichokes → olives → sun-blushed tomato → bake → <span class="pb-tag">POST-BAKE</span> rocket',
+   allergens:['Gluten','Soy','Nuts','Sulphites']},
+  {id:'prawn',name:'Prawn & Squid',diet:'',price:'£16',
+   build:'EVOO + garlic → <strong>fior di latte</strong> → <strong>prawns</strong> → <strong>squid</strong> → bake → <span class="pb-tag">POST-BAKE</span> <strong>salsa verde (15g)</strong> + lemon',
+   allergens:['Gluten','Dairy','Crustacean','Mollusc','Mustard','Sulphites']},
+  {id:'special',name:'Special (Smoked Chicken & Gochujang)',diet:'',price:'£14',
+   build:'<strong>Gochujang paste</strong> → <strong>fior di latte</strong> → <strong>smoked chicken</strong> → bake → fresh basil',
+   allergens:['Gluten','Dairy','Soy?','Sesame?'],warn:'⚠ Confirm gochujang allergens'},
+];
+
+const ALL_ALLERGENS = ['Gluten','Dairy','Egg','Nuts','Soy','Crustacean','Mollusc','Mustard','Celery','Sulphites'];
+let activeAllergen = null;
+
+function buildMenu() {
+  const af = document.getElementById('allergen-filters');
+  af.innerHTML = ALL_ALLERGENS.map(a =>
+    `<div class="af-chip ${activeAllergen===a?'active':''}" onclick="filterAllergen('${a}')">${a}</div>`
+  ).join('');
+
+  const list = document.getElementById('pizza-list');
+  list.innerHTML = MENU.map(p => {
+    const filtered = activeAllergen && p.allergens.includes(activeAllergen);
+    const s = load();
+    const out86 = (s.out86||[]).includes(p.id);
+    return `<div class="pz ${filtered?'filtered':''} ${out86?'out-item':''}" data-pid="${p.id}">
+      <div class="pz-top">
+        <div><div class="pz-name">${p.name}${p.diet?`<span class="pz-diet">(${p.diet})</span>`:''}</div></div>
+        <div class="pz-price">${p.price}</div>
+      </div>
+      <div class="pz-build">${p.build}</div>
+      <div class="pz-meta">
+        ${p.allergens.map(a=>`<span class="at">${a}</span>`).join('')}
+        ${p.gp?`<span class="gpt">${p.gp} GP</span>`:''}
+        ${out86?`<span class="out-badge">86'D</span>`:''}
+        ${p.warn?`<span style="font-size:10px;color:var(--fire2);padding:2px 4px">${p.warn}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterAllergen(a) {
+  activeAllergen = activeAllergen === a ? null : a;
+  buildMenu();
+}
+
+// ── PREP AUTO-SCROLL ──
+function autoScrollPrep() {
+  const day = new Date().getDay();
+  let targetGroup = null;
+  if (day === 4) targetGroup = 'pg1';
+  else if (day === 5) {
+    const hr = new Date().getHours();
+    if (hr < 12) targetGroup = 'pg3';
+    else if (hr < 13) targetGroup = 'pg4';
+    else targetGroup = 'pg5';
+  }
+  if (targetGroup) {
+    setTimeout(() => {
+      const el = document.getElementById('grp-' + targetGroup);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 200);
+  }
+}
+
+// ── INIT ──
+function init() {
+  const s = load();
+  setMode(s.mode || 'service');
+  document.getElementById('special-display').textContent = s.special || 'Smoked Chicken & Gochujang';
+  if (s.dome) document.getElementById('dome-check').classList.add('done');
+  document.getElementById('covers-num').textContent = s.covers || 0;
+  document.getElementById('notes-ta').value = s.notes || '';
+  buildChecklists();
+  build86Board();
+  buildMenu();
+}
+init();
+</script>
+</body>
+</html>
