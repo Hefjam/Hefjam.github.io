@@ -217,6 +217,7 @@
       transition: transform 0.18s, box-shadow 0.18s;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
     .card:hover {
       transform: translateY(-3px);
@@ -490,6 +491,29 @@
     .ref-link { color: #1E4799; border-color: #1E4799; }
     .ref-link:hover { background: #1E4799; color: white; }
 
+    /* ── BOOKMARK / SHORTLIST ── */
+    .bookmark-btn {
+      position: absolute;
+      top: 10px; right: 11px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid #E4DCC4;
+      background: rgba(255,255,255,0.94);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: #C8C0B4;
+      padding: 0;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      z-index: 4;
+    }
+    .bookmark-btn:hover { border-color: #F0A500; color: #F0A500; background: #FFF; }
+    .card.saved .bookmark-btn { border-color: #F0A500; background: #F0A500; color: #FFF; }
+    .card.saved {
+      box-shadow: 0 0 0 2px rgba(240,165,0,0.30), 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.06);
+      background: #FFFEF8;
+    }
+    .filter-btn.filter-shortlist.active { border-bottom-color: #F0A500; color: #FFD060; }
+
     /* ── HIDDEN ── */
     .card.hidden          { display: none; }
     .section-block.hidden { display: none; }
@@ -531,6 +555,10 @@
       <span class="stat-label">Quick Wins</span>
     </div>
     <div class="stat">
+      <span class="stat-number" id="stat-saved">0</span>
+      <span class="stat-label">Saved</span>
+    </div>
+    <div class="stat">
       <span class="stat-number">6</span>
       <span class="stat-label">Sources</span>
     </div>
@@ -564,6 +592,7 @@
     <button class="filter-btn" data-filter="seasonal">Seasonal</button>
     <div class="filter-sep"></div>
     <button class="filter-btn filter-quickwin" data-filter="quick-wins">Quick Wins Only</button>
+    <button class="filter-btn filter-shortlist" data-filter="shortlist">★ Shortlist</button>
   </div>
 </nav>
 
@@ -576,7 +605,7 @@
     <div class="section-header">
       <span class="section-icon">☀️</span>
       <h2 class="section-title">Brunch</h2>
-      <span class="section-count">14 ideas</span>
+      <span class="section-count">16 ideas</span>
       <span class="section-desc">Mon–Sun mornings — crowd-pleasers at the core, with one rotating boundary-push special that gives regulars a reason to come back</span>
     </div>
     <div class="grid">
@@ -807,7 +836,7 @@
 
 
       <!-- 5 · Honey & Co [NEW] -->
-      <article class="card" data-category="brunch" data-effort="instant">
+      <article class="card" data-category="brunch" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -818,7 +847,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-timeless">Timeless</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Honey &amp; Co</h3>
             <p class="card-location">Bloomsbury, London — Israeli/Palestinian Kitchen</p>
@@ -1146,7 +1175,7 @@
 
 
       <!-- 11 · Rochelle Canteen -->
-      <article class="card" data-category="brunch" data-effort="instant">
+      <article class="card" data-category="brunch" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -1157,7 +1186,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Rochelle Canteen</h3>
             <p class="card-location">Arnold Circus, Shoreditch — Margot Henderson &amp; Melanie Arnold</p>
@@ -1262,7 +1291,7 @@
 
 
       <!-- 13 · Babka French Toast -->
-      <article class="card card-trend" data-category="brunch" data-effort="instant">
+      <article class="card card-trend" data-category="brunch" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-brunch"></div>
           <div class="card-content">
@@ -1273,7 +1302,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Babka French Toast</h3>
             <p class="card-location">Brunch Trend — London / New York / Tel Aviv 2024–2025</p>
@@ -1308,6 +1337,112 @@
             <div class="menu-app">
               <div class="menu-app-label">Menu Application</div>
               <p class="menu-app-text">This is your premium French toast — a meaningful upgrade from brioche with a story worth telling. Price it £2 above your standard French toast. Source the babka rather than making it. The dish is unusual enough to photograph, familiar enough to order without explanation, and the seasonal fruit topping gives you a monthly variation. In a market town, you are almost certainly the first to put babka French toast on a brunch menu within 30 miles — and the first wins the reputation.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- 15 · Dishoom -->
+      <article class="card" data-category="brunch" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-brunch"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gfg">Good Food Guide</span>
+              <span class="sec-pill sec-brunch">Brunch</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-timeless">Timeless</span>
+              <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Dishoom</h3>
+            <p class="card-location">Multiple UK Cities — Bombay Café, Good Food Guide Perennial</p>
+            <p class="card-concept">Dishoom recreates the Irani cafes of Bombay — open from breakfast through midnight, the same menu running all day. Their brunch is the most-booked in the UK outside London, with queues before opening on weekends. The relevance: their dishes are recognisably brunch-shaped (eggs, beans, bread) but the spice vocabulary is entirely their own. Every market-town customer already has a point of reference for Dishoom — that's your advantage.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Masala scrambled eggs: cook diced tomato, green chilli and fresh ginger in butter until softened (4 minutes). Add beaten eggs, cook slowly with cumin and turmeric. Finish with coriander. It's scrambled eggs with five extra ingredients that cost pennies and completely transform the dish. On the menu tomorrow morning.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Kejriwal — Fried Eggs on Chilli Cheese Toast</div>
+                <div class="dish-desc">Thick-cut white bread toasted, spread with a mixture of melted cheese and chopped green chillies, two fried eggs on top, cracked black pepper. Named after a Delhi politician. One of the cheapest dishes on the menu, one of the most-ordered. The concept: familiar (egg on toast) made completely distinctive through one additional element (chilli cheese base).</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">House Black Daal</div>
+                <div class="dish-desc">Black lentils cooked overnight (literally — on the stove for 24 hours) until silky and almost spreadable, with tomato, cream, garam masala. Served with naan baked in a tandoor. A brunch side that's also a vegetarian main — hearty, deeply flavoured, deeply affordable to produce in bulk.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Bacon Naan Roll</div>
+                <div class="dish-desc">House-baked naan, streaky bacon, cream cheese, house tomato-chilli chutney. The bridge dish: takes a classic British format (bacon roll) and recontextualises it through a different bread. If you bake flatbreads, a naan is the next step. If you already make naan or pitta, this is instant.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Bun Maska — Bread &amp; Butter</div>
+                <div class="dish-desc">A soft-baked bun, split and served with cultured butter and house-made jam. The Dishoom version of a breakfast pastry — simple, branded, recognisable, but different enough from everything else on the table to be notable. Their cultured butter is the steal: more complex than supermarket butter, costs the same to buy from any good dairy supplier.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">Dishoom's genius is that the dishes are familiar in form (eggs, bread, beans) but unfamiliar in flavour — accessible enough for the market-town crowd who's cautious about "foreign food," interesting enough for regulars who want something new every visit. The masala scrambled eggs require no new equipment and no specialist sourcing — cumin, turmeric, green chilli and fresh coriander are available in every supermarket. The Kejriwal (chilli cheese toast + fried eggs) is your most accessible bold move: it's eggs on toast with one extra step that completely changes the experience.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- 16 · E5 Bakehouse / Jolene -->
+      <article class="card" data-category="brunch" data-effort="week">
+        <div class="card-wrap">
+          <div class="card-bar bar-brunch"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gbc">Great British Chefs</span>
+              <span class="sec-pill sec-brunch">Brunch</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-boundary">Boundary Push</span>
+              <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-week">This Week</span>
+            </div>
+            <h3 class="card-name">E5 Bakehouse &amp; Jolene</h3>
+            <p class="card-location">Hackney / London Bridge — Natural Sourdough Bakery Brunch</p>
+            <p class="card-concept">Two of London's most influential bakery-restaurants — E5 Bakehouse in Hackney and Jolene on London Bridge — have built their entire identities around natural leavening, heritage grains and the conviction that great bread IS the kitchen. Their brunch model: exceptional sourdough as the anchor, seasonal veg and simple proteins around it. The bread is the star. Everything else is a vehicle for the bread.</p>
+
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Toast your thick-cut sourdough cut-face down on a screaming hot dry pan or griddle until genuinely dark — past golden, into deep brown. The char is flavour, not a mistake. Serve with cultured butter and flaked sea salt. That's the best toast in the room. No extra cost. Just conviction about heat.</p>
+            </div>
+
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Tartine — Open-Face Seasonal Toast</div>
+                <div class="dish-desc">Thick sourdough charred on one side, cold butter spread on the hot surface so it half-melts, then topped with seasonal ingredients: ricotta + roasted figs + honey in autumn, smashed peas + mint + soft-boiled egg in spring, roasted heritage tomatoes + basil oil in August. The bread is the base; the seasonal topping is the menu rotation. One skill, endless variations.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Cultured Butter — The £0.50 Upgrade</div>
+                <div class="dish-desc">Good-quality unsalted butter left at room temperature for 24–48 hours with a tablespoon of crème fraîche stirred through, then churned or worked with a wooden spoon until slightly tangy and spreadable. The fermentation from the crème fraîche changes the flavour profile entirely. Costs the same as regular butter to make. Worth double on the table.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Heritage Grain Porridge with Seasonal Fruit</div>
+                <div class="dish-desc">Emmer, einkorn or spelt grain (not oats) slow-cooked with whole milk until thick and nutty, topped with warm seasonal fruit compote and honey. A porridge with a story — heritage grains have more flavour, more complexity, and give you a conversation about where they come from. Source from any specialist grain supplier.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Sourdough Discard Pancakes</div>
+                <div class="dish-desc">Sourdough starter discard — the portion removed before feeding, typically thrown away — mixed with egg, a little flour, pinch of salt, fried in butter. Slightly tangy, more complex than buttermilk pancakes, made from what the kitchen was discarding. The ultimate zero-waste brunch main with a built-in story.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">If you're already making sourdough (or buying it from a good local baker), the E5/Jolene model is directly applicable: the bread you serve every morning is the menu anchor, and the seasonal toppings rotate monthly. The tartine format is particularly powerful because it makes the toast the hero — and your market-town customers already know what sourdough toast is. What they don't know is what it tastes like when it's charred properly, with cultured butter and seasonally-appropriate toppings. The sourdough discard pancake solves two problems: it uses what you'd otherwise throw away, and it gives you a genuinely different pancake worth charging more for.</p>
             </div>
           </div>
         </div>
@@ -1376,7 +1511,7 @@
     <div class="section-header">
       <span class="section-icon">🍕</span>
       <h2 class="section-title">Pizza</h2>
-      <span class="section-count">11 ideas</span>
+      <span class="section-count">14 ideas</span>
       <span class="section-desc">Friday &amp; Saturday nights — a focused operation with a clear point of view, seasonal rotations, and one trend format worth testing</span>
     </div>
     <div class="grid">
@@ -1497,7 +1632,7 @@
 
 
       <!-- 3 · 'Nduja + Hot Honey -->
-      <article class="card card-trend" data-category="pizza" data-effort="instant">
+      <article class="card card-trend" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1508,7 +1643,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">'Nduja + Hot Honey</h3>
             <p class="card-location">Pizza Trend — 2024–2025 — UK &amp; US</p>
@@ -1546,7 +1681,7 @@
 
 
       <!-- 4 · Mortadella + Stracciatella -->
-      <article class="card card-trend" data-category="pizza" data-effort="instant">
+      <article class="card card-trend" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1557,7 +1692,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Mortadella &amp; Stracciatella</h3>
             <p class="card-location">Pizza Trend — Italian Fine-Casual — London 2025</p>
@@ -1700,7 +1835,7 @@
 
 
       <!-- 7 · Dough Hands "Jode" + Short Road Pizzeria -->
-      <article class="card" data-category="pizza" data-effort="instant">
+      <article class="card" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1711,7 +1846,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-boundary">Boundary Push</span>
               <span class="crowd-tag tag-elevated">Elevated</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Dough Hands "Jode" &amp; Short Road Pizzeria</h3>
             <p class="card-location">Dublin / London — World's Best Pizza 2024–25</p>
@@ -1810,7 +1945,7 @@
 
 
       <!-- 9 · Roberta's — Bee Sting -->
-      <article class="card" data-category="pizza" data-effort="instant">
+      <article class="card" data-category="pizza" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-pizza"></div>
           <div class="card-content">
@@ -1821,7 +1956,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-timeless">Timeless</span>
               <span class="crowd-tag tag-pleaser">Crowd Pleaser</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Roberta's — "Bee Sting"</h3>
             <p class="card-location">Bushwick, Brooklyn — Bon Appétit All-Time Best Pizza</p>
@@ -1966,6 +2101,174 @@
       </article>
 
 
+      <!-- 12 · Kiln — British Produce / Thai Fire Technique -->
+      <article class="card" data-category="pizza" data-effort="week">
+        <div class="card-wrap">
+          <div class="card-bar bar-pizza"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-tout">Time Out</span>
+              <span class="sec-pill sec-pizza">Pizza</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-boundary">Boundary Push</span>
+              <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-week">This Week</span>
+            </div>
+            <h3 class="card-name">Kiln</h3>
+            <p class="card-location">Brewer Street, Soho</p>
+            <p class="card-concept">Ben Chapman's NRA Top 100 counter restaurant — 20 seats, open charcoal grill, Thai clay burners. The logic is precise: northern Thai and Burmese borderland technique applied entirely to British produce. Tamworth pigs from Somerset, lamb from Cornwall, dayboat fish. This is not fusion — it is technique from one culture, ingredients from another, executed with rigour. The lesson for a pizza kitchen: bold spice bases and char logic belong on your dough just as much as on a street grill. A nam jim jaew-style chilli sauce in place of tomato — smoky, sour, pungent — is a Friday special pizza base that takes 20 minutes to make once and lasts the week.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Toast raw rice in a dry pan until golden, then grind. That is toasted rice powder — a uniquely nutty, slightly gritty seasoning that adds a dimension no other ingredient replicates. Finish any charred pizza with it, add it to a dipping sauce, dust it on a pork dish. Zero cost. Completely distinctive. Kiln uses it on everything.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Nam Jim Jaew Pizza Base</div>
+                <div class="dish-desc">Dried chillies toasted in a dry pan, then ground with toasted rice powder, fish sauce, lime, tamarind, palm sugar, shallots. The result is a smoky-sour-pungent paste that works as a pizza base instead of tomato. Top with pulled pork belly or sausage, mozzarella, fresh chilli, a post-bake squeeze of lime and a handful of coriander and Thai basil. This is achievable on any Friday special — a week to source palm sugar and tamarind (any Asian supermarket), then the paste lasts in the fridge for two weeks.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Clay Pot Glass Noodles with Pork Belly and Crab</div>
+                <div class="dish-desc">Kiln's bestseller and signature. Thinly-sliced Tamworth pork belly lines the base of a clay pot so the fat renders directly on the hot clay. Brown crab meat is spooned over. Pre-soaked glass noodles go on top with chicken stock and soy. The bottom layer caramelises and crisps as the stock reduces — the same principle as Korean stone-pot bibimbap. The bottom has crunch; the top is silky and sauced. A technique steal for any clay-pot or cast-iron brunch dish: fat renders, liquid reduces, bottom crisps.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">5-Week Dry-Aged Cornish Lamb Skewers with Cumin</div>
+                <div class="dish-desc">Standard lamb is aged 7–10 days; Kiln ages theirs 35 days. The extended ageing concentrates flavour and allows extra fat marbling. The skewers go on the charcoal grill coated in cumin before and after — the fat bastes the meat from within as it renders, the cumin chars on the outside into a crust. The pizza application: a cumin-charred lamb pizza with yogurt base (instead of tomato), pickled red onion, fresh mint and pomegranate. All components available this week. The lamb doesn't need 5-week ageing to taste outstanding.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Curried Cockles</div>
+                <div class="dish-desc">British cockles cooked briefly in a southern Thai-influenced yellow curry paste with coconut, lemongrass and galangal — served in the shell. This is the crowd-pleasing version of boundary-pushing: completely familiar British shellfish, completely unfamiliar seasoning. An excellent Friday pizza-night starter. Cockles are cheap, quick to cook, dramatic to serve. The curry base is the same paste you're making for the pizza anyway.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The nam jim jaew base is your most impactful Friday special pizza move. Make the paste on Thursday, refrigerate, apply to a pizza Friday service. You need palm sugar, tamarind, fish sauce, dried chillies and shallots — all available online or from any Asian supermarket. The result is a pizza base with no analogue anywhere in your market town. Top with any pork product you're already running (sausage, pulled shoulder, belly), mozzarella, and finish post-bake with lime and fresh herbs. The toasted rice powder adds a dusty, nutty finishing note that guests will ask about. The cumin lamb pizza is a second special for the following week — no new sourcing required. Kiln's broader lesson: char is a flavour, not a mistake. High heat, intentional browning, and bold spice are the vocabulary your pizza Friday wants.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://kilnsoho.com" target="_blank" rel="noopener" class="ref-link">
+            Kiln — Brewer Street
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 13 · Som Saa — Thai Borderlands Applied to British Produce -->
+      <article class="card" data-category="pizza" data-effort="week">
+        <div class="card-wrap">
+          <div class="card-bar bar-pizza"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-tout">Time Out</span>
+              <span class="sec-pill sec-pizza">Pizza</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-boundary">Boundary Push</span>
+              <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-week">This Week</span>
+            </div>
+            <h3 class="card-name">Som Saa</h3>
+            <p class="card-location">Spitalfields, London</p>
+            <p class="card-concept">Andy Oliver and Mark Dobbie's Spitalfields restaurant is the definitive regional Thai in London — specifically northern Isaan and Yunanese borderland cooking, not the sweet-adapted UK version. Crucially: British seasonal produce is the primary ingredient. Flourish Farm courgettes, British fish, British pork, all treated with Thai technique and flavour. Som Saa makes the case that bold, deeply seasoned, funky, sour food works at every price point — and that a nam prik pao base is as legitimate a pizza sauce as San Marzano tomato. The soy-cured egg is an immediate brunch add.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Soy-cured eggs: hard-boil 6 eggs (9 minutes), peel, submerge in a mix of 100ml soy, 100ml water, 2 tbsp sugar, splash of rice vinegar. Fridge for 4 hours minimum. Halve and serve on toast with furikake, chilli oil, and crispy shallots. The white turns amber; the flavour penetrates throughout. A brunch dish that looks extraordinary, costs under 50p per portion, and takes 10 minutes of active work. Goes on the menu tomorrow.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Nam Prik Pao Pizza Base</div>
+                <div class="dish-desc">Roasted chilli paste made by dry-roasting dried chillies, shallots and garlic separately in a pan until charred at the edges, then pounding together with shrimp paste, tamarind, fish sauce and palm sugar. Applied to pizza dough as the sauce base. Top with: pulled pork belly, fresh chilli, garlic chives, mozzarella, finish with lime post-bake. This is smoky, complex, sweet-and-sour-and-pungent in a way that San Marzano tomato simply isn't. The paste keeps refrigerated for 2 weeks. One 20-minute prep session enables 4–6 weeks of Friday specials.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Soy-Cured Egg on Toast</div>
+                <div class="dish-desc">Hard-boiled eggs marinated in diluted soy, sugar and rice vinegar for a minimum of 4 hours — the white turns deep amber and the flavour penetrates throughout. Halved, served on charred sourdough toast with furikake (or toasted sesame and nori), a pool of chilli oil, crispy shallots, fresh coriander. This is visually striking, costs almost nothing, takes 10 minutes of active work and zero skill to execute consistently. Direct brunch addition. The egg is the steal — the components around it are already in your kitchen.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Isaan-Style Fried British Fish with Toasted Rice Powder and Chilli Dressing</div>
+                <div class="dish-desc">Line-caught British fish (mackerel, pollock, gurnard) fried whole or as fillets until genuinely crisp. Dressed with a jaew sauce: toasted rice powder (toast raw rice in a dry pan until golden, grind), lime, fish sauce, dried chilli, shallots, fresh mint. The rice powder is the key — nutty, slightly gritty, adds a texture and character that no other seasoning replicates. A brunch fish dish (Saturday lunch) or Friday starter that uses cheap, sustainable British fish and transforms it with Thai technique.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Long Aubergine — Double-Cooked, Fermented Soy, Thai Basil</div>
+                <div class="dish-desc">Aubergine deep-fried first until completely collapsing and silky inside, then quickly stir-fried in a very hot pan with fermented yellow bean paste (tao jiao — available from Asian supermarkets, distinct from soy sauce: funkier, more umami, less salty). Thai basil added at the last second. The double cooking is essential: frying gives butter-soft interior; the second stage adds char and the paste's depth. A seasonal vegetarian pizza topping for June–August when UK aubergines are available.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">Two immediate wins from Som Saa. First, the soy-cured egg: make a batch tonight, serve at tomorrow's brunch service. It is the highest-impact-to-effort brunch add on this entire board — extraordinary visual, genuinely different flavour, 50p ingredient cost. Second, the nam prik pao pizza base: a week to source palm sugar and tamarind (both online or any Asian supermarket), then you have a house paste that lasts a fortnight. The Friday special pizza with that base, pork belly and lime immediately signals that your pizza operation is thinking beyond the standard — because nobody else in your town is doing it. Som Saa's logic: British produce + Thai technique = the most interesting food in London right now. Apply that directly to your seasonal menu and Friday specials.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.somsaa.com" target="_blank" rel="noopener" class="ref-link">
+            Som Saa — Spitalfields
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 14 · Pizza Pilgrims — Calzone Roll -->
+      <article class="card" data-category="pizza" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-pizza"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-topjaw">TopJaw</span>
+              <span class="sec-pill sec-pizza">Pizza</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-format">Format Innovation</span>
+              <span class="crowd-tag tag-crowd">Crowd-Pleaser</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">Pizza Pilgrims</h3>
+            <p class="card-location">Soho, London</p>
+            <p class="card-concept">Pizza Pilgrims built one of London's most-loved pizza brands on a single principle: do fewer things, do them better. Their calzone fritta and table-share formats consistently top TopJaw's London pizza recommendations. The key insight: they don't try to be a 40-cover fine-dining room. They're a pizza bar with no pretension — and the queues run out the door every Friday and Saturday. The lesson isn't the dough (though it's excellent) — it's the format thinking. The calzone roll in particular exemplifies this: sealed dough, cut at the table, steam and aroma as part of the theatre.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Seal your calzone completely, bring it to the table whole, cut it open in front of the table. Same dough, same toppings — the theatre is free. The steam, the pull, the aroma: that's the moment guests photograph and share. Costs nothing extra. Changes everything about the experience.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">The Calzone Roll — Table Theatre</div>
+                <div class="dish-desc">A full calzone brought to the table sealed and uncut. Server cuts it open at the table — steam, melted cheese, filling smell all released at once. Cut into four sections, shared between the table. The reveal is the dish. Same dough as your pizza, same fillings: mozzarella, ricotta, prosciutto, basil. The only change is sealing it completely before baking and delivering it uncut.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Classic Fill — Prosciutto, Ricotta, Mozzarella</div>
+                <div class="dish-desc">The foundation: torn fior di latte inside the calzone base, dolloped fresh ricotta, folded prosciutto, fresh basil leaves added before sealing. The heat transforms the prosciutto — it relaxes, renders slightly, becomes more intense. The ricotta and mozzarella melt together into a single silky interior. Simple, classic, delivers 100% of the time.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Seasonal Fill — Courgette, Mint, Ricotta (Summer)</div>
+                <div class="dish-desc">Thin-sliced courgette, blanched or quickly sautéed, folded with ricotta, fresh mint, lemon zest, pinch of dried chilli. The courgette releases moisture as it bakes inside the sealed dough — the interior becomes steamed, delicate, aromatic. A vegetarian calzone that doesn't feel like a compromise. June–August: courgette is cheap, abundant, local. Change the fill monthly and every return visit is a new dish.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Sharing Format — One Calzone, Four People</div>
+                <div class="dish-desc">Price as a sharing starter or an alternative to two individual pizzas. Four people ordering a calzone as a starter before individual pizzas increases the average spend per head by £4–6 with near-zero extra kitchen time (the oven is already running, the dough is already made). The sharing format also builds table energy — the act of cutting it together, serving each other, is a social moment that changes the atmosphere of a Friday night service.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">This is the simplest possible upsell on your existing pizza operation. You are already making the dough. You are already running the oven. You are already holding all the fillings. The calzone roll requires you to seal the dough differently and serve it uncut — that is the entire operational change. On Friday/Saturday evenings, price it as a sharing starter at £12–14 for four people. It arrives first, gives the table something to do while pizzas bake, and creates a moment of theatre that gets photographed every time. A sealed calzone with a tableside cut is one of the most Instagrammable moves in pizza — and it costs you nothing to implement tonight.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.youtube.com/@TopJaw" target="_blank" rel="noopener" class="watch-link">
+            TopJaw
+          </a>
+        </div>
+      </article>
+
+
     </div>
   </div><!-- /pizza -->
 
@@ -1975,7 +2278,7 @@
     <div class="section-header">
       <span class="section-icon">🌿</span>
       <h2 class="section-title">Seasonal</h2>
-      <span class="section-count">11 ideas</span>
+      <span class="section-count">14 ideas</span>
       <span class="section-desc">The philosophy beneath the menu — produce calendars, zero-waste technique, wood-fire thinking, sharing formats and desserts guests walk home talking about</span>
     </div>
     <div class="grid">
@@ -2426,7 +2729,7 @@
 
 
       <!-- 9 · Holy Carrot -->
-      <article class="card" data-category="seasonal" data-effort="instant">
+      <article class="card" data-category="seasonal" data-effort="week">
         <div class="card-wrap">
           <div class="card-bar bar-seasonal"></div>
           <div class="card-content">
@@ -2437,7 +2740,7 @@
             <div class="card-tags">
               <span class="trend-tag tag-ontrend">On Trend Now</span>
               <span class="crowd-tag tag-both">Both</span>
-              <span class="effort-tag eff-instant">Instant</span>
+              <span class="effort-tag eff-week">This Week</span>
             </div>
             <h3 class="card-name">Holy Carrot — Zero-Waste Plant Kitchen</h3>
             <p class="card-location">Mayfair, London — The Chancery Rosewood</p>
@@ -2595,6 +2898,175 @@
       </article>
 
 
+      <!-- 12 · 40 Maltby Street — Seasonal Minimalism -->
+      <article class="card" data-category="seasonal" data-effort="instant">
+        <div class="card-wrap">
+          <div class="card-bar bar-seasonal"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gfg">Good Food Guide</span>
+              <span class="sec-pill sec-seasonal">Seasonal</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-provenance">Provenance</span>
+              <span class="crowd-tag tag-regular">Regulars</span>
+              <span class="effort-tag eff-instant">Instant</span>
+            </div>
+            <h3 class="card-name">40 Maltby Street</h3>
+            <p class="card-location">Bermondsey, London</p>
+            <p class="card-concept">Operates inside the Gergovie Wines warehouse under the Bermondsey arches — no reservations, 12 dishes on a chalkboard, natural wine. Menu changes weekly, sometimes daily, driven entirely by what is best at that moment. Michelin-level produce thinking in a deliberately unpolished setting. The 50 Best Discovery and Good Food Guide have listed it consistently for over a decade. The lesson is not specific dishes (those rotate constantly) — it is the operating model: a small, changing seasonal section signals to regulars that there is always a reason to return, and it trains the kitchen to think differently about what constitutes a dish.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Add a handwritten chalkboard section — "this week" or just three dish names, no label needed. 2–3 items. Change them weekly based on what's best from your supplier. It trains your team to think seasonally, trains your regulars to order speculatively, and gives you a social-media post every single week. The dishes themselves are secondary. The practice is the point.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Smoked Mackerel Rillette on Toast</div>
+                <div class="dish-desc">Smoked mackerel flaked and mixed with crème fraîche, lemon, dill, capers, seasoning, spread thickly on sourdough toast. Takes 8 minutes to make; costs almost nothing; tastes considerably more serious than that. A proper brunch dish in its own right — not a starter, a main. The version with pickled beetroot alongside (roasted, then pickled in sherry vinegar) and grated fresh horseradish is the 40 Maltby iteration. Every component is available at any good supermarket. The rillette base is worth making in a 500g batch: it lasts 4 days and goes on every brunch plate that needs a fish option.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Raw Mackerel, Pickled Forced Rhubarb, Horseradish</div>
+                <div class="dish-desc">Three ingredients, zero cooking, all about quality and contrast. Mackerel sliced sashimi-thin (the fish must be genuinely fresh, same-day). Rhubarb pickled lightly in vinegar brine — the forced rhubarb season (January–March) is brilliant for this: pink, sharp, barely sweet. Fresh horseradish grated over at the point of service. Fatty oily fish / sharp acidic pickle / pungent heat — the flavour triangle that makes this memorable. By April–May use outdoor rhubarb as the season moves; by summer swap to a different acid (pickled gooseberry, pickled green tomato).</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Gurnard Fritters with Fennel and Blood Orange</div>
+                <div class="dish-desc">Gurnard is one of the most underused, sustainable, cheap British fish — firm white flesh, excellent flavour, usually bypassed for cod or haddock. Battered and fried until crisp, served immediately with raw fennel (shaved very thin on a mandoline) and blood orange segments. The fennel-blood orange combination cuts through the fried fat with sharpness and freshness. January–February when blood oranges peak; swap to standard orange in spring, or pickled lemon in summer. The principle: a cheap sustainable fish elevated by a seasonal acid-and-freshness pairing.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Buckwheat Pancakes with Chanterelles, Purple Sprouting Broccoli and Chard</div>
+                <div class="dish-desc">Buckwheat galette-style savoury pancakes — darker, denser and more robust than standard crêpes, with a nutty earthiness from the grain. Topped or filled with whatever is excellent that week: chanterelles in late summer, PSB and chard in late winter/early spring. The vegetables sautéed simply in butter with seasoning — no heavy sauce, the grain and the vegetable do the work. Buckwheat flour is available from any wholefood supplier. The pancake base is worth standardising as your savoury pancake option; the topping rotates monthly.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The smoked mackerel rillette is the most actionable thing on this card. It belongs on your brunch menu this week: sourdough toast, mackerel rillette, pickled cucumber or beetroot, grated horseradish, lemon. Under £2 to make per portion, prices at £9–11, looks like a restaurant dish rather than a café dish. The buckwheat pancake is your next move — replace standard pancakes with a buckwheat option and immediately communicate that your brunch thinks about grain in a way that stacks with the whole bread-quality narrative. The operating model steal — a weekly-changing chalkboard section — is free to implement today and generates a reason for every regular to return next week. 40 Maltby Street's greatest lesson: the practise of changing the menu seasonally is itself a competitive advantage, regardless of what the specific dish is.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.40maltbystreet.com" target="_blank" rel="noopener" class="ref-link">
+            40 Maltby Street
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 13 · Quality Chop House — British Technique Foundations -->
+      <article class="card" data-category="seasonal" data-effort="week">
+        <div class="card-wrap">
+          <div class="card-bar bar-seasonal"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gbc">Great British Chefs</span>
+              <span class="sec-pill sec-seasonal">Seasonal</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-technique">Technique</span>
+              <span class="crowd-tag tag-regular">Regulars</span>
+              <span class="effort-tag eff-week">This Week</span>
+            </div>
+            <h3 class="card-name">Quality Chop House</h3>
+            <p class="card-location">Farringdon Road, London</p>
+            <p class="card-concept">On Farringdon Road since 1869 — the original "progressive working class caterer" sign is still above the door. Under Shaun Searley it became one of the defining modern British restaurants: serious aged cuts, meticulous vegetable cookery, heritage produce treated with technique rather than deference. The menu changes every two weeks. The lesson is foundational cooking logic: every dish has a technique justification, not a trend justification. The confit potato has been on the menu since spring 2013 without removal. That is the benchmark for a dish that works — not seasonal, not clever, just technically perfect and endlessly ordered.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Confit potatoes. Wafer-thin mandoline-sliced potatoes, layered in duck fat, cooked at 120°C until translucent, pressed overnight under weight, cut into blocks, deep-fried at 190°C for 4 minutes until croissant-gold. The exterior shatters. The interior is warm potato cream. On the menu since 2013, never removed. This is the brunch side dish that ends all arguments. Takes 2 days of passive time, zero difficult technique. Do it this week.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Confit Potatoes — Full Technique</div>
+                <div class="dish-desc">Mandoline-slice potatoes wafer-thin. Toss in duck fat and salt. Layer one slice at a time in a lined terrine mould (or deep baking dish). Cook at 120°C for 1.5–2 hours until soft and translucent throughout. Press overnight in the fridge under weight — this compresses the layers into a dense, cuttable block. Cut into portions (rectangles or squares). Deep-fry at 190°C for 4 minutes until golden — the exterior shatters like glass, the interior is potato cream. Finish with Maldon salt. Serve immediately. The press overnight is non-negotiable: it is what enables clean cuts and the dramatic texture contrast.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Chicken Liver Parfait with Charred Sourdough</div>
+                <div class="dish-desc">Livers cleaned of all sinew and membrane, blended with butter, eggs, cream, madeira, seasoned and strained through a fine sieve. Poured into a mould and baked in a bain-marie at 130°C until just set — it should still tremble in the centre when you remove it. Chilled under light pressure for a minimum of 6 hours. Served thin-sliced on charred sourdough with something sharp alongside: cornichons, pickled walnut, or a small amount of chutney. This is a legitimate brunch dish in France and should be on a serious British brunch menu. A 500g parfait serves 10–12 brunch portions.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Mangalitza Shoulder Croquettes with Pickled Walnut Ketchup</div>
+                <div class="dish-desc">Mangalitza is the highest-fat heritage breed pig — almost a lard pig. Shoulder braised until falling-apart, pulled and mixed with a little of the braising liquor, pressed cold, cut into cylinders, crumbed in panko, fried until deeply golden. Pickled walnut ketchup: pickled walnuts (available from any good British deli or online) reduced and blended into a sauce. This is the "familiar format, unfamiliar quality level" move — a croquette everyone understands, but the quality of the breed and the British condiment make it something worth ordering again. A Friday pizza night starter or weekend brunch special.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Your Version — The Confit Everything Principle</div>
+                <div class="dish-desc">The Quality Chop House operating principle generalises: any protein or vegetable confit in fat at low temperature, then finished at high heat, achieves a texture and flavour impossible any other way. Confit chicken legs (duck fat, thyme, garlic, 120°C, 2 hours) — crisp skin, falling-off-bone meat, brunch main. Confit garlic cloves (olive oil, low oven, 1 hour) — spreadable, sweet, zero sharpness — a house condiment. Confit cherry tomatoes (olive oil, basil, 90°C, 2 hours) — concentrated, jammy, versatile. The technique costs almost nothing in energy once you understand the principle. The result reads as restaurant-quality to any guest.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The confit potato is your first task. Buy a mandoline if you don't have one (£20, Kuhn Rikon or OXO), source a tin of duck fat (£4, any supermarket), and run the first batch this week. It takes 15 minutes of active time across two days. The result is the best potato you've ever served — and you will never serve a different potato again. The chicken liver parfait goes on your weekend brunch menu as the one dish that signals serious kitchen thinking: it costs under £1 per portion, prices at £8–10, and anybody who knows anything will immediately recalibrate their expectations upwards when they see it. The croquette is your Friday pizza night starter — braise a shoulder on Thursday, croquette on Friday. Pickled walnuts are on Amazon. The QCH's most important lesson: a technically perfect dish that never needs changing is worth more than ten interesting dishes that rotate. Find your confit potato. Keep it forever.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://thequalitychophouse.com" target="_blank" rel="noopener" class="ref-link">
+            Quality Chop House — Farringdon
+          </a>
+        </div>
+      </article>
+
+
+      <!-- 14 · Sabor — Spanish Charcoal Technique -->
+      <article class="card" data-category="seasonal" data-effort="week">
+        <div class="card-wrap">
+          <div class="card-bar bar-seasonal"></div>
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="src-pill src-gbc">Great British Chefs</span>
+              <span class="sec-pill sec-seasonal">Seasonal</span>
+            </div>
+            <div class="card-tags">
+              <span class="trend-tag tag-boundary">Boundary Push</span>
+              <span class="crowd-tag tag-elevated">Elevated</span>
+              <span class="effort-tag eff-week">This Week</span>
+              <span class="badge-season">In Season Now</span>
+            </div>
+            <h3 class="card-name">Sabor</h3>
+            <p class="card-location">Heddon Street, London</p>
+            <p class="card-concept">José Pizarro and Nieves Barragán Mohacho's Michelin-starred Sabor is the most influential Spanish restaurant in the UK — not because of the fine dining, but because of how they cook simply. The mesón counter downstairs serves from a live charcoal grill: padron peppers, secreto ibérico, presa ibérica, whole roasted suckling pig. The philosophy is Andalusian simplicity — exceptional produce, fire, fat, salt. Nothing else. The lesson: a charcoal-adjacent technique (wood-fire, cast iron, griddle at highest heat) applied to the right ingredients produces results that no amount of technique can approximate. You need the fire and the ingredient. That's it.</p>
+            <div class="quick-steal">
+              <div class="qs-label">Steal This Now</div>
+              <p class="qs-text">Padron peppers. Blister them in the hottest pan you have, finish with good flaked sea salt and a squeeze of lemon. The entire dish costs under £2 and takes 4 minutes. Order them today — they're in season now (May–September) and you can put them on the menu tomorrow as a sharing snack, a brunch side, or a pizza nibble while people wait for tables. One in eight is always spicy: that's the selling line.</p>
+            </div>
+            <button class="dishes-toggle" aria-expanded="false">Show dishes <span>▼</span></button>
+            <div class="dishes-section ds-closed">
+              <div class="dishes-heading">Key Dishes</div>
+              <div class="dish-item">
+                <div class="dish-name">Pimientos de Padrón — The Entry Point</div>
+                <div class="dish-desc">Padron peppers blistered on a ripping-hot plancha or cast-iron pan with a little sunflower oil, finished with Maldon or fleur de sel and a half lemon. The peppers caramelise on the outside, stay just-cooked inside. Served immediately — hot from the pan, salt hitting as they arrive. The game: one in eight is intensely spicy, unpredictable by sight. That randomness is the whole point. It's a game, a snack and a talking point in one dish. In season May–September; UK-grown available from Natoora or any good wholesaler.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Pork Secreto — The Weekend Move</div>
+                <div class="dish-desc">Secreto ibérico is the hidden muscle between the shoulder blade and the fat back of the pig — marbled, tender, intensely flavoured, almost unknown in the UK. Cooked whole on high heat, rested, sliced. At Sabor it arrives as 4–5 thick slices with no sauce, just good salt. The fat renders perfectly at high heat, the lean is pink and trembling. Works as a Friday/Saturday evening sharing plate at £14–16. A single secreto (300g) serves two, takes 12 minutes to cook. Source from any good Spanish food importer — Brindisa is the standard.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Brunch Application — Chorizo & Padron Hash</div>
+                <div class="dish-desc">A Sabor-inspired brunch: sauté diced good chorizo (Brindisa cooking chorizo) until the fat runs red-orange, add diced potato (par-boiled), blister padron peppers separately in the same style. Plate together with a fried egg on top, pinch of smoked paprika, parsley. Everything is done at high heat — the chorizo fat becomes the cooking medium. This is a brunch dish that uses Sabor's fire philosophy without needing a charcoal grill. The padron peppers make it seasonal and current.</div>
+              </div>
+              <div class="dish-item">
+                <div class="dish-name">Seasonal Versions — Your Own Iterations</div>
+                <div class="dish-desc">The Sabor philosophy applied to a rotating seasonal vegetable: May/June — padron peppers, salt. July — courgette flowers, tempura-light batter, anchovy cream. August — fresh borlotti beans, olive oil, sage brown butter. September — bitter leaves (radicchio, endive) grilled on the highest heat, walnut dressing. Same technique — high heat, fat, salt — different ingredient every 4–6 weeks. The menu updates itself.</div>
+              </div>
+            </div>
+
+            <div class="menu-app">
+              <div class="menu-app-label">Menu Application</div>
+              <p class="menu-app-text">The padron pepper snack is the most actionable item on this entire board. It requires no planning, no equipment investment, no new skills. Order a bag from your wholesaler today (in season now), blister them in your hottest pan, season with good salt, price at £5–6 as a bar snack or brunch side. If you have a pizza night, they arrive at the table before anything else — the kitchen needs 4 minutes, the customer gets something warm and interactive while the pizza bakes. The pork secreto is the Friday/Saturday evening upgrade: one product, two to three weeks to source from Brindisa, and you have a sharing plate that nobody else in your market town is serving. Sabor's brilliance is the refusal to over-complicate — great ingredients, maximum heat, good salt. That's the whole recipe.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="https://www.greatbritishchefs.com/restaurants/sabor-restaurant" target="_blank" rel="noopener" class="ref-link">
+            Great British Chefs
+          </a>
+        </div>
+      </article>
+
+
     </div>
   </div><!-- /seasonal -->
 
@@ -2613,37 +3085,69 @@
     const allBlocks  = document.querySelectorAll('.section-block');
     const statCount  = document.getElementById('stat-count');
     const statQW     = document.getElementById('stat-quickwins');
+    const statSaved  = document.getElementById('stat-saved');
 
     // Collapse all dish sections on load
     document.querySelectorAll('.dishes-section').forEach(s => s.classList.add('ds-closed'));
 
-    // Count quick wins on load
-    function countVisible() {
-      return document.querySelectorAll('.card:not(.hidden)').length;
-    }
-    function countQuickWins() {
-      return document.querySelectorAll('.card:not(.hidden)[data-effort="instant"]').length;
-    }
+    // ── BOOKMARK BUTTONS ──────────────────────────────────────────
+    allCards.forEach((card, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'bookmark-btn';
+      btn.setAttribute('aria-label', 'Save to shortlist');
+      btn.title = 'Save to shortlist';
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>';
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        card.classList.toggle('saved');
+        saveShortlist();
+        updateStats();
+      });
+      card.appendChild(btn);
+    });
 
-    // Update hero stats
+    function saveShortlist() {
+      const saved = Array.from(allCards).map((c, i) => c.classList.contains('saved') ? i : null).filter(i => i !== null);
+      try { localStorage.setItem('taproom_shortlist', JSON.stringify(saved)); } catch(e) {}
+    }
+    function loadShortlist() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('taproom_shortlist') || '[]');
+        saved.forEach(i => { if (allCards[i]) allCards[i].classList.add('saved'); });
+      } catch(e) {}
+    }
+    loadShortlist();
+
+    // ── STATS ─────────────────────────────────────────────────────
+    function countVisible()   { return document.querySelectorAll('.card:not(.hidden)').length; }
+    function countQuickWins() { return document.querySelectorAll('.card:not(.hidden)[data-effort="instant"]').length; }
+    function countSaved()     { return document.querySelectorAll('.card.saved').length; }
+
     function updateStats() {
       if (statCount) statCount.textContent = countVisible();
-      if (statQW) statQW.textContent = countQuickWins();
+      if (statQW)    statQW.textContent    = countQuickWins();
+      if (statSaved) statSaved.textContent = countSaved();
+      const slBtn = document.querySelector('.filter-btn[data-filter="shortlist"]');
+      if (slBtn) {
+        const n = countSaved();
+        slBtn.textContent = n > 0 ? '★ Shortlist (' + n + ')' : '★ Shortlist';
+      }
     }
     updateStats();
 
-    // Dish toggle
+    // ── DISH TOGGLE ───────────────────────────────────────────────
     document.querySelectorAll('.dishes-toggle').forEach(btn => {
+      const raw = btn.textContent.replace(/Show |Hide /,'').replace(/[▼▲]/g,'').trim();
+      btn.dataset.label = raw || 'dishes';
       btn.addEventListener('click', () => {
         const section = btn.nextElementSibling;
-        const closed = section.classList.toggle('ds-closed');
-        btn.setAttribute('aria-expanded', !closed);
-        btn.innerHTML = (closed ? 'Show ' : 'Hide ') +
-          (btn.textContent.replace(/Show |Hide /, '').trim().split(' ')[0] + ' <span>' + (closed ? '▼' : '▲') + '</span>');
+        const closed  = section.classList.toggle('ds-closed');
+        btn.setAttribute('aria-expanded', String(!closed));
+        btn.innerHTML = (closed ? 'Show ' : 'Hide ') + btn.dataset.label + ' <span>' + (closed ? '▼' : '▲') + '</span>';
       });
     });
 
-    // Filter logic
+    // ── FILTER ────────────────────────────────────────────────────
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -2652,25 +3156,19 @@
 
         allCards.forEach(card => {
           let visible;
-          if (filter === 'all') {
-            visible = true;
-          } else if (filter === 'quick-wins') {
-            visible = card.dataset.effort === 'instant';
-          } else {
-            visible = card.dataset.category === filter;
-          }
+          if      (filter === 'all')        visible = true;
+          else if (filter === 'quick-wins') visible = card.dataset.effort === 'instant';
+          else if (filter === 'shortlist')  visible = card.classList.contains('saved');
+          else                              visible = card.dataset.category === filter;
           card.classList.toggle('hidden', !visible);
         });
 
-        // For section blocks: hide if no visible cards inside, except for quick-wins (show all sections)
         allBlocks.forEach(block => {
           if (filter === 'all') {
             block.classList.remove('hidden');
-          } else if (filter === 'quick-wins') {
+          } else {
             const hasVisible = block.querySelector('.card:not(.hidden)');
             block.classList.toggle('hidden', !hasVisible);
-          } else {
-            block.classList.toggle('hidden', block.dataset.section !== filter);
           }
         });
 
