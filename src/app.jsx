@@ -1,5 +1,5 @@
 // app.jsx — Pizza Pop-up · in-house QR ordering
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MENU, CONDIMENTS, THEMES, Menu, Cart, Paying, Receipt } from './screens.jsx';
 import { IOSDevice } from './ios.jsx';
 import { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakToggle, TweakButton } from './tweaks-panel.jsx';
@@ -18,6 +18,21 @@ function readTable() {
   return (Number.isFinite(n) && n >= 1 && n <= 30) ? n : 7;
 }
 
+const DEFAULT_MENU_STATE = {
+  items: MENU,
+  condiments: CONDIMENTS,
+  orderingEnabled: true,
+  pausedMessage: '',
+  version: 0,
+};
+
+function splitItems(items) {
+  if (!items) return { pizzas: MENU, conds: CONDIMENTS };
+  const pizzas = items.filter(i => i.type !== 'condiment');
+  const conds  = items.filter(i => i.type === 'condiment');
+  return { pizzas, conds };
+}
+
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [table] = useState(readTable);
@@ -27,6 +42,36 @@ function App() {
   const [payMethod, setPayMethod] = useState('apple');
   const [orderNum, setOrderNum] = useState(null);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [menuState, setMenuState] = useState(() => {
+    try {
+      const cached = localStorage.getItem('menu_cache');
+      if (cached) return JSON.parse(cached);
+    } catch {}
+    return DEFAULT_MENU_STATE;
+  });
+
+  useEffect(() => {
+    fetch('/api/menu')
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(data => {
+        const { pizzas, conds } = splitItems(data.items);
+        const next = {
+          items: pizzas,
+          condiments: conds,
+          orderingEnabled: data.orderingEnabled ?? true,
+          pausedMessage: data.pausedMessage ?? '',
+          version: data.version ?? 0,
+        };
+        setMenuState(next);
+        localStorage.setItem('menu_cache', JSON.stringify(next));
+      })
+      .catch(() => {
+        // Fail-safe: if API unreachable, disable ordering so we never sell at stale prices
+        setMenuState(s => ({ ...s, orderingEnabled: false, pausedMessage: 'Unable to reach menu service — please order at the bar.' }));
+      });
+  }, []);
+
+  const { items: menu, condiments, orderingEnabled, pausedMessage } = menuState;
 
   const theme = tweaks.theme;
   const t = THEMES[theme];
@@ -38,11 +83,10 @@ function App() {
       setOrderNum(num);
       setScreen('done');
 
-      // Save this order to session history
       const lineTotal = (line) => {
-        const item = MENU.find(m => m.id === line.itemId);
+        const item = menu.find(m => m.id === line.itemId);
         const condTotal = line.condiments.reduce((s, cid) => {
-          const cond = CONDIMENTS.find(c => c.id === cid);
+          const cond = condiments.find(c => c.id === cid);
           return s + (cond ? cond.price : 0);
         }, 0);
         return (item ? item.price : 0) + condTotal;
@@ -51,8 +95,8 @@ function App() {
       const tip = Math.round((subtotal * (tipPct / 100)) * 100) / 100;
       const total = Math.round((subtotal + tip) * 100) / 100;
       const lines = cart.map(line => {
-        const item = MENU.find(m => m.id === line.itemId);
-        const extras = line.condiments.map(cid => CONDIMENTS.find(c => c.id === cid)).filter(Boolean);
+        const item = menu.find(m => m.id === line.itemId);
+        const extras = line.condiments.map(cid => condiments.find(c => c.id === cid)).filter(Boolean);
         const label = '1× ' + (item ? item.name : line.itemId) + (extras.length ? ' (+' + extras.map(c => c.name).join(', ') + ')' : '');
         return { label, price: '£' + lineTotal(line).toFixed(2) };
       });
@@ -66,7 +110,6 @@ function App() {
     setTipPct(10);
     setOrderNum(null);
     setScreen('menu');
-    // Keep email and optIn so they don't have to re-enter for the next round
   };
 
   return (
@@ -80,6 +123,9 @@ function App() {
               cart={cart} setCart={setCart}
               onCheckout={() => setScreen('cart')}
               orderHistory={orderHistory}
+              menu={menu} condiments={condiments}
+              orderingEnabled={orderingEnabled}
+              pausedMessage={pausedMessage}
             />
           )}
           {(screen === 'cart' || screen === 'paying') && (
@@ -90,6 +136,7 @@ function App() {
               payMethod={payMethod} setPayMethod={setPayMethod}
               onBack={() => setScreen('menu')}
               onPay={handlePay}
+              menu={menu} condiments={condiments}
             />
           )}
           {screen === 'paying' && <Paying theme={theme} payMethod={payMethod} />}
@@ -99,6 +146,7 @@ function App() {
               table={table} tipPct={tipPct} payMethod={payMethod}
               orderNum={orderNum}
               onNew={handleNewOrder}
+              menu={menu} condiments={condiments}
             />
           )}
         </div>

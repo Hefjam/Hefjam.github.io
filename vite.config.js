@@ -18,7 +18,7 @@ export default defineConfig({
           copyFileSync(src, resolve('dist', 'index.html'));
         }
         // Copy static pages
-        const statics = ['privacy.html', 'QR Codes.html'];
+        const statics = ['privacy.html', 'QR Codes.html', 'admin.html'];
         for (const file of statics) {
           if (existsSync(file)) {
             copyFileSync(file, resolve('dist', file));

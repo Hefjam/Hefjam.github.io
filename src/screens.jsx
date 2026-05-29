@@ -5,23 +5,23 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 // MENU DATA
 // ─────────────────────────────────────────────
 const MENU = [
-  { id: 'garlic',    name: 'Garlic Bread',          price: 6,  tags: ['v'],  desc: 'Confit garlic & rosemary cream, parsley.' },
-  { id: 'marinara',  name: 'Marinara',              price: 10, tags: ['ve'], desc: 'San Marzano, garlic, oregano, olive oil.' },
-  { id: 'margherita',name: 'Margherita',            price: 12, tags: ['v'],  desc: 'San Marzano, fior di latte, basil, olive oil.' },
-  { id: 'pepperoni', name: 'Pepperoni',             price: 13, tags: [],     desc: 'San Marzano, fior di latte, pepperoni, oregano.' },
-  { id: 'diavola',   name: 'Diavola',               price: 14, tags: ['🌶'], desc: 'San Marzano, fior di latte, pepperoni, nduja, agrodolce peppers, hot honey, basil.' },
-  { id: 'beef',      name: 'Beef Ragu',             price: 15, tags: [],     desc: 'San Marzano, fior di latte, slow-braised beef shin & cheek, Parmesan, basil.' },
-  { id: 'mushroom',  name: 'Mushroom & Taleggio',   price: 14, tags: ['v'],  desc: 'Fior di latte, taleggio, roasted chestnut mushrooms, gorgonzola, Parmesan, sherry vinegar glaze.' },
-  { id: 'potato',    name: 'Potato & Prosciutto',   price: 14, tags: [],     desc: 'Confit garlic & rosemary cream, thinly sliced potato, guindillas, prosciutto crudo, Parmesan.' },
-  { id: 'tenderstem',name: 'Tenderstem & Vegan Nduja', price: 13, tags: ['ve'], desc: 'Pistachio pesto, tenderstem, vegan nduja, artichokes, olives, sun-blushed tomato, rocket.' },
-  { id: 'prawn',     name: 'Prawn & Anchovy',         price: 16, tags: [],     desc: 'Olive oil & garlic, fior di latte, prawns, anchovy, salsa verde, lemon.' },
+  { id: 'garlic',    name: 'Garlic Bread',             price: 6,  tags: ['v'],  desc: 'Confit garlic & rosemary cream, parsley.',                                                                          eposId: 7664996, type: 'pizza', available: true },
+  { id: 'marinara',  name: 'Marinara',                 price: 10, tags: ['ve'], desc: 'San Marzano, garlic, oregano, olive oil.',                                                                          eposId: 7665016, type: 'pizza', available: true },
+  { id: 'margherita',name: 'Margherita',               price: 12, tags: ['v'],  desc: 'San Marzano, fior di latte, basil, olive oil.',                                                                     eposId: 7665039, type: 'pizza', available: true },
+  { id: 'pepperoni', name: 'Pepperoni',                price: 13, tags: [],     desc: 'San Marzano, fior di latte, pepperoni, oregano.',                                                                   eposId: 7665064, type: 'pizza', available: true },
+  { id: 'diavola',   name: 'Diavola',                  price: 14, tags: ['🌶'], desc: 'San Marzano, fior di latte, pepperoni, nduja, agrodolce peppers, hot honey, basil.',                               eposId: 7665070, type: 'pizza', available: true },
+  { id: 'beef',      name: 'Beef Ragu',                price: 15, tags: [],     desc: 'San Marzano, fior di latte, slow-braised beef shin & cheek, Parmesan, basil.',                                     eposId: 7665078, type: 'pizza', available: true },
+  { id: 'mushroom',  name: 'Mushroom & Taleggio',      price: 14, tags: ['v'],  desc: 'Fior di latte, taleggio, roasted chestnut mushrooms, gorgonzola, Parmesan, sherry vinegar glaze.',                eposId: 7665277, type: 'pizza', available: true },
+  { id: 'potato',    name: 'Potato & Prosciutto',      price: 14, tags: [],     desc: 'Confit garlic & rosemary cream, thinly sliced potato, guindillas, prosciutto crudo, Parmesan.',                   eposId: 7665308, type: 'pizza', available: true },
+  { id: 'tenderstem',name: 'Tenderstem & Vegan Nduja', price: 13, tags: ['ve'], desc: 'Pistachio pesto, tenderstem, vegan nduja, artichokes, olives, sun-blushed tomato, rocket.',                       eposId: 7665384, type: 'pizza', available: true },
+  { id: 'prawn',     name: 'Prawn & Anchovy',          price: 16, tags: [],     desc: 'Olive oil & garlic, fior di latte, prawns, anchovy, salsa verde, lemon.',                                         eposId: 7665403, type: 'pizza', available: true },
 ];
 
 const CONDIMENTS = [
-  { id: 'chilli-oil',    name: 'House Italian Chilli Oil', price: 0.50, eposId: 7665572 },
-  { id: 'garlic-mayo',   name: 'House Garlic Mayo',        price: 0.50, eposId: 7665597 },
-  { id: 'chilli-flakes', name: 'Chilli Flakes',            price: 0,    eposId: 7665604 },
-  { id: 'parmesan',      name: 'Parmesan',                 price: 0.50, eposId: 7665609 },
+  { id: 'chilli-oil',    name: 'House Italian Chilli Oil', price: 0.50, eposId: 7665572, type: 'condiment', available: true },
+  { id: 'garlic-mayo',   name: 'House Garlic Mayo',        price: 0.50, eposId: 7665597, type: 'condiment', available: true },
+  { id: 'chilli-flakes', name: 'Chilli Flakes',            price: 0,    eposId: 7665604, type: 'condiment', available: true },
+  { id: 'parmesan',      name: 'Parmesan',                 price: 0.50, eposId: 7665609, type: 'condiment', available: true },
 ];
 
 const ALL_ITEMS = [...MENU, ...CONDIMENTS];
@@ -383,13 +383,13 @@ function QtyControl({ qty, onAdd, onRemove, theme, compact = false }) {
 // ─────────────────────────────────────────────
 // ADD-ONS SHEET
 // ─────────────────────────────────────────────
-function AddOnsSheet({ item, theme, onConfirm, onSkip }) {
+function AddOnsSheet({ item, theme, condiments, onConfirm, onSkip }) {
   const t = THEMES[theme];
   const [sel, setSel] = useState({});
   const radius = theme === 'minimal' ? 14 : (theme === 'refined' ? 16 : 6);
 
   const toggle = (id) => setSel(s => ({ ...s, [id]: !s[id] }));
-  const extraCost = CONDIMENTS.filter(c => sel[c.id]).reduce((s, c) => s + c.price, 0);
+  const extraCost = condiments.filter(c => sel[c.id]).reduce((s, c) => s + c.price, 0);
 
   return (
     <div style={{
@@ -421,7 +421,7 @@ function AddOnsSheet({ item, theme, onConfirm, onSkip }) {
           </div>
         </div>
         <div style={{ borderTop: `1px solid ${t.border}` }}>
-          {CONDIMENTS.map(c => {
+          {condiments.filter(c => c.available !== false).map(c => {
             const checked = !!sel[c.id];
             return (
               <div key={c.id} onClick={() => toggle(c.id)} style={{
@@ -457,7 +457,7 @@ function AddOnsSheet({ item, theme, onConfirm, onSkip }) {
           })}
         </div>
         <div style={{ padding: '16px 20px 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <button onClick={() => onConfirm(sel)} style={{
+          <button onClick={() => onConfirm(sel, condiments)} style={{
             width: '100%', padding: '15px',
             background: t.buttonBg, color: t.buttonText,
             border: 'none', borderRadius: radius,
@@ -522,7 +522,7 @@ function OrderHistoryDrawer({ theme, orderHistory, table, onClose }) {
   );
 }
 
-function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orderHistory }) {
+function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orderHistory, menu = MENU, condiments = CONDIMENTS, orderingEnabled = true, pausedMessage = '' }) {
   const t = THEMES[theme];
   const [pendingAdd, setPendingAdd] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -530,17 +530,20 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
   const totalQty = cart.length;
   const totalPrice = useMemo(() =>
     cart.reduce((sum, line) => {
-      const item = MENU.find(m => m.id === line.itemId);
+      const item = menu.find(m => m.id === line.itemId);
       const condTotal = line.condiments.reduce((cs, cid) => {
-        const cond = CONDIMENTS.find(c => c.id === cid);
+        const cond = condiments.find(c => c.id === cid);
         return cs + (cond ? cond.price : 0);
       }, 0);
       return sum + (item ? item.price : 0) + condTotal;
     }, 0),
-    [cart]
+    [cart, menu, condiments]
   );
 
-  const add = (id) => setPendingAdd(id);
+  const add = (id) => {
+    if (!orderingEnabled) return;
+    setPendingAdd(id);
+  };
 
   const remove = (id) => setCart(c => {
     const idx = c.map(l => l.itemId).lastIndexOf(id);
@@ -548,9 +551,9 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
     return c.filter((_, i) => i !== idx);
   });
 
-  const confirmAddOns = (sel) => {
-    const condiments = CONDIMENTS.filter(c => sel[c.id]).map(c => c.id);
-    setCart(c => [...c, { lineId: Date.now() + Math.random(), itemId: pendingAdd, condiments }]);
+  const confirmAddOns = (sel, conds) => {
+    const chosen = (conds || condiments).filter(c => sel[c.id]).map(c => c.id);
+    setCart(c => [...c, { lineId: Date.now() + Math.random(), itemId: pendingAdd, condiments: chosen }]);
     setPendingAdd(null);
   };
 
@@ -625,6 +628,19 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
         </div>
       </div>
 
+      {/* ORDERING PAUSED BANNER */}
+      {!orderingEnabled && (
+        <div style={{
+          background: '#3a1408', color: '#e8dfca',
+          padding: '11px 22px',
+          fontFamily: t.bodyFont, fontSize: 13, fontWeight: 600,
+          textAlign: 'center',
+          zIndex: 3,
+        }}>
+          {pausedMessage || 'Ordering is currently paused — please see your server.'}
+        </div>
+      )}
+
       {/* SCROLLABLE BODY */}
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }} className={t.paperTexture ? 'paper-bg' : ''}>
         <div style={{ padding: '16px 22px 140px', position: 'relative' }}>
@@ -639,32 +655,59 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
                 San Marzano tomatoes & fresh fior di latte for that authentic Neapolitan flavour.
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {MENU.map(item => (
-                  <MenuRowList key={item.id} item={item} theme={theme}
-                    qty={cart.filter(l => l.itemId === item.id).length}
-                    onAdd={() => add(item.id)} onRemove={() => remove(item.id)} />
-                ))}
+                {menu.map(item => {
+                  const soldOut = item.available === false;
+                  return (
+                    <div key={item.id} style={{ position: 'relative', opacity: soldOut ? 0.5 : 1 }}>
+                      <MenuRowList item={item} theme={theme}
+                        qty={soldOut ? 0 : cart.filter(l => l.itemId === item.id).length}
+                        onAdd={soldOut ? () => {} : () => add(item.id)}
+                        onRemove={() => remove(item.id)} />
+                      {soldOut && (
+                        <span style={{ position: 'absolute', top: 2, right: 0, fontFamily: t.bodyFont, fontSize: 9, fontWeight: 700, color: t.inkSoft, textTransform: 'uppercase', letterSpacing: '0.08em', border: `1px solid ${t.border}`, padding: '1px 5px', borderRadius: 3 }}>sold out</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}
 
           {layout === 'cards' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {MENU.map(item => (
-                <MenuCard key={item.id} item={item} theme={theme}
-                  qty={cart.filter(l => l.itemId === item.id).length}
-                  onAdd={() => add(item.id)} onRemove={() => remove(item.id)} />
-              ))}
+              {menu.map(item => {
+                const soldOut = item.available === false;
+                return (
+                  <div key={item.id} style={{ position: 'relative', opacity: soldOut ? 0.5 : 1 }}>
+                    <MenuCard item={item} theme={theme}
+                      qty={soldOut ? 0 : cart.filter(l => l.itemId === item.id).length}
+                      onAdd={soldOut ? () => {} : () => add(item.id)}
+                      onRemove={() => remove(item.id)} />
+                    {soldOut && (
+                      <div style={{ position: 'absolute', top: 10, right: 10, fontFamily: t.bodyFont, fontSize: 9, fontWeight: 700, color: t.inkSoft, textTransform: 'uppercase', letterSpacing: '0.08em', border: `1px solid ${t.border}`, padding: '1px 5px', borderRadius: 3, background: t.paper }}>sold out</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 
           {layout === 'grid' && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {MENU.map(item => (
-                <MenuGridTile key={item.id} item={item} theme={theme}
-                  qty={cart.filter(l => l.itemId === item.id).length}
-                  onAdd={() => add(item.id)} onRemove={() => remove(item.id)} />
-              ))}
+              {menu.map(item => {
+                const soldOut = item.available === false;
+                return (
+                  <div key={item.id} style={{ position: 'relative', opacity: soldOut ? 0.5 : 1 }}>
+                    <MenuGridTile item={item} theme={theme}
+                      qty={soldOut ? 0 : cart.filter(l => l.itemId === item.id).length}
+                      onAdd={soldOut ? () => {} : () => add(item.id)}
+                      onRemove={() => remove(item.id)} />
+                    {soldOut && (
+                      <div style={{ position: 'absolute', top: 6, right: 6, fontFamily: t.bodyFont, fontSize: 8, fontWeight: 700, color: t.inkSoft, textTransform: 'uppercase', letterSpacing: '0.06em', border: `1px solid ${t.border}`, padding: '1px 4px', borderRadius: 3, background: t.paper }}>sold out</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -677,12 +720,14 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
           zIndex: 5,
           animation: 'fadeUp 0.3s ease',
         }}>
-          <button onClick={onCheckout} style={{
+          <button onClick={orderingEnabled ? onCheckout : undefined} style={{
+            opacity: orderingEnabled ? 1 : 0.4,
+            cursor: orderingEnabled ? 'pointer' : 'default',
             width: '100%',
             background: t.buttonBg, color: t.buttonText,
             border: 'none',
             borderRadius: theme === 'minimal' ? 14 : (theme === 'refined' ? 999 : 6),
-            padding: '14px 18px', cursor: 'pointer',
+            padding: '14px 18px',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             fontFamily: t.bodyFont, fontWeight: 700, fontSize: 15,
             boxShadow: '0 8px 24px rgba(0,0,0,0.22)',
@@ -714,11 +759,12 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
 
       {/* ADD-ONS SHEET */}
       {pendingAdd && (() => {
-        const item = MENU.find(m => m.id === pendingAdd);
+        const item = menu.find(m => m.id === pendingAdd);
         return (
           <AddOnsSheet
             item={item}
             theme={theme}
+            condiments={condiments}
             onConfirm={confirmAddOns}
             onSkip={skipAddOns}
           />
@@ -731,13 +777,13 @@ function Menu({ theme, layout, cart, setCart, onCheckout, table, showTable, orde
 // ─────────────────────────────────────────────
 // CART / CHECKOUT — in-app payment with tipping
 // ─────────────────────────────────────────────
-function Cart({ theme, cart, setCart, onBack, onPay, table, showTable, tipPct, setTipPct, tipPrompt, payMethod, setPayMethod }) {
+function Cart({ theme, cart, setCart, onBack, onPay, table, showTable, tipPct, setTipPct, tipPrompt, payMethod, setPayMethod, menu = MENU, condiments = CONDIMENTS }) {
   const t = THEMES[theme];
 
   const lineTotal = (line) => {
-    const item = MENU.find(m => m.id === line.itemId);
+    const item = menu.find(m => m.id === line.itemId);
     const condTotal = line.condiments.reduce((s, cid) => {
-      const cond = CONDIMENTS.find(c => c.id === cid);
+      const cond = condiments.find(c => c.id === cid);
       return s + (cond ? cond.price : 0);
     }, 0);
     return (item ? item.price : 0) + condTotal;
@@ -872,9 +918,9 @@ function Cart({ theme, cart, setCart, onBack, onPay, table, showTable, tipPct, s
           {/* ITEMS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 18 }}>
             {cart.map((line, idx) => {
-              const item = MENU.find(m => m.id === line.itemId);
+              const item = menu.find(m => m.id === line.itemId);
               if (!item) return null;
-              const lineConds = line.condiments.map(cid => CONDIMENTS.find(c => c.id === cid)).filter(Boolean);
+              const lineConds = line.condiments.map(cid => condiments.find(c => c.id === cid)).filter(Boolean);
               return (
                 <div key={line.lineId} style={{ borderBottom: `1px dashed ${t.border}`, paddingBottom: 10, marginBottom: 4 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10 }}>
@@ -1000,12 +1046,12 @@ function Paying({ theme, payMethod }) {
 // ─────────────────────────────────────────────
 // RECEIPT — EposNow till receipt animation
 // ─────────────────────────────────────────────
-function Receipt({ theme, cart, table, tipPct, payMethod, orderNum, onNew }) {
+function Receipt({ theme, cart, table, tipPct, payMethod, orderNum, onNew, menu = MENU, condiments = CONDIMENTS }) {
   const t = THEMES[theme];
   const lineTotal = (line) => {
-    const item = MENU.find(m => m.id === line.itemId);
+    const item = menu.find(m => m.id === line.itemId);
     const condTotal = line.condiments.reduce((s, cid) => {
-      const cond = CONDIMENTS.find(c => c.id === cid);
+      const cond = condiments.find(c => c.id === cid);
       return s + (cond ? cond.price : 0);
     }, 0);
     return (item ? item.price : 0) + condTotal;
@@ -1035,11 +1081,11 @@ function Receipt({ theme, cart, table, tipPct, payMethod, orderNum, onNew }) {
     ls.push({ k: 'kv', l: 'Source',  r: 'EposNow Dine-in' });
     ls.push({ k: 'rule' });
     cart.forEach(line => {
-      const item = MENU.find(m => m.id === line.itemId);
+      const item = menu.find(m => m.id === line.itemId);
       if (!item) return;
       ls.push({ k: 'item', l: '1× '+item.name, r: '£'+item.price.toFixed(2) });
       line.condiments.forEach(cid => {
-        const cond = CONDIMENTS.find(c => c.id === cid);
+        const cond = condiments.find(c => c.id === cid);
         if (!cond) return;
         ls.push({ k: 'addon', l: '  + '+cond.name, r: cond.price === 0 ? 'free' : '+£'+cond.price.toFixed(2) });
       });
@@ -1133,11 +1179,11 @@ function Receipt({ theme, cart, table, tipPct, payMethod, orderNum, onNew }) {
                    : 'Card · Visa •• 4242';
     let itemsHtml = '';
     cart.forEach(line => {
-      const item = MENU.find(m => m.id === line.itemId);
+      const item = menu.find(m => m.id === line.itemId);
       if (!item) return;
       itemsHtml += '<div class="item"><span>1\xd7 ' + item.name + '</span><span>\xa3' + item.price.toFixed(2) + '</span></div>';
       line.condiments.forEach(cid => {
-        const cond = CONDIMENTS.find(c => c.id === cid);
+        const cond = condiments.find(c => c.id === cid);
         if (!cond) return;
         itemsHtml += '<div class="addon"><span>\xa0\xa0+ ' + cond.name + '</span><span>' + (cond.price === 0 ? 'free' : '+\xa3' + cond.price.toFixed(2)) + '</span></div>';
       });
