@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How GitHub + Claude fit together — Hefjam</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --text:#e8eaed; --muted:#9aa0a6;
+    --line:#2a2f3a; --accent:#e4572e; --you:#4f9cf9; --hub:#46c08a; --cloud:#b07cff;
+    --chat:#f5b942;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.5}
+  header{padding:20px 24px 8px;max-width:1180px;margin:0 auto}
+  h1{font-size:1.5rem;margin:0 0 4px}
+  header p{color:var(--muted);margin:0;font-size:.95rem}
+  .wrap{display:flex;gap:18px;max-width:1180px;margin:0 auto;padding:14px 24px 40px;flex-wrap:wrap}
+  .stage{flex:1 1 560px;min-width:320px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px}
+  .side{flex:1 1 320px;min-width:280px;display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .card h2{font-size:1rem;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+  .card p{margin:0 0 10px;font-size:.9rem;color:var(--text)}
+  .card .muted{color:var(--muted);font-size:.85rem}
+  .scenarios{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  button.sc{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);
+    padding:9px 12px;border-radius:10px;font-size:.85rem;transition:border-color .15s, background .15s}
+  button.sc:hover{border-color:var(--accent)}
+  button.sc.active{border-color:var(--accent);background:#2a1f1a}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:8px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  /* SVG node styling */
+  .node{cursor:pointer}
+  .node rect,.node .nbg{transition:stroke .15s, filter .15s}
+  .node:hover .nbg{stroke:#fff}
+  .node.sel .nbg{stroke:var(--accent);stroke-width:2.5}
+  .ntitle{font-size:13px;font-weight:700;fill:var(--text)}
+  .nsub{font-size:10.5px;fill:var(--muted)}
+  .zoneLbl{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .flow{stroke-width:2.4;fill:none;opacity:.28;transition:opacity .2s, stroke-width .2s}
+  .flow.on{opacity:1;stroke-width:3.4}
+  .flowlbl{font-size:10.5px;fill:var(--muted);opacity:0;transition:opacity .2s}
+  .flowlbl.on{opacity:1;fill:var(--text)}
+  .hint{font-size:.8rem;color:var(--muted);padding:0 6px 6px}
+  @keyframes dash{to{stroke-dashoffset:-16}}
+  .flow.on.anim{stroke-dasharray:7 5;animation:dash .6s linear infinite}
+</style>
+</head>
+<body>
+<header>
+  <h1>How GitHub + Claude fit together</h1>
+  <p>Your real setup. Tap any box to learn what it is — or run a scenario below to see how your work flows.</p>
+</header>
+
+<div class="wrap">
+  <div class="stage">
+    <svg id="map" viewBox="0 0 640 560" width="100%" role="img" aria-label="Interactive map">
+      <!-- zone labels -->
+      <text x="20" y="34" class="zoneLbl" fill="#4f9cf9">You — your devices</text>
+      <text x="350" y="34" class="zoneLbl" fill="#46c08a">GitHub — the single hub</text>
+      <text x="20" y="300" class="zoneLbl" fill="#f5b942">Claude account</text>
+      <text x="350" y="300" class="zoneLbl" fill="#b07cff">Cloud (web / mobile Claude Code)</text>
+
+      <!-- FLOW LINES (drawn first, behind nodes) -->
+      <g id="flows">
+        <path id="f-macpush" class="flow" stroke="#4f9cf9" d="M 175 95 C 280 95, 300 110, 350 120"/>
+        <text class="flowlbl" x="240" y="92">git push / pull</text>
+
+        <path id="f-clone" class="flow" stroke="#b07cff" d="M 470 165 C 470 210, 470 330, 470 360"/>
+        <text class="flowlbl" x="478" y="270">clone fresh</text>
+
+        <path id="f-cloudpush" class="flow" stroke="#b07cff" d="M 540 360 C 560 300, 560 210, 540 165"/>
+        <text class="flowlbl" x="556" y="270">commit + push</text>
+
+        <path id="f-chat" class="flow" stroke="#f5b942" d="M 95 200 C 95 240, 95 300, 95 330"/>
+        <text class="flowlbl" x="104" y="270">syncs by account</text>
+      </g>
+
+      <!-- NODES -->
+      <!-- MacBook -->
+      <g class="node" data-key="mac">
+        <rect class="nbg" x="20" y="56" width="155" height="70" rx="12" fill="#13202f" stroke="#2a3a4f"/>
+        <text x="36" y="86" class="ntitle">💻 MacBook</text>
+        <text x="36" y="104" class="nsub">Claude Code CLI</text>
+        <text x="36" y="118" class="nsub">local clone of a repo</text>
+      </g>
+      <!-- Mobile -->
+      <g class="node" data-key="mobile">
+        <rect class="nbg" x="20" y="138" width="155" height="70" rx="12" fill="#13202f" stroke="#2a3a4f"/>
+        <text x="36" y="168" class="ntitle">📱 Phone / web</text>
+        <text x="36" y="186" class="nsub">Claude Code on the web</text>
+        <text x="36" y="200" class="nsub">runs in the cloud</text>
+      </g>
+
+      <!-- GitHub hub container -->
+      <g class="node" data-key="github">
+        <rect class="nbg" x="350" y="46" width="270" height="170" rx="14" fill="#11241b" stroke="#2c5040"/>
+        <text x="366" y="70" class="ntitle">🐙 GitHub</text>
+        <text x="366" y="86" class="nsub">the shared source of truth</text>
+      </g>
+      <!-- repo 1 -->
+      <g class="node" data-key="repo-taproom">
+        <rect class="nbg" x="366" y="98" width="238" height="48" rx="10" fill="#0e3324" stroke="#3a6b53"/>
+        <text x="380" y="120" class="ntitle">📦 Taproom-Pizza</text>
+        <text x="380" y="136" class="nsub">the ordering app (canonical)</text>
+      </g>
+      <!-- repo 2 -->
+      <g class="node" data-key="repo-site">
+        <rect class="nbg" x="366" y="154" width="238" height="48" rx="10" fill="#0e3324" stroke="#3a6b53"/>
+        <text x="380" y="176" class="ntitle">📦 hefjam.github.io</text>
+        <text x="380" y="192" class="nsub">landing page + support pages</text>
+      </g>
+
+      <!-- Claude account / chats -->
+      <g class="node" data-key="chats">
+        <rect class="nbg" x="20" y="330" width="180" height="86" rx="12" fill="#2e260f" stroke="#5a4a1e"/>
+        <text x="36" y="360" class="ntitle">💬 claude.ai chats</text>
+        <text x="36" y="380" class="nsub">live in your account</text>
+        <text x="36" y="396" class="nsub">auto-sync phone ↔ web</text>
+        <text x="36" y="410" class="nsub">not tied to a repo</text>
+      </g>
+
+      <!-- Cloud sandbox -->
+      <g class="node" data-key="sandbox">
+        <rect class="nbg" x="350" y="350" width="270" height="120" rx="14" fill="#231a36" stroke="#4b3a72"/>
+        <text x="366" y="376" class="ntitle">☁️ Temporary container</text>
+        <text x="366" y="396" class="nsub">spun up for each web/mobile session</text>
+        <text x="366" y="414" class="nsub">clones your repo to work on it…</text>
+        <text x="366" y="432" class="nsub">…then is thrown away when done.</text>
+        <text x="366" y="452" class="nsub" style="fill:#e4572e">Unpushed work here is lost!</text>
+      </g>
+    </svg>
+    <div class="hint">Tip: the faint lines are connections. Run a scenario to light up the path your work actually takes.</div>
+    <div class="legend">
+      <span><i class="dot" style="background:#4f9cf9"></i>You / devices</span>
+      <span><i class="dot" style="background:#46c08a"></i>GitHub hub</span>
+      <span><i class="dot" style="background:#b07cff"></i>Cloud session</span>
+      <span><i class="dot" style="background:#f5b942"></i>Chats / account</span>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="card">
+      <h2>▶︎ Run a scenario</h2>
+      <p class="muted">See exactly where your work goes in each situation.</p>
+      <div class="scenarios">
+        <button class="sc" data-sc="mac">I edit on my MacBook</button>
+        <button class="sc" data-sc="mobile">I open Claude Code on my phone</button>
+        <button class="sc" data-sc="chat">I have a quick chat</button>
+        <button class="sc" data-sc="reset">Reset</button>
+      </div>
+    </div>
+    <div class="card" id="info">
+      <h2 id="info-title">👋 Start here</h2>
+      <p id="info-body">Everything you do connects through <b>one hub: GitHub</b>. Your MacBook, your phone, and the cloud all read from and write to the same repos there — that's what keeps things from feeling scattered.</p>
+      <p class="muted" id="info-note">Tap any box on the map, or run a scenario, to dig in.</p>
+    </div>
+    <div class="card">
+      <h2>🧭 The one rule</h2>
+      <p><b>Commit &amp; push before you switch devices.</b></p>
+      <p class="muted">GitHub is the only place all three (Mac, phone, cloud) can see. If it's not pushed there, the other device — and the next cloud session — can't see it.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const NODE_INFO = {
+  mac:{t:"💻 MacBook — Claude Code CLI",
+    b:"Here you run the Claude Code command-line tool inside a <b>local clone</b> of a repo on your hard drive. You edit, then <b>git push</b> to send work up to GitHub.",
+    n:"This is the only place your work lives until you push it."},
+  mobile:{t:"📱 Phone / web — Claude Code on the web",
+    b:"When you open Claude Code from your phone or a browser, it doesn't use files on your phone. It spins up a <b>temporary cloud container</b> and clones your GitHub repo into it.",
+    n:"So mobile only ever sees what's already been pushed to GitHub."},
+  github:{t:"🐙 GitHub — the single hub",
+    b:"GitHub holds your repos in the cloud. It's the <b>one place</b> your MacBook, your phone, and cloud sessions all connect to. This is the answer to your 'everything feels scattered' problem.",
+    n:"Not Google Drive — GitHub. It also gives you history and undo."},
+  "repo-taproom":{t:"📦 Taproom-Pizza",
+    b:"Now the <b>canonical home</b> of your Taproom ordering app (<code>index.html</code>). One copy, one place.",
+    n:"We just consolidated this from the 3 drifting copies you had."},
+  "repo-site":{t:"📦 hefjam.github.io",
+    b:"Your <b>personal landing page</b> plus the Taproom support pages (kitchen display, QR codes, privacy, menu research).",
+    n:"It links out to the Taproom app instead of holding a duplicate copy."},
+  chats:{t:"💬 claude.ai chats",
+    b:"Plain conversations (not Claude Code). These live in <b>your Claude account</b> and sync between your phone and the web automatically — no folder or repo involved.",
+    n:"Rule of thumb: quick thinking → chat. Work that makes files → Claude Code on a repo."},
+  sandbox:{t:"☁️ Temporary cloud container",
+    b:"Each web/mobile Claude Code session gets a fresh, isolated container. It clones your repo, you work, and it pushes back to GitHub. When the session ends, <b>the container is wiped</b>.",
+    n:"⚠️ Anything not committed & pushed before it closes is gone for good."}
+};
+
+const FLOWS = {
+  // scenario -> [flow ids to light], with anim
+  mac:["f-macpush"],
+  mobile:["f-clone","f-cloudpush","f-macpush"],
+  chat:["f-chat"]
+};
+const SCENARIO_INFO = {
+  mac:{t:"💻 You edit on your MacBook",
+    b:"You work in your local clone and run <b>git push</b>. Your changes travel up the blue line into the matching GitHub repo.",
+    n:"Until you push, your phone and any cloud session still see the OLD version. Push = make it visible everywhere."},
+  mobile:{t:"📱 You open Claude Code on your phone",
+    b:"A fresh cloud container <b>clones your repo from GitHub</b> (purple, down), you make changes, and it <b>commits & pushes back</b> (purple, up). Because your Mac pushed earlier (blue), the phone sees that work too.",
+    n:"This is why 'push before switching devices' matters — the cloud only sees GitHub."},
+  chat:{t:"💬 You have a quick chat",
+    b:"A normal claude.ai chat just talks to your Claude account (yellow). It syncs across your phone and the web on its own.",
+    n:"No repo, no GitHub. Use it for thinking — switch to Claude Code on a repo when you want files saved."}
+};
+
+const svg = document.getElementById('map');
+const info = {t:document.getElementById('info-title'), b:document.getElementById('info-body'), n:document.getElementById('info-note')};
+let selected = null;
+
+function clearFlows(){
+  document.querySelectorAll('.flow').forEach(f=>f.classList.remove('on','anim'));
+  document.querySelectorAll('.flowlbl').forEach(f=>f.classList.remove('on'));
+}
+function lightFlows(ids){
+  clearFlows();
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.add('on','anim');
+      const lbl=el.nextElementSibling;
+      if(lbl && lbl.classList.contains('flowlbl')) lbl.classList.add('on');
+    }
+  });
+}
+function setInfo(o){ info.t.innerHTML=o.t; info.b.innerHTML=o.b; info.n.innerHTML=o.n; }
+function selectNode(key){
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('sel'));
+  const n=document.querySelector('.node[data-key="'+key+'"]');
+  if(n) n.classList.add('sel');
+  selected=key;
+  if(NODE_INFO[key]) setInfo(NODE_INFO[key]);
+}
+
+svg.querySelectorAll('.node').forEach(n=>{
+  n.addEventListener('click',()=>selectNode(n.dataset.key));
+});
+
+document.querySelectorAll('button.sc').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('button.sc').forEach(b=>b.classList.remove('active'));
+    const sc=btn.dataset.sc;
+    if(sc==='reset'){ clearFlows(); document.querySelectorAll('.node').forEach(n=>n.classList.remove('sel'));
+      setInfo({t:"👋 Start here",
+        b:"Everything you do connects through <b>one hub: GitHub</b>. Your MacBook, your phone, and the cloud all read from and write to the same repos there.",
+        n:"Tap any box on the map, or run a scenario, to dig in."});
+      return;
+    }
+    btn.classList.add('active');
+    lightFlows(FLOWS[sc]||[]);
+    if(SCENARIO_INFO[sc]) setInfo(SCENARIO_INFO[sc]);
+  });
+});
+</script>
+</body>
+</html>
