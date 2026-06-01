@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Invoices — Taproom Ops</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0f0e0c;--bg2:#1a1815;--bg3:#242018;--card:#1e1c18;
+  --border:#2e2a22;--fire:#f97316;--fire2:#ef4444;--gold:#f59e0b;
+  --green:#22c55e;--teal:#14b8a6;--purple:#a855f7;
+  --text:#f5f0e8;--text2:#a89f8c;--text3:#6b6357;
+  --r:12px;--nav:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;padding-bottom:60px}
+a{color:inherit;text-decoration:none}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-family:inherit;font-size:14px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--fire)}
+button{cursor:pointer;border:none;border-radius:8px;font-family:inherit;font-size:14px;padding:8px 16px}
+.nav{height:var(--nav);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100}
+.nav-wordmark{font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--fire)}
+.nav-back{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:var(--text)}
+.nav-title{font-family:'Archivo Black',sans-serif;font-size:16px;margin-left:8px}
+.wrapper{max-width:1100px;margin:0 auto;padding:24px 20px}
+.tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:24px}
+.tab{flex:1;text-align:center;padding:10px;border-radius:7px;font-size:13px;font-weight:600;color:var(--text2);background:transparent;border:none;cursor:pointer;transition:all .15s}
+.tab.active{background:var(--bg3);color:var(--text)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.section-title{font-family:'Archivo Black',sans-serif;font-size:18px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+label.field-label{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:640px){.form-row{grid-template-columns:1fr}}
+.field{margin-bottom:16px}
+.supplier-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0}
+.line-items-header{display:grid;grid-template-columns:2fr 80px 110px 90px 90px 32px;gap:8px;padding:0 4px 8px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.line-items-header span{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.line-row{display:grid;grid-template-columns:2fr 80px 110px 90px 90px 32px;gap:8px;align-items:center;margin-bottom:8px}
+@media(max-width:700px){
+  .line-items-header{display:none}
+  .line-row{grid-template-columns:1fr 1fr;gap:6px}
+  .line-row .line-delete{grid-column:2;justify-self:end}
+}
+.line-total{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2);text-align:right}
+.price-badge{font-family:'DM Mono',monospace;font-size:11px;padding:2px 6px;border-radius:4px;white-space:nowrap}
+.badge-up{background:rgba(239,68,68,.15);color:var(--fire2)}
+.badge-down{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-same{background:var(--bg3);color:var(--text3)}
+.line-delete{background:rgba(239,68,68,.12);color:var(--fire2);width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:16px;border:none}
+.line-delete:hover{background:rgba(239,68,68,.25)}
+.btn-primary{background:var(--fire);color:#fff;font-weight:700;padding:12px 24px;border-radius:10px;font-size:15px}
+.btn-primary:hover{background:#ea6c10}
+.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border);padding:9px 18px}
+.btn-secondary:hover{border-color:var(--fire);color:var(--fire)}
+.invoice-total-row{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);margin-top:8px}
+.invoice-total-label{font-size:14px;color:var(--text2)}
+.invoice-total-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--text)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#000;font-weight:700;padding:12px 20px;border-radius:10px;font-size:14px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.gp-impact{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:16px;margin-top:16px}
+.gp-impact-title{font-family:'Archivo Black',sans-serif;font-size:14px;color:var(--gold);margin-bottom:12px}
+.gp-impact-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(245,158,11,.12);font-size:13px}
+.gp-impact-row:last-child{border-bottom:none}
+.period-chips{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.chip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer}
+.chip.active{background:var(--fire);border-color:var(--fire);color:#fff}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:700px){.analytics-grid{grid-template-columns:1fr}}
+.kpi-label{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.kpi-val{font-family:'DM Mono',monospace;font-size:24px;font-weight:500}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{font-size:13px;width:140px;flex-shrink:0;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;background:var(--bg3);border-radius:4px;height:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s ease}
+.bar-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);white-space:nowrap;width:64px;text-align:right}
+.weekly-bars{display:flex;gap:6px;align-items:flex-end;height:120px;margin-bottom:8px}
+.w-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.w-bar{width:100%;background:var(--fire);border-radius:4px 4px 0 0;min-height:4px;transition:height .4s ease}
+.w-bar-label{font-size:10px;color:var(--text3)}
+.w-bar-val{font-size:10px;font-family:'DM Mono',monospace;color:var(--text2)}
+.accordion-item{border-bottom:1px solid var(--border)}
+.accordion-trigger{width:100%;background:none;border:none;color:var(--text);padding:14px 4px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left}
+.accordion-trigger:hover{background:var(--bg2);border-radius:6px}
+.accordion-arrow{color:var(--text3);transition:transform .2s;margin-left:auto}
+.accordion-body{display:none;padding:0 4px 14px}
+.accordion-body.open{display:block}
+.invoice-line-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;border-bottom:1px solid var(--border);color:var(--text2)}
+.invoice-line-row:last-child{border-bottom:none}
+.subtabs{display:flex;gap:8px;margin-bottom:20px}
+.subtab{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.subtab.active{background:var(--teal);border-color:var(--teal);color:#000}
+.subtab-panel{display:none}
+.subtab-panel.active{display:block}
+.pricebook-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
+.pricebook-row:last-child{border-bottom:none}
+.pricebook-name{flex:1;min-width:0}
+.pricebook-sku{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);white-space:nowrap}
+.pricebook-price{font-family:'DM Mono',monospace;font-size:13px;white-space:nowrap;text-align:right;min-width:60px}
+.pricebook-date{font-size:11px;color:var(--text3);white-space:nowrap;text-align:right;min-width:70px}
+.recipe-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.recipe-card-header{display:flex;align-items:center;gap:12px;margin-bottom:0}
+.recipe-card-header.open{margin-bottom:14px}
+.recipe-name{font-family:'Archivo Black',sans-serif;font-size:15px}
+.recipe-sell{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2)}
+.recipe-cost{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2)}
+.gp-badge{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;padding:4px 10px;border-radius:6px}
+.gp-green{background:rgba(34,197,94,.15);color:var(--green)}
+.gp-amber{background:rgba(245,158,11,.15);color:var(--gold)}
+.gp-red{background:rgba(239,68,68,.15);color:var(--fire2)}
+.recipe-breakdown{font-size:12px;color:var(--text2);border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.breakdown-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(46,42,34,.5)}
+.breakdown-row:last-child{border-bottom:none}
+.recalc-btn{background:rgba(20,184,166,.12);color:var(--teal);border:1px solid rgba(20,184,166,.3);padding:5px 12px;border-radius:6px;font-size:12px;margin-left:auto}
+.recalc-btn:hover{background:rgba(20,184,166,.25)}
+.recipe-toggle{background:none;border:none;color:var(--text3);cursor:pointer;padding:0 4px;font-size:14px;transition:transform .2s}
+.empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-state .icon{font-size:40px;margin-bottom:12px}
+.error-msg{color:var(--fire2);font-size:12px;margin-top:4px}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-back">← Back</a>
+  <span class="nav-wordmark">Hefjam</span>
+  <span class="nav-title">Invoices</span>
+</nav>
+<div class="wrapper">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('log')">Log Invoice</button>
+    <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+    <button class="tab" onclick="switchTab('prices')">Prices &amp; GP</button>
+  </div>
+
+  <div id="tab-log" class="tab-panel active">
+    <div class="section-title">Log Invoice</div>
+    <div class="card">
+      <div class="form-row">
+        <div>
+          <label class="field-label">Supplier</label>
+          <select id="log-supplier" onchange="onSupplierChange()">
+            <option value="">— select —</option>
+            <option value="bidfood">Bidfood</option>
+            <option value="infusions4chefs">Infusions4Chefs</option>
+            <option value="burtons">Burtons</option>
+            <option value="fisherandwoods">Fisher &amp; Woods</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Invoice Date</label>
+          <input type="date" id="log-date"/>
+        </div>
+        <div>
+          <label class="field-label">Invoice Ref</label>
+          <input type="text" id="log-ref" placeholder="e.g. INV-00123"/>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label class="field-label">Notes (optional)</label>
+        <textarea id="log-notes" rows="2" style="resize:vertical"></textarea>
+      </div>
+      <div id="line-items-section">
+        <div class="line-items-header">
+          <span>Ingredient</span>
+          <span>Qty</span>
+          <span>Price/Pack</span>
+          <span>Change</span>
+          <span style="text-align:right">Line Total</span>
+          <span></span>
+        </div>
+        <div id="line-rows"></div>
+        <button class="btn-secondary" onclick="addLineRow()" style="margin-top:8px;width:100%">+ Add Line Item</button>
+      </div>
+      <div class="invoice-total-row">
+        <span class="invoice-total-label">Invoice Total</span>
+        <span class="invoice-total-val" id="invoice-total">£0.00</span>
+      </div>
+      <div id="save-error" class="error-msg"></div>
+      <button class="btn-primary" onclick="saveInvoice()" style="margin-top:12px;width:100%">Save Invoice</button>
+    </div>
+    <div id="gp-impact-panel" style="display:none"></div>
+  </div>
+
+  <div id="tab-analytics" class="tab-panel">
+    <div class="section-title">Analytics</div>
+    <div class="period-chips">
+      <button class="chip active" onclick="setPeriod('week',this)">This week</button>
+      <button class="chip" onclick="setPeriod('4weeks',this)">Last 4 weeks</button>
+      <button class="chip" onclick="setPeriod('all',this)">All time</button>
+    </div>
+    <div id="analytics-content"></div>
+  </div>
+
+  <div id="tab-prices" class="tab-panel">
+    <div class="section-title">Prices &amp; GP</div>
+    <div class="subtabs">
+      <button class="subtab active" onclick="switchSubtab('pricebook',this)">Price Book</button>
+      <button class="subtab" onclick="switchSubtab('gp',this)">GP Calculator</button>
+    </div>
+    <div id="subtab-pricebook" class="subtab-panel active"></div>
+    <div id="subtab-gp" class="subtab-panel"></div>
+  </div>
+</div>
+
+<datalist id="ingredient-datalist"></datalist>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE_KEY = 'taproom_invoices';
+const SUPPLIER_COLORS = {bidfood:'#3b82f6',infusions4chefs:'#f97316',burtons:'#22c55e',fisherandwoods:'#14b8a6'};
+const SUPPLIER_LABELS = {bidfood:'Bidfood',infusions4chefs:'Infusions4Chefs',burtons:'Burtons',fisherandwoods:'Fisher & Woods'};
+const today = new Date().toISOString().split('T')[0];
+
+function getStore(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || null; }catch(e){ return null; }
+}
+function saveStore(s){ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+
+function initStore(){
+  let s = getStore();
+  if(!s || !s.seededAt){ s = seedStore(); saveStore(s); }
+  return s;
+}
+
+function seedStore(){
+  const s = { version:2, seededAt:today, ingredients:{}, invoices:[], recipes:{} };
+  const add = (id,name,supplier,sku,unit,packSize,latestPrice) => {
+    s.ingredients[id]={id,name,supplier,sku,unit,packSize,latestPrice,
+      latestPricePerUnit:+(latestPrice/packSize).toFixed(4),priceHistory:[]};
+  };
+  add('bf_sourdough','Pan Artisan Sourdough Balls 80x210g','bidfood','56003','each',80,37.31);
+  add('bf_fior_di_latte','Pettinicchio Fior Di Latte 2.5kg','bidfood','24125','kg',2.5,19.96);
+  add('bf_vegan_mozz','Violife Vegan Mozzarella 1kg','bidfood','13529','kg',1,8.70);
+  add('bf_taleggio','Arrigoni Taleggio 8x200g','bidfood','22804','kg',1.6,23.11);
+  add('bf_mascarpone','Galbani Mascarpone 2kg','bidfood','02869','kg',2,16.23);
+  add('bf_parmesan','Zanetti Parmigiano PDO Flakes 500g','bidfood','50781','kg',0.5,17.60);
+  add('bf_grana_padano','Gustoso Grana Padano Wedge 1kg','bidfood','03087','kg',1,20.18);
+  add('bf_evoo','La Pedriza EVOO 5L','bidfood','00068','L',5,31.06);
+  add('bf_sherry_vinegar','Tramontana Sherry Vinegar 750ml','bidfood','80178','L',0.75,3.88);
+  add('bf_gochujang','Ajumma Republic Gochujang 6x500g','bidfood','29752','kg',3,15.83);
+  add('bf_mushrooms','Paris Brown Chestnut Mushrooms 3kg','bidfood','76566','kg',3,12.43);
+  add('bf_rocket','Wild Roquette Rocket 500g','bidfood','74849','kg',0.5,3.90);
+  add('bf_artichokes','Casa De Mare Artichokes 12x396g','bidfood','36328','pack',12,25.69);
+  add('bf_capers','Casa De Mare Baby Capers 975g','bidfood','89461','kg',0.975,7.85);
+  add('bf_sun_dried_tomatoes','Sapori D\'Italia Semi-Dried Cherry 1kg','bidfood','36006','kg',1,16.24);
+  add('bf_honey','EF Clear Honey 3.17kg','bidfood','61367','kg',3.17,14.05);
+  add('bf_chilli_flakes','EF Crushed Chillies 300g','bidfood','30144','kg',0.3,5.22);
+  add('bf_oregano','EF Dry Oregano 100g','bidfood','30142','kg',0.1,3.12);
+  add('i4c_san_marzano','Magna San Marzano 2.55kg','infusions4chefs','24094','kg',2.55,6.99);
+  add('i4c_nocellara','Greek Olive Co. Nocellara 1.4kg','infusions4chefs','22191','kg',1.4,22.59);
+  add('i4c_guindilla','Perello Guindilla Chillies 2kg','infusions4chefs','','kg',2,16.99);
+  add('i4c_anchovies','Marinated Anchovies 1kg','infusions4chefs','','kg',1,18.99);
+  add('i4c_pistachios','Pistachio Kernels 1kg','infusions4chefs','','kg',1,32.89);
+  add('brt_pepperoni','Pepperoni Sticks','burtons','PROV148','kg',1,9.90);
+  add('brt_nduja','Nduja','burtons','PROV167','kg',1,21.99);
+  add('brt_parma_ham','Parma Ham Whole Boneless','burtons','PROV162','kg',1,12.99);
+  add('brt_beef_shin','Beef Shin Boneless','burtons','BEEF158','kg',1,13.99);
+  add('brt_ox_cheek','Ox Cheek Scotch','burtons','BEEF179','kg',1,19.90);
+  add('brt_chicken','Chicken Fillet Skinless','burtons','CHICK160','kg',1,8.99);
+  add('fw_prawns','Black Tiger Prawns 16/20 1kg','fisherandwoods','ZRAWPE3','kg',1,9.00);
+  add('fw_squid','Fresh Squid 1kg','fisherandwoods','FSQUID','kg',1,12.75);
+  add('fw_gorgonzola','Gorgonzola Dolce DOP 1.5kg','fisherandwoods','CHE-GORGON1','kg',1.5,15.88);
+  s.recipes['ragu']={id:'ragu',name:'Beef Ragù',sellPrice:15,
+    ingredients:[{ingredientId:'brt_beef_shin',qtyPerPizza:0.12},{ingredientId:'bf_fior_di_latte',qtyPerPizza:0.08},{ingredientId:'i4c_san_marzano',qtyPerPizza:0.08}],
+    lastComputedCost:3.97,lastComputedGP:73.6,lastComputedAt:today};
+  s.recipes['tenderstem']={id:'tenderstem',name:'Tenderstem & Vegan Nduja',sellPrice:13,
+    ingredients:[{ingredientId:'i4c_pistachios',qtyPerPizza:0.035},{ingredientId:'bf_vegan_mozz',qtyPerPizza:0.08},{ingredientId:'i4c_san_marzano',qtyPerPizza:0.04}],
+    lastComputedCost:3.81,lastComputedGP:70.7,lastComputedAt:today};
+  return s;
+}
+
+function computeRecipeCost(recipe, ingredients){
+  let cost = 0;
+  for(const ri of recipe.ingredients){
+    const ing = ingredients[ri.ingredientId];
+    if(ing) cost += ing.latestPricePerUnit * ri.qtyPerPizza;
+  }
+  return +cost.toFixed(4);
+}
+
+function recalcAllGP(store){
+  const impacts = [];
+  for(const id in store.recipes){
+    const r = store.recipes[id];
+    const oldGP = r.lastComputedGP;
+    const newCost = computeRecipeCost(r, store.ingredients);
+    const newGP = r.sellPrice > 0 ? +((1 - newCost/r.sellPrice)*100).toFixed(1) : 0;
+    if(Math.abs(newGP - oldGP) > 0.5){
+      impacts.push({name:r.name, oldGP, newGP, delta:+(newGP-oldGP).toFixed(1)});
+    }
+    r.lastComputedCost = newCost;
+    r.lastComputedGP = newGP;
+    r.lastComputedAt = today;
+  }
+  return impacts;
+}
+
+let store = initStore();
+let lineRowCount = 0;
+let currentPeriod = 'week';
+
+function supColor(s){ return SUPPLIER_COLORS[s]||'#888'; }
+function supLabel(s){ return SUPPLIER_LABELS[s]||s; }
+function fmt(n){ return '£'+Number(n).toFixed(2); }
+
+document.getElementById('log-date').value = today;
+
+function switchTab(t){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  const idx = {log:0,analytics:1,prices:2}[t];
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  if(t==='analytics') renderAnalytics();
+  if(t==='prices') renderPrices();
+}
+
+function switchSubtab(id, btn){
+  document.querySelectorAll('.subtab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.subtab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('subtab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function onSupplierChange(){
+  const sup = document.getElementById('log-supplier').value;
+  document.getElementById('line-rows').innerHTML = '';
+  lineRowCount = 0;
+  updateInvoiceTotal();
+}
+
+function getIngredientsForSupplier(sup){
+  return Object.values(store.ingredients).filter(i=>i.supplier===sup);
+}
+
+function addLineRow(){
+  const sup = document.getElementById('log-supplier').value;
+  if(!sup){ showToast('Select a supplier first','#ef4444'); return; }
+  const ings = getIngredientsForSupplier(sup);
+  const id = 'row-'+lineRowCount++;
+  const dlId = 'dl-'+id;
+  const div = document.createElement('div');
+  div.className = 'line-row';
+  div.id = id;
+  div.innerHTML = `
+    <div>
+      <input type="text" list="${dlId}" placeholder="Ingredient name" oninput="onIngredientInput('${id}')" autocomplete="off" style="width:100%"/>
+      <datalist id="${dlId}">${ings.map(i=>`<option value="${i.name}"></option>`).join('')}</datalist>
+    </div>
+    <input type="number" min="1" step="1" value="1" placeholder="Qty" oninput="recalcRow('${id}')" style="text-align:center"/>
+    <input type="number" min="0" step="0.01" placeholder="£/pack" oninput="recalcRow('${id}')" style="text-align:right"/>
+    <span class="price-badge badge-same" id="badge-${id}">—</span>
+    <span class="line-total" id="lt-${id}">£0.00</span>
+    <button class="line-delete" onclick="removeRow('${id}')">×</button>`;
+  document.getElementById('line-rows').appendChild(div);
+}
+
+function removeRow(id){
+  const el = document.getElementById(id);
+  if(el) el.remove();
+  updateInvoiceTotal();
+}
+
+function findIngredientByName(name, sup){
+  return Object.values(store.ingredients).find(i=>i.supplier===sup && i.name===name);
+}
+
+function onIngredientInput(rowId){
+  const row = document.getElementById(rowId);
+  const sup = document.getElementById('log-supplier').value;
+  const nameInput = row.querySelector('input[type=text]');
+  const priceInput = row.querySelectorAll('input')[2];
+  const ing = findIngredientByName(nameInput.value.trim(), sup);
+  if(ing && (!priceInput.value)){
+    priceInput.value = ing.latestPrice.toFixed(2);
+  }
+  recalcRow(rowId);
+}
+
+function recalcRow(rowId){
+  const row = document.getElementById(rowId);
+  const sup = document.getElementById('log-supplier').value;
+  const inputs = row.querySelectorAll('input');
+  const nameInput = inputs[0];
+  const qty = parseFloat(inputs[1].value)||0;
+  const price = parseFloat(inputs[2].value)||0;
+  const lineTotal = qty * price;
+  document.getElementById('lt-'+rowId).textContent = fmt(lineTotal);
+  const badge = document.getElementById('badge-'+rowId);
+  const ing = findIngredientByName(nameInput.value.trim(), sup);
+  if(ing && price > 0){
+    const prev = ing.latestPrice;
+    const delta = price - prev;
+    const pct = prev > 0 ? (delta/prev*100) : 0;
+    if(Math.abs(pct) < 0.1){
+      badge.className='price-badge badge-same'; badge.textContent='—';
+    } else if(delta>0){
+      badge.className='price-badge badge-up'; badge.textContent=`▲ ${pct.toFixed(1)}%`;
+    } else {
+      badge.className='price-badge badge-down'; badge.textContent=`▼ ${Math.abs(pct).toFixed(1)}%`;
+    }
+  } else {
+    badge.className='price-badge badge-same'; badge.textContent='—';
+  }
+  updateInvoiceTotal();
+}
+
+function updateInvoiceTotal(){
+  let total = 0;
+  document.querySelectorAll('.line-row').forEach(row=>{
+    const inputs = row.querySelectorAll('input');
+    const qty = parseFloat(inputs[1].value)||0;
+    const price = parseFloat(inputs[2].value)||0;
+    total += qty * price;
+  });
+  document.getElementById('invoice-total').textContent = fmt(total);
+}
+
+function saveInvoice(){
+  const errEl = document.getElementById('save-error');
+  errEl.textContent='';
+  const supplier = document.getElementById('log-supplier').value;
+  const date = document.getElementById('log-date').value;
+  const ref = document.getElementById('log-ref').value.trim();
+  if(!supplier){ errEl.textContent='Please select a supplier.'; return; }
+  if(!date){ errEl.textContent='Please select a date.'; return; }
+  if(!ref){ errEl.textContent='Please enter an invoice reference.'; return; }
+  const rows = document.querySelectorAll('.line-row');
+  if(rows.length===0){ errEl.textContent='Add at least one line item.'; return; }
+  const lines = [];
+  for(const row of rows){
+    const inputs = row.querySelectorAll('input');
+    const name = inputs[0].value.trim();
+    const qty = parseFloat(inputs[1].value)||0;
+    const price = parseFloat(inputs[2].value)||0;
+    if(!name||qty<=0||price<=0){ errEl.textContent='All line items must have a name, qty and price.'; return; }
+    const ing = findIngredientByName(name, supplier);
+    if(!ing){ errEl.textContent=`Ingredient not found: "${name}"`; return; }
+    let priceChange = null;
+    const prev = ing.latestPrice;
+    if(prev > 0){
+      const delta = +(price - prev).toFixed(4);
+      const pct = +(delta/prev*100).toFixed(2);
+      if(Math.abs(pct) >= 0.1) priceChange = {prevPrice:prev, delta, pct};
+    }
+    lines.push({ingredientId:ing.id, name:ing.name, qty, pricePerPack:price, lineTotal:+(qty*price).toFixed(2), priceChange});
+  }
+  const invoiceTotal = lines.reduce((s,l)=>s+l.lineTotal,0);
+  const invoiceId = 'inv-'+Date.now();
+  for(const line of lines){
+    const ing = store.ingredients[line.ingredientId];
+    ing.latestPrice = line.pricePerPack;
+    ing.latestPricePerUnit = +(line.pricePerPack / ing.packSize).toFixed(4);
+    ing.priceHistory.unshift({date, invoiceRef:ref, pricePerPack:line.pricePerPack, pricePerUnit:ing.latestPricePerUnit});
+    if(ing.priceHistory.length > 12) ing.priceHistory = ing.priceHistory.slice(0,12);
+  }
+  store.invoices.unshift({id:invoiceId, supplier, date, ref, lines, invoiceTotal:+invoiceTotal.toFixed(2), notes:document.getElementById('log-notes').value.trim()});
+  const impacts = recalcAllGP(store);
+  saveStore(store);
+  showToast('Invoice saved!');
+  document.getElementById('log-ref').value='';
+  document.getElementById('log-notes').value='';
+  document.getElementById('line-rows').innerHTML='';
+  lineRowCount=0;
+  updateInvoiceTotal();
+  if(impacts.length > 0) showGPImpact(impacts);
+  else document.getElementById('gp-impact-panel').style.display='none';
+}
+
+function showGPImpact(impacts){
+  const panel = document.getElementById('gp-impact-panel');
+  let html = `<div class="gp-impact"><div class="gp-impact-title">GP Impact from Price Changes</div>`;
+  for(const i of impacts){
+    const cls = i.delta > 0 ? 'color:var(--green)' : 'color:var(--fire2)';
+    const sign = i.delta > 0 ? '+' : '';
+    html += `<div class="gp-impact-row"><span>${i.name}</span><span><span style="color:var(--text3)">${i.oldGP.toFixed(1)}%</span> → <strong>${i.newGP.toFixed(1)}%</strong> <span style="${cls}">(${sign}${i.delta.toFixed(1)}pp)</span></span></div>`;
+  }
+  html += '</div>';
+  panel.innerHTML = html;
+  panel.style.display='block';
+}
+
+function showToast(msg, bg=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  if(bg) t.style.background = bg;
+  else t.style.background = 'var(--green)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function setPeriod(p, btn){
+  currentPeriod = p;
+  document.querySelectorAll('.period-chips .chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderAnalytics();
+}
+
+function getFilteredInvoices(){
+  const now = new Date();
+  return store.invoices.filter(inv=>{
+    if(currentPeriod==='all') return true;
+    const d = new Date(inv.date);
+    if(currentPeriod==='week'){
+      const wStart = new Date(now); wStart.setDate(now.getDate()-now.getDay());
+      wStart.setHours(0,0,0,0);
+      return d >= wStart;
+    }
+    if(currentPeriod==='4weeks'){
+      const cutoff = new Date(now); cutoff.setDate(now.getDate()-28);
+      return d >= cutoff;
+    }
+    return true;
+  });
+}
+
+function renderAnalytics(){
+  const invoices = getFilteredInvoices();
+  const container = document.getElementById('analytics-content');
+  if(invoices.length===0){
+    container.innerHTML='<div class="empty-state"><div class="icon">📊</div><div>No invoices in this period</div></div>';
+    return;
+  }
+  const supplierSpend = {};
+  const ingSpend = {};
+  for(const inv of invoices){
+    supplierSpend[inv.supplier] = (supplierSpend[inv.supplier]||0) + inv.invoiceTotal;
+    for(const l of inv.lines){
+      ingSpend[l.name] = (ingSpend[l.name]||0) + l.lineTotal;
+    }
+  }
+  const maxSup = Math.max(...Object.values(supplierSpend));
+  let html = '<div class="analytics-grid">';
+  html += '<div class="card"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em">Spend by Supplier</div>';
+  for(const [sup, spend] of Object.entries(supplierSpend).sort((a,b)=>b[1]-a[1])){
+    const pct = maxSup > 0 ? spend/maxSup*100 : 0;
+    html += `<div class="bar-row"><div class="bar-label"><span class="supplier-dot" style="background:${supColor(sup)}"></span>${supLabel(sup)}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${supColor(sup)}"></div></div><div class="bar-val">${fmt(spend)}</div></div>`;
+  }
+  html += '</div>';
+  const weeks = {};
+  for(const inv of invoices){
+    const d = new Date(inv.date);
+    const wk = `${d.getFullYear()}-W${String(Math.ceil((((d - new Date(d.getFullYear(),0,1))/86400000)+new Date(d.getFullYear(),0,1).getDay()+1)/7)).padStart(2,'0')}`;
+    weeks[wk] = (weeks[wk]||0) + inv.invoiceTotal;
+  }
+  const wkKeys = Object.keys(weeks).sort().slice(-8);
+  const maxWk = Math.max(...wkKeys.map(k=>weeks[k])||[1],1);
+  html += '<div class="card"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em">Weekly Spend</div><div class="weekly-bars">';
+  wkKeys.forEach((k,i)=>{
+    const h = Math.round(weeks[k]/maxWk*100);
+    html += `<div class="w-bar-wrap"><div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end"><div class="w-bar" style="height:${h}px"></div></div><div class="w-bar-label">Wk ${i+1}</div></div>`;
+  });
+  if(wkKeys.length===0) html += '<div style="color:var(--text3);font-size:13px">No data</div>';
+  html += '</div>';
+  const wkVals = wkKeys.map(k=>`<div style="font-size:10px;font-family:\'DM Mono\',monospace;color:var(--text3);text-align:center;flex:1">${fmt(weeks[k])}</div>`).join('');
+  if(wkKeys.length) html += `<div style="display:flex;gap:6px;margin-top:4px">${wkVals}</div>`;
+  html += '</div></div>';
+  const top5 = Object.entries(ingSpend).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxIng = top5.length ? top5[0][1] : 1;
+  html += '<div class="card"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em">Top 5 Ingredients by Spend</div>';
+  for(const [name,spend] of top5){
+    const pct = maxIng > 0 ? spend/maxIng*100 : 0;
+    html += `<div class="bar-row"><div class="bar-label" style="width:180px" title="${name}">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--fire)"></div></div><div class="bar-val">${fmt(spend)}</div></div>`;
+  }
+  html += '</div>';
+  html += '<div class="card"><div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em">Invoices</div>';
+  for(const inv of invoices){
+    const accId = 'acc-'+inv.id;
+    html += `<div class="accordion-item"><button class="accordion-trigger" onclick="toggleAcc('${accId}')"><span class="supplier-dot" style="background:${supColor(inv.supplier)}"></span><span style="font-weight:600;font-size:13px">${inv.ref||'—'}</span><span style="font-size:12px;color:var(--text3);margin-left:8px">${inv.date}</span><span style="font-family:'DM Mono',monospace;font-size:13px;margin-left:auto;margin-right:8px">${fmt(inv.invoiceTotal)}</span><span class="accordion-arrow" id="arr-${accId}">▶</span></button><div class="accordion-body" id="${accId}">`;
+    for(const l of inv.lines){
+      let changeTxt = '';
+      if(l.priceChange){
+        const sign = l.priceChange.pct>0?'▲':'▼';
+        const cls = l.priceChange.pct>0?'color:var(--fire2)':'color:var(--green)';
+        changeTxt = ` <span style="${cls};font-size:11px">${sign}${Math.abs(l.priceChange.pct).toFixed(1)}%</span>`;
+      }
+      html += `<div class="invoice-line-row"><span>${l.name}</span><span style="font-family:'DM Mono',monospace">${fmt(l.lineTotal)}${changeTxt}</span></div>`;
+    }
+    if(inv.notes) html += `<div style="font-size:12px;color:var(--text3);margin-top:6px;font-style:italic">${inv.notes}</div>`;
+    html += '</div></div>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function toggleAcc(id){
+  const body = document.getElementById(id);
+  const arr = document.getElementById('arr-'+id);
+  const open = body.classList.toggle('open');
+  if(arr) arr.textContent = open ? '▼' : '▶';
+}
+
+function renderPrices(){
+  renderPriceBook();
+  renderGP();
+}
+
+function renderPriceBook(){
+  const el = document.getElementById('subtab-pricebook');
+  const ings = Object.values(store.ingredients).sort((a,b)=>{
+    if(a.supplier < b.supplier) return -1;
+    if(a.supplier > b.supplier) return 1;
+    return a.name.localeCompare(b.name);
+  });
+  let html = '<div class="card" style="padding:12px 16px">';
+  let curSup = null;
+  for(const ing of ings){
+    if(ing.supplier !== curSup){
+      curSup = ing.supplier;
+      html += `<div style="font-family:'Archivo Black',sans-serif;font-size:12px;color:${supColor(curSup)};text-transform:uppercase;letter-spacing:.08em;padding:12px 0 6px;border-top:1px solid var(--border);margin-top:4px">${supLabel(curSup)}</div>`;
+    }
+    let changeBadge = '';
+    if(ing.priceHistory.length > 0){
+      const prev = ing.priceHistory[0].pricePerPack;
+      const curr = ing.latestPrice;
+      const pct = prev > 0 ? (curr-prev)/prev*100 : 0;
+      if(Math.abs(pct) > 0.1){
+        const cls = pct > 0 ? 'badge-up' : 'badge-down';
+        const sign = pct > 0 ? '▲' : '▼';
+        changeBadge = `<span class="price-badge ${cls}">${sign}${Math.abs(pct).toFixed(1)}%</span>`;
+      }
+    }
+    const lastDate = ing.priceHistory.length > 0 ? ing.priceHistory[0].date : store.seededAt;
+    html += `<div class="pricebook-row">
+      <span class="supplier-dot" style="background:${supColor(ing.supplier)}"></span>
+      <span class="pricebook-name" title="${ing.name}">${ing.name}</span>
+      <span class="pricebook-sku">${ing.sku||'—'}</span>
+      ${changeBadge}
+      <span class="pricebook-price">${fmt(ing.latestPricePerUnit)}/${ing.unit}</span>
+      <span class="pricebook-date">${lastDate}</span>
+    </div>`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function renderGP(){
+  const el = document.getElementById('subtab-gp');
+  let html = '';
+  for(const id in store.recipes){
+    const r = store.recipes[id];
+    const gpCls = r.lastComputedGP >= 72 ? 'gp-green' : r.lastComputedGP >= 60 ? 'gp-amber' : 'gp-red';
+    const cardId = 'gp-card-'+id;
+    html += `<div class="recipe-card" id="${cardId}">
+      <div class="recipe-card-header" id="rch-${id}" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="recipe-name">${r.name}</span>
+        <span class="recipe-sell">Sell ${fmt(r.sellPrice)}</span>
+        <span class="recipe-cost">Cost ${fmt(r.lastComputedCost)}</span>
+        <span class="gp-badge ${gpCls}">${r.lastComputedGP.toFixed(1)}% GP</span>
+        <button class="recalc-btn" onclick="recalcRecipe('${id}')">Recalculate</button>
+        <button class="recipe-toggle" id="rt-${id}" onclick="toggleRecipe('${id}')">▶</button>
+      </div>
+      <div id="rb-${id}" style="display:none">`;
+    html += `<div class="recipe-breakdown">`;
+    for(const ri of r.ingredients){
+      const ing = store.ingredients[ri.ingredientId];
+      if(ing){
+        const cost = +(ing.latestPricePerUnit * ri.qtyPerPizza).toFixed(4);
+        html += `<div class="breakdown-row"><span>${ing.name} × ${ri.qtyPerPizza}${ing.unit}</span><span style="font-family:'DM Mono',monospace">${fmt(cost)}</span></div>`;
+      }
+    }
+    html += `<div class="breakdown-row" style="font-weight:600;color:var(--text)"><span>Total food cost</span><span style="font-family:'DM Mono',monospace">${fmt(r.lastComputedCost)}</span></div>`;
+    html += `</div></div></div>`;
+  }
+  if(!html) html = '<div class="empty-state"><div class="icon">🍕</div><div>No recipes found</div></div>';
+  el.innerHTML = html;
+}
+
+function toggleRecipe(id){
+  const rb = document.getElementById('rb-'+id);
+  const rt = document.getElementById('rt-'+id);
+  const open = rb.style.display === 'none';
+  rb.style.display = open ? 'block' : 'none';
+  rt.textContent = open ? '▼' : '▶';
+}
+
+function recalcRecipe(id){
+  const r = store.recipes[id];
+  if(!r) return;
+  r.lastComputedCost = computeRecipeCost(r, store.ingredients);
+  r.lastComputedGP = r.sellPrice > 0 ? +((1 - r.lastComputedCost/r.sellPrice)*100).toFixed(1) : 0;
+  r.lastComputedAt = today;
+  saveStore(store);
+  renderGP();
+  showToast('GP recalculated');
+}
+</script>
+</body>
+</html>

@@ -23,6 +23,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 #mode-toggle{display:flex;background:var(--bg3);border-radius:8px;border:1px solid var(--border);overflow:hidden;flex-shrink:0}
 #mode-toggle button{border:none;background:none;color:var(--text2);font-size:11px;font-weight:700;padding:5px 10px;cursor:pointer;transition:all .15s}
 #mode-toggle button.active{background:var(--fire);color:#fff}
+#hdr-right{display:flex;align-items:center;gap:8px}
+#btn-svc{border:1px solid var(--border);background:var(--bg3);color:var(--text3);font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer;transition:all .15s;white-space:nowrap}
+#btn-svc.open{background:#0f2a18;border-color:var(--green);color:var(--green)}
 #content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav) + 8px);scrollbar-width:none}
 #content::-webkit-scrollbar{display:none}
 #nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
@@ -183,9 +186,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 <div id="app">
 <div id="hdr">
   <h1>🔥 Taproom <span>Pizza</span></h1>
-  <div id="mode-toggle">
-    <button id="btn-service" class="active" onclick="setMode('service')">SERVICE</button>
-    <button id="btn-setup" onclick="setMode('setup')">SETUP</button>
+  <div id="hdr-right">
+    <button id="btn-svc" onclick="toggleService()">● CLOSED</button>
+    <div id="mode-toggle">
+      <button id="btn-service" class="active" onclick="setMode('service')">SERVICE</button>
+      <button id="btn-setup" onclick="setMode('setup')">SETUP</button>
+    </div>
   </div>
 </div>
 
@@ -408,6 +414,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 const SK = 'taproom_v2';
 function load() { try { return JSON.parse(localStorage.getItem(SK)) || {}; } catch { return {}; } }
 function save(s) { try { localStorage.setItem(SK, JSON.stringify(s)); } catch {} }
+
+// ── SERVICE OPEN/CLOSE ──
+function toggleService() {
+  const s = load();
+  s.serviceOpen = !s.serviceOpen;
+  save(s);
+  updateSvcBtn(s.serviceOpen);
+}
+function updateSvcBtn(open) {
+  const btn = document.getElementById('btn-svc');
+  btn.textContent = open ? '● OPEN' : '● CLOSED';
+  btn.classList.toggle('open', !!open);
+}
 
 // ── MODE ──
 function setMode(m) {
@@ -850,6 +869,7 @@ function init() {
   if (s.dome) document.getElementById('dome-check').classList.add('done');
   document.getElementById('covers-num').textContent = s.covers || 0;
   document.getElementById('notes-ta').value = s.notes || '';
+  updateSvcBtn(s.serviceOpen || false);
   buildChecklists();
   build86Board();
   buildMenu();

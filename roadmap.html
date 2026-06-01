@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Roadmap — Taproom Ops</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0f0e0c;--bg2:#1a1815;--bg3:#242018;--card:#1e1c18;
+  --border:#2e2a22;--fire:#f97316;--fire2:#ef4444;--gold:#f59e0b;
+  --green:#22c55e;--teal:#14b8a6;--purple:#a855f7;
+  --text:#f5f0e8;--text2:#a89f8c;--text3:#6b6357;
+  --r:12px;--nav:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh;padding-bottom:60px}
+.nav{height:var(--nav);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;position:sticky;top:0;z-index:100}
+.nav-wordmark{font-family:'Archivo Black',sans-serif;font-size:18px;color:var(--fire)}
+.nav-back{color:var(--text2);font-size:13px;display:flex;align-items:center;gap:6px;text-decoration:none}
+.nav-back:hover{color:var(--text)}
+.nav-title{font-family:'Archivo Black',sans-serif;font-size:16px;margin-left:8px}
+.wrapper{max-width:1100px;margin:0 auto;padding:32px 20px}
+.page-header{margin-bottom:32px}
+.page-title{font-family:'Archivo Black',sans-serif;font-size:28px;line-height:1.1}
+.page-sub{font-size:14px;color:var(--text2);margin-top:6px}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+@media(max-width:720px){.kanban{grid-template-columns:1fr}}
+.column{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.col-header{padding:16px 20px;border-bottom:1px solid var(--border);border-top:4px solid transparent}
+.col-header.live{border-top-color:#22c55e}
+.col-header.inprogress{border-top-color:#f59e0b}
+.col-header.planned{border-top-color:#3b82f6}
+.col-title{font-family:'Archivo Black',sans-serif;font-size:15px;display:flex;align-items:center;gap:8px}
+.col-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.col-count{font-family:'DM Mono',monospace;font-size:12px;background:var(--bg3);padding:2px 8px;border-radius:10px;color:var(--text2);margin-left:auto}
+.col-body{padding:12px}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:default;transition:border-color .15s,transform .15s}
+.card:last-child{margin-bottom:0}
+.card:hover{border-color:var(--fire);transform:translateY(-1px)}
+.card-title{font-size:14px;font-weight:600;line-height:1.3}
+.card-meta{font-size:12px;color:var(--text3);margin-top:4px}
+.empty-col{padding:32px 16px;text-align:center;color:var(--text3);font-size:13px;line-height:1.6}
+.empty-col .icon{font-size:28px;margin-bottom:8px;display:block}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-back">← Back</a>
+  <span class="nav-wordmark">Hefjam</span>
+  <span class="nav-title">Roadmap</span>
+</nav>
+<div class="wrapper">
+  <div class="page-header">
+    <div class="page-title">Taproom Ops Roadmap</div>
+    <div class="page-sub">Internal development tracker for the kitchen operations system.</div>
+  </div>
+  <div class="kanban">
+
+    <div class="column">
+      <div class="col-header live">
+        <div class="col-title">
+          <span class="col-dot" style="background:#22c55e"></span>
+          Live
+          <span class="col-count">0</span>
+        </div>
+      </div>
+      <div class="col-body">
+        <div class="empty-col">
+          <span class="icon">🚀</span>
+          Nothing live yet — items will appear here once shipped.
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="col-header inprogress">
+        <div class="col-title">
+          <span class="col-dot" style="background:#f59e0b"></span>
+          In Progress
+          <span class="col-count">5</span>
+        </div>
+      </div>
+      <div class="col-body">
+        <div class="card">
+          <div class="card-title">Operations Dashboard Hub</div>
+          <div class="card-meta">Central nav &amp; overview for all ops tools</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Invoice Sorting System</div>
+          <div class="card-meta">Log &amp; track supplier invoices</div>
+        </div>
+        <div class="card">
+          <div class="card-title">GP / Menu Costing</div>
+          <div class="card-meta">Recipe cost breakdown &amp; gross profit tracking</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Spend Analytics</div>
+          <div class="card-meta">Supplier spend trends &amp; ingredient insights</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Service Status</div>
+          <div class="card-meta">Real-time kitchen &amp; front-of-house status board</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="col-header planned">
+        <div class="col-title">
+          <span class="col-dot" style="background:#3b82f6"></span>
+          Planned
+          <span class="col-count">5</span>
+        </div>
+      </div>
+      <div class="col-body">
+        <div class="card">
+          <div class="card-title">End-of-Night Reporting</div>
+          <div class="card-meta">Automated daily close-down summary</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Staff Rota / Scheduling</div>
+          <div class="card-meta">Weekly shift planning &amp; coverage view</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Supplier Price Threshold Alerts</div>
+          <div class="card-meta">Notify when ingredient prices exceed targets</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Dough Calculator</div>
+          <div class="card-meta">Batch sizing &amp; fermentation scheduling</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Par Level Suggestions</div>
+          <div class="card-meta">AI-assisted ordering based on historic usage</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
