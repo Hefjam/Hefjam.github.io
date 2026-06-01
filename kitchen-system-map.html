@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taproom Kitchen — System Architecture</title>
+<style>
+  :root {
+    --bg: #0f0e0c;
+    --bg2: #1a1815;
+    --border: #2e2a22;
+    --fire: #f97316;
+    --fire2: #ef4444;
+    --gold: #f59e0b;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --teal: #14b8a6;
+    --purple: #a855f7;
+    --text: #f5f0e8;
+    --text2: #a89f8c;
+    --text3: #6b6357;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .page-header .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--fire);
+    margin-bottom: 8px;
+  }
+  .page-header h1 {
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .page-header h1 span { color: var(--fire); }
+  .page-header .subtitle {
+    margin-top: 8px;
+    color: var(--text2);
+    font-size: 15px;
+  }
+
+  /* ── SVG infographic container ── */
+  .diagram-wrap {
+    margin: 32px 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg2);
+    overflow: hidden;
+  }
+  .diagram-wrap svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0 40px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Module cards (detail section) ── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 16px;
+  }
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .module-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color .15s;
+  }
+  .module-card:hover { border-color: #3e3830; }
+  .module-card .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .module-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .badge-live    { background: #14532d; color: var(--green); }
+  .badge-planned { background: #451a03; color: var(--gold); }
+  .badge-hub     { background: #431407; color: var(--fire); }
+
+  .module-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .module-card p {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+  .module-card .features {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text3);
+  }
+  .feature::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+  }
+
+  .flow-note {
+    background: #1a1815;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--fire);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .flow-note strong { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .page { padding: 20px 16px 48px; }
+    .modules-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <p class="eyebrow">Taproom Bar &amp; Restaurant</p>
+    <h1>Kitchen <span>Management</span> System</h1>
+    <p class="subtitle">System architecture &amp; data flow — Head Chef overview</p>
+  </header>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Taproom Kitchen system architecture diagram">
+      <defs>
+        <linearGradient id="gradHub" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#c2410c"/>
+          <stop offset="100%" stop-color="#9a3412"/>
+        </linearGradient>
+        <linearGradient id="gradModule" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#1e293b"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+        <linearGradient id="gradExisting" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#14532d" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#052e16" stop-opacity="0.7"/>
+        </linearGradient>
+        <linearGradient id="gradFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#f97316" stop-opacity="0.2"/>
+          <stop offset="50%"  stop-color="#f97316" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#f97316" stop-opacity="0.2"/>
+        </linearGradient>
+        <linearGradient id="gradFlowV" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%"   stop-color="#f97316" stop-opacity="0.2"/>
+          <stop offset="50%"  stop-color="#f97316" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#f97316" stop-opacity="0.2"/>
+        </linearGradient>
+        <filter id="glowHub" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+        </marker>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6" opacity="0.6"/>
+        </marker>
+        <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#22c55e" opacity="0.5"/>
+        </marker>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.025" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+
+      <rect width="1000" height="780" fill="#0f0e0c"/>
+      <rect width="1000" height="780" fill="url(#grid)"/>
+      <ellipse cx="500" cy="390" rx="180" ry="130" fill="#f97316" opacity="0.04"/>
+      <ellipse cx="500" cy="390" rx="280" ry="220" fill="#f97316" opacity="0.02"/>
+
+      <!-- Hub spokes -->
+      <path d="M 432 365 C 370 310 280 270 255 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
+      <path d="M 568 365 C 630 310 720 270 745 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
+      <path d="M 568 435 C 640 480 720 540 745 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
+      <path d="M 432 435 C 360 480 280 540 255 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
+      <path d="M 500 355 L 500 138" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,4" marker-end="url(#arrowGreen)"/>
+      <path d="M 500 445 L 500 662" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,4" marker-end="url(#arrowGreen)"/>
+
+      <!-- Outer data flow chain -->
+      <line x1="273" y1="163" x2="727" y2="163" stroke="url(#gradFlow)" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+      <line x1="837" y1="235" x2="837" y2="565" stroke="url(#gradFlowV)" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+      <line x1="727" y1="617" x2="273" y2="617" stroke="url(#gradFlow)" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+
+      <!-- Flow labels -->
+      <rect x="423" y="149" width="154" height="20" rx="4" fill="#1a1815"/>
+      <text x="500" y="163" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="9.5" font-weight="700" letter-spacing="0.08em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">INVOICE DATA FEEDS SPEND</text>
+      <text x="857" y="390" text-anchor="start" dominant-baseline="middle" fill="#f97316" font-size="9.5" font-weight="700" letter-spacing="0.08em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" transform="rotate(90, 857, 390)">SPEND FEEDS RECIPE COSTS</text>
+      <rect x="423" y="624" width="154" height="20" rx="4" fill="#1a1815"/>
+      <text x="500" y="634" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="9.5" font-weight="700" letter-spacing="0.08em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">RECIPES INFORM PREP LEVELS</text>
+
+      <!-- HUB -->
+      <rect x="382" y="347" width="236" height="146" rx="16" fill="#f97316" opacity="0.12" filter="url(#glowHub)"/>
+      <rect x="390" y="355" width="220" height="130" rx="13" fill="url(#gradHub)" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.6"/>
+      <rect x="402" y="367" width="32" height="32" rx="7" fill="#f97316" fill-opacity="0.25"/>
+      <text x="418" y="387" text-anchor="middle" dominant-baseline="middle" font-size="16">🍕</text>
+      <rect x="440" y="370" width="82" height="16" rx="8" fill="#f97316" fill-opacity="0.2"/>
+      <text x="481" y="379" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="9" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">CENTRAL HUB</text>
+      <text x="500" y="408" text-anchor="middle" fill="#fff" font-size="17" font-weight="800" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Kitchen Dashboard</text>
+      <text x="500" y="427" text-anchor="middle" fill="#fed7aa" font-size="11" font-weight="500" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">One-stop admin &amp; management</text>
+      <line x1="410" y1="440" x2="590" y2="440" stroke="#f97316" stroke-opacity="0.2" stroke-width="1"/>
+      <text x="410" y="456" fill="#fbd38d" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">◆ Live order display</text>
+      <text x="535" y="456" fill="#fbd38d" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">◆ Team tools</text>
+      <text x="410" y="471" fill="#fbd38d" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">◆ Reporting &amp; alerts</text>
+      <text x="535" y="471" fill="#fbd38d" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">◆ All modules</text>
+
+      <!-- MODULE 1: Invoicing -->
+      <rect x="82" y="118" width="196" height="128" rx="11" fill="url(#gradModule)" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="94" y="130" width="28" height="28" rx="6" fill="#1e3a5f"/>
+      <text x="108" y="148" text-anchor="middle" dominant-baseline="middle" font-size="14">📧</text>
+      <rect x="128" y="132" width="60" height="14" rx="7" fill="#451a03"/>
+      <text x="158" y="140" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="8.5" font-weight="700" letter-spacing="0.06em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">PLANNED</text>
+      <circle cx="258" cy="139" r="10" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-opacity="0.4" stroke-width="1"/>
+      <text x="258" y="139" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="10" font-weight="800" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">1</text>
+      <text x="94" y="172" fill="#f1f5f9" font-size="13.5" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Invoicing Tool</text>
+      <text x="94" y="192" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Pull invoices from accounts email</text>
+      <text x="94" y="208" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Live supplier pricing</text>
+      <text x="94" y="224" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Supplier &amp; product catalogue</text>
+
+      <!-- MODULE 2: Monthly Spend -->
+      <rect x="722" y="118" width="196" height="128" rx="11" fill="url(#gradModule)" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="734" y="130" width="28" height="28" rx="6" fill="#1e3a5f"/>
+      <text x="748" y="148" text-anchor="middle" dominant-baseline="middle" font-size="14">📊</text>
+      <rect x="768" y="132" width="60" height="14" rx="7" fill="#451a03"/>
+      <text x="798" y="140" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="8.5" font-weight="700" letter-spacing="0.06em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">PLANNED</text>
+      <circle cx="898" cy="139" r="10" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-opacity="0.4" stroke-width="1"/>
+      <text x="898" y="139" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="10" font-weight="800" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">2</text>
+      <text x="734" y="172" fill="#f1f5f9" font-size="13.5" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Monthly Spend</text>
+      <text x="734" y="192" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Kitchen product spend tracker</text>
+      <text x="734" y="208" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Budget vs actual by category</text>
+      <text x="734" y="224" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Month-on-month trends</text>
+
+      <!-- MODULE 3: GP & Recipe -->
+      <rect x="722" y="558" width="196" height="128" rx="11" fill="url(#gradModule)" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="734" y="570" width="28" height="28" rx="6" fill="#1e3a5f"/>
+      <text x="748" y="588" text-anchor="middle" dominant-baseline="middle" font-size="14">🧮</text>
+      <rect x="768" y="572" width="60" height="14" rx="7" fill="#451a03"/>
+      <text x="798" y="580" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="8.5" font-weight="700" letter-spacing="0.06em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">PLANNED</text>
+      <circle cx="898" cy="579" r="10" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-opacity="0.4" stroke-width="1"/>
+      <text x="898" y="579" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="10" font-weight="800" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">3</text>
+      <text x="734" y="614" fill="#f1f5f9" font-size="13.5" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">GP &amp; Recipe Costing</text>
+      <text x="734" y="634" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ GP% per dish, live food cost</text>
+      <text x="734" y="650" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Recipe builder + costing tool</text>
+      <text x="734" y="666" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Menu GP &amp; margin overview</text>
+
+      <!-- MODULE 4: Prep System -->
+      <rect x="82" y="558" width="196" height="128" rx="11" fill="url(#gradModule)" stroke="#3b82f6" stroke-width="1.2" stroke-opacity="0.5"/>
+      <rect x="94" y="570" width="28" height="28" rx="6" fill="#1e3a5f"/>
+      <text x="108" y="588" text-anchor="middle" dominant-baseline="middle" font-size="14">📋</text>
+      <rect x="128" y="572" width="60" height="14" rx="7" fill="#451a03"/>
+      <text x="158" y="580" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="8.5" font-weight="700" letter-spacing="0.06em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">PLANNED</text>
+      <circle cx="258" cy="579" r="10" fill="#f97316" fill-opacity="0.2" stroke="#f97316" stroke-opacity="0.4" stroke-width="1"/>
+      <text x="258" y="579" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="10" font-weight="800" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">4</text>
+      <text x="94" y="614" fill="#f1f5f9" font-size="13.5" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Prep System</text>
+      <text x="94" y="634" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Par levels by station</text>
+      <text x="94" y="650" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Daily prep lists + sign-off</text>
+      <text x="94" y="666" fill="#94a3b8" font-size="10.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">→ Waste &amp; stock tracking</text>
+
+      <!-- EXISTING: Kitchen Display -->
+      <rect x="416" y="42" width="168" height="80" rx="10" fill="url(#gradExisting)" stroke="#22c55e" stroke-width="1.2" stroke-opacity="0.5"/>
+      <text x="500" y="68" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Kitchen Display</text>
+      <text x="500" y="85" text-anchor="middle" fill="#86efac" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Live order tickets</text>
+      <rect x="465" y="95" width="70" height="16" rx="8" fill="#14532d"/>
+      <circle cx="478" cy="103" r="3" fill="#22c55e"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle>
+      <text x="500" y="103.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">● LIVE</text>
+
+      <!-- EXISTING: Pizza Ordering -->
+      <rect x="416" y="658" width="168" height="80" rx="10" fill="url(#gradExisting)" stroke="#22c55e" stroke-width="1.2" stroke-opacity="0.5"/>
+      <text x="500" y="686" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Pizza Ordering</text>
+      <text x="500" y="703" text-anchor="middle" fill="#86efac" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Table-side QR ordering</text>
+      <rect x="465" y="713" width="70" height="16" rx="8" fill="#14532d"/>
+      <circle cx="478" cy="721" r="3" fill="#22c55e"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/></circle>
+      <text x="500" y="721.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">● LIVE</text>
+
+      <text x="500" y="758" text-anchor="middle" fill="#6b6357" font-size="10" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">The Taproom Kitchen Management System · hefjam.github.io</text>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div>Central hub — Kitchen Dashboard</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>New modules to build (Planned)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Existing tools (Live)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f97316; border-radius:0"></div>Data flow direction</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6b6357"></div>Dashboard ↔ module links</div>
+  </div>
+
+  <div class="flow-note">
+    <strong>The pipeline:</strong> Supplier invoices land in the accounts email →
+    the Invoicing Tool parses and categorises them →
+    Monthly Spend rolls them up into kitchen product costs →
+    GP &amp; Recipe Costing uses live ingredient prices to calculate dish margins →
+    Prep System pulls par levels and recipe yields to generate daily prep lists.
+    <strong>All modules are accessible from — and feed data back into — the central Kitchen Dashboard.</strong>
+  </div>
+
+  <p class="section-title">Module breakdown</p>
+  <div class="modules-grid">
+
+    <div class="module-card" style="border-color: #7c2d12;">
+      <div class="card-top">
+        <div class="module-icon" style="background:#431407;">🏠</div>
+        <span class="badge badge-hub">Central Hub</span>
+      </div>
+      <h3>Kitchen Dashboard</h3>
+      <p>The one-stop-shop entry point for you and your kitchen team. Houses navigation to all modules and provides at-a-glance KPIs.</p>
+      <div class="features">
+        <div class="feature">Live order display (tickets)</div>
+        <div class="feature">Daily spend &amp; GP snapshot</div>
+        <div class="feature">Prep status at a glance</div>
+        <div class="feature">Team task &amp; alert feed</div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="card-top">
+        <div class="module-icon" style="background:#1e3a5f;">📧</div>
+        <span class="badge badge-planned">1 · Planned</span>
+      </div>
+      <h3>Invoicing Tool</h3>
+      <p>Connects to the accounts email inbox to pull supplier invoices automatically. Maintains a live product price list per supplier.</p>
+      <div class="features">
+        <div class="feature">Gmail / email integration (IMAP or API)</div>
+        <div class="feature">PDF invoice parsing (OCR or structured)</div>
+        <div class="feature">Supplier + product price catalogue</div>
+        <div class="feature">Price change alerts (vs last order)</div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="card-top">
+        <div class="module-icon" style="background:#1e3a5f;">📊</div>
+        <span class="badge badge-planned">2 · Planned</span>
+      </div>
+      <h3>Monthly Spend</h3>
+      <p>Aggregates all invoice data into kitchen spend reports by product category, supplier, and time period.</p>
+      <div class="features">
+        <div class="feature">Monthly / weekly spend by category</div>
+        <div class="feature">Budget vs actual variance</div>
+        <div class="feature">Supplier cost comparison</div>
+        <div class="feature">Month-on-month trend charts</div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="card-top">
+        <div class="module-icon" style="background:#1e3a5f;">🧮</div>
+        <span class="badge badge-planned">3 · Planned</span>
+      </div>
+      <h3>GP &amp; Recipe Costing</h3>
+      <p>Build and cost every recipe using live ingredient prices pulled from invoicing. See your real food cost % and GP per dish instantly.</p>
+      <div class="features">
+        <div class="feature">Recipe builder (ingredients + yields)</div>
+        <div class="feature">Live food cost % per dish</div>
+        <div class="feature">Target vs actual GP per dish</div>
+        <div class="feature">Menu-level GP overview</div>
+      </div>
+    </div>
+
+    <div class="module-card">
+      <div class="card-top">
+        <div class="module-icon" style="background:#1e3a5f;">📋</div>
+        <span class="badge badge-planned">4 · Planned</span>
+      </div>
+      <h3>Prep System</h3>
+      <p>Generates daily prep lists based on par levels, recipe data, and expected covers. Your team can sign off tasks in real time.</p>
+      <div class="features">
+        <div class="feature">Par levels per product / station</div>
+        <div class="feature">Auto-generated daily prep lists</div>
+        <div class="feature">Team sign-off &amp; progress tracking</div>
+        <div class="feature">Waste logging (links to recipe costs)</div>
+      </div>
+    </div>
+
+    <div class="module-card" style="border-color: #14532d; opacity: 0.85;">
+      <div class="card-top">
+        <div class="module-icon" style="background:#052e16;">🖥️</div>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <h3>Kitchen Display</h3>
+      <p>Existing live order display at <code style="font-size:11px;color:#86efac">taproom-kitchen.html</code> — shows incoming orders from the table ordering app in real time.</p>
+      <div class="features">
+        <div class="feature">Real-time order tickets</div>
+        <div class="feature">Status tracking (new → cooking → done)</div>
+        <div class="feature">Mobile-optimised for kitchen screens</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="text-align:center;">
+    <a href="index.html" style="color:var(--text3);font-size:13px;text-decoration:none;">← Back to Hefjam</a>
+  </p>
+
+</div>
+</body>
+</html>
