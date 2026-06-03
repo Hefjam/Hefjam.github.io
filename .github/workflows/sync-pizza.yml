@@ -1,0 +1,31 @@
+name: Sync pizza app
+
+on:
+  push:
+    branches: [claude/taproom-dashboard-hub-2bvaM]
+    paths: ['.github/workflows/sync-pizza.yml']
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/taproom-dashboard-hub-2bvaM
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download pizza app from Taproom-Pizza repo
+        run: |
+          curl -sL 'https://raw.githubusercontent.com/hefjam/Taproom-Pizza/main/The%20Taproom%20Pizza%20_standalone_.html' -o pizza.html
+          echo "Downloaded: $(wc -c < pizza.html) bytes"
+
+      - name: Commit pizza.html
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add pizza.html
+          git diff --staged --quiet && echo "No changes" || git commit -m "Sync pizza.html from Taproom-Pizza repo"
+          git push
