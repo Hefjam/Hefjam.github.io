@@ -171,7 +171,7 @@
     <label>Tables</label>
     <input id="count" type="number" min="1" max="60" value="30" />
     <label>Base URL</label>
-    <input id="baseurl" type="text" value="https://hefjam.github.io" style="width: 240px;" />
+    <input id="baseurl" type="text" value="https://hefjam.github.io/pizza.html" style="width: 280px;" />
     <button onclick="window.print()">Print</button>
   </div>
 </div>
@@ -258,7 +258,7 @@
   function buildCard(n, style, baseUrl) {
     const card = document.createElement('div');
     card.className = 'tcard';
-    const url = `${baseUrl}/?t=${String(n).padStart(2, '0')}`;
+    const url = `${baseUrl}?t=${String(n).padStart(2, '0')}`;
 
     card.innerHTML = `
       <div class="tcard-wordmark">the<br/>taproom<br/><span style="font-family:'DM Mono',monospace; font-size:9px; font-weight:700; letter-spacing:0.18em; color:#1a1310; opacity:0.75;">· PIZZA ·</span></div>
@@ -317,7 +317,7 @@
   function rebuild() {
     const style = styleSel.value;
     const count = Math.max(1, Math.min(60, parseInt(countInput.value, 10) || 30));
-    const baseUrl = baseInput.value.trim() || 'https://hefjam.github.io';
+    const baseUrl = baseInput.value.trim() || 'https://hefjam.github.io/pizza.html';
     grid.innerHTML = '';
     for (let i = 1; i <= count; i++) {
       grid.appendChild(buildCard(i, style, baseUrl));
