@@ -236,7 +236,7 @@
         </linearGradient>
         <filter id="glowHub" x="-30%" y="-30%" width="160%" height="160%">
           <feGaussianBlur stdDeviation="8" result="blur"/>
-          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
         <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
           <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
@@ -258,10 +258,10 @@
       <ellipse cx="500" cy="390" rx="280" ry="220" fill="#f97316" opacity="0.02"/>
 
       <!-- Hub spokes -->
-      <path d="M 432 365 C 370 310 280 270 255 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
-      <path d="M 568 365 C 630 310 720 270 745 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
-      <path d="M 568 435 C 640 480 720 540 745 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
-      <path d="M 432 435 C 360 480 280 540 255 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowBlue)"/>
+      <path d="M 432 365 C 370 310 280 270 255 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowOrange)"/>
+      <path d="M 568 365 C 630 310 720 270 745 235" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowOrange)"/>
+      <path d="M 568 435 C 640 480 720 540 745 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowOrange)"/>
+      <path d="M 432 435 C 360 480 280 540 255 565" fill="none" stroke="#f97316" stroke-width="1.5" stroke-opacity="0.4" stroke-dasharray="5,4" marker-end="url(#arrowOrange)"/>
       <path d="M 500 355 L 500 138" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,4" marker-end="url(#arrowGreen)"/>
       <path d="M 500 445 L 500 662" fill="none" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,4" marker-end="url(#arrowGreen)"/>
 
@@ -350,7 +350,7 @@
       <text x="500" y="85" text-anchor="middle" fill="#86efac" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Live order tickets</text>
       <rect x="465" y="95" width="70" height="16" rx="8" fill="#14532d"/>
       <circle cx="478" cy="103" r="3" fill="#22c55e"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle>
-      <text x="500" y="103.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">● LIVE</text>
+      <text x="500" y="103.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">LIVE</text>
 
       <!-- EXISTING: Pizza Ordering -->
       <rect x="416" y="658" width="168" height="80" rx="10" fill="url(#gradExisting)" stroke="#22c55e" stroke-width="1.2" stroke-opacity="0.5"/>
@@ -358,7 +358,7 @@
       <text x="500" y="703" text-anchor="middle" fill="#86efac" font-size="9.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">Table-side QR ordering</text>
       <rect x="465" y="713" width="70" height="16" rx="8" fill="#14532d"/>
       <circle cx="478" cy="721" r="3" fill="#22c55e"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/></circle>
-      <text x="500" y="721.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">● LIVE</text>
+      <text x="500" y="721.5" text-anchor="middle" dominant-baseline="middle" fill="#22c55e" font-size="8.5" font-weight="700" letter-spacing="0.1em" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">LIVE</text>
 
       <text x="500" y="758" text-anchor="middle" fill="#6b6357" font-size="10" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">The Taproom Kitchen Management System · hefjam.github.io</text>
     </svg>
