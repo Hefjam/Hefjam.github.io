@@ -2,13 +2,22 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "pizza",
   "compatibility_date": "2026-05-15",
+  "main": "src/index.js",
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "restaurant-bookings",
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    }
   ]
 }

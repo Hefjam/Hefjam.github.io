@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Table</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f5f0e8;--card:#fff;--primary:#3a1408;--accent:#e8a545;
+      --text:#1a1a1a;--muted:#777;--border:#e0d8cc;--r:12px;
+    }
+    body{background:var(--bg);min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text)}
+    .wrap{max-width:480px;margin:0 auto;padding:32px 16px}
+    .header{text-align:center;margin-bottom:28px}
+    .header h1{font-size:26px;font-weight:700;color:var(--primary)}
+    .header p{color:var(--muted);margin-top:4px;font-size:15px}
+    .card{background:var(--card);border-radius:var(--r);padding:24px;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+    .progress{display:flex;gap:6px;margin-bottom:24px}
+    .prog-seg{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+    .prog-seg.active{background:var(--accent)}
+    .prog-seg.done{background:var(--primary)}
+    label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+    input,select,textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;color:var(--text);background:#faf8f4;outline:none;transition:border-color .2s;font-family:inherit}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+    textarea{resize:vertical;min-height:80px}
+    .field{margin-bottom:16px}
+    .btn{width:100%;padding:14px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .2s;font-family:inherit}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{opacity:.88}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-ghost{background:transparent;color:var(--muted);font-size:14px;padding:10px;margin-top:6px}
+    .btn-ghost:hover{color:var(--text)}
+    .size-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:4px}
+    .sz{aspect-ratio:1;border:1.5px solid var(--border);border-radius:8px;background:#faf8f4;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit}
+    .sz:hover{border-color:var(--accent)}
+    .sz.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:280px;overflow-y:auto}
+    .slot{padding:11px 6px;border:1.5px solid var(--border);border-radius:8px;background:#faf8f4;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit}
+    .slot:hover:not(:disabled){border-color:var(--accent)}
+    .slot.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .slot:disabled{opacity:.35;cursor:not-allowed}
+    .slot-sub{font-size:11px;color:var(--muted);font-weight:400;display:block;margin-top:2px}
+    .slot.sel .slot-sub{color:rgba(255,255,255,.65)}
+    .err{background:#fff0f0;border:1px solid #fcc;border-radius:8px;padding:11px 14px;color:#c0392b;font-size:14px;margin-bottom:14px;display:none}
+    .step{display:none}.step.on{display:block}
+    /* Confirmation */
+    .tick{text-align:center;font-size:52px;margin-bottom:12px}
+    .conf-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+    .conf-row:last-child{border:none}
+    .conf-label{color:var(--muted);font-size:14px}
+    .conf-val{font-weight:600;text-align:right;font-size:14px}
+    .ref{text-align:center;margin-top:14px;font-size:12px;color:var(--muted)}
+    .loading{text-align:center;padding:32px;color:var(--muted);font-size:15px}
+    @media(max-width:360px){.size-grid{grid-template-columns:repeat(4,1fr)}.slots-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>Book a Table</h1>
+    <p id="resto-name">The Taproom</p>
+  </div>
+  <div class="card">
+    <div class="progress">
+      <div class="prog-seg active" id="p1"></div>
+      <div class="prog-seg" id="p2"></div>
+      <div class="prog-seg" id="p3"></div>
+      <div class="prog-seg" id="p4"></div>
+    </div>
+
+    <!-- Step 1: Date + party size -->
+    <div class="step on" id="s1">
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="date-in">
+      </div>
+      <div class="field">
+        <label>Party size</label>
+        <div class="size-grid" id="size-grid"></div>
+      </div>
+      <div class="err" id="e1"></div>
+      <button class="btn btn-primary" id="n1">Choose a time &rarr;</button>
+    </div>
+
+    <!-- Step 2: Time slot -->
+    <div class="step" id="s2">
+      <div class="field">
+        <label>Available times</label>
+        <div id="slots-wrap"><div class="loading">Checking availability&hellip;</div></div>
+      </div>
+      <div class="err" id="e2"></div>
+      <button class="btn btn-primary" id="n2" disabled>Continue &rarr;</button>
+      <button class="btn btn-ghost" id="b1">&larr; Back</button>
+    </div>
+
+    <!-- Step 3: Details -->
+    <div class="step" id="s3">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" id="f-name" placeholder="Jane Smith" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="tel" id="f-phone" placeholder="+44 7700 000000" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label>Email (for confirmation)</label>
+        <input type="email" id="f-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Special requests <span style="font-weight:400;text-transform:none">(optional)</span></label>
+        <textarea id="f-notes" placeholder="Dietary requirements, birthday celebrations, accessibility needs&hellip;"></textarea>
+      </div>
+      <div class="err" id="e3"></div>
+      <button class="btn btn-primary" id="n3">Confirm booking &rarr;</button>
+      <button class="btn btn-ghost" id="b2">&larr; Back</button>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div class="step" id="s4">
+      <div class="tick">&#10003;</div>
+      <h2 style="text-align:center;margin-bottom:20px;color:var(--primary);font-size:22px">You&rsquo;re booked!</h2>
+      <div id="conf-body"></div>
+      <p class="ref" id="conf-ref"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+const state = { date: '', covers: 0, slot: '' };
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+(function init() {
+  const today = new Date().toISOString().split('T')[0];
+  const di = document.getElementById('date-in');
+  di.min = today;
+  di.value = today;
+  state.date = today;
+
+  // Max date: 60 days out
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 60);
+  di.max = maxDate.toISOString().split('T')[0];
+
+  const grid = document.getElementById('size-grid');
+  for (let i = 1; i <= 12; i++) {
+    const b = document.createElement('button');
+    b.className = 'sz';
+    b.textContent = i < 12 ? i : '12+';
+    b.dataset.n = i;
+    b.addEventListener('click', () => {
+      state.covers = i;
+      document.querySelectorAll('.sz').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+    });
+    grid.appendChild(b);
+  }
+})();
+
+// ── Progress indicator ────────────────────────────────────────────────────────
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById(`s${i}`).className = 'step' + (i === n ? ' on' : '');
+    const p = document.getElementById(`p${i}`);
+    p.className = 'prog-seg' + (i < n ? ' done' : i === n ? ' active' : '');
+  }
+}
+
+function showErr(n, msg) {
+  const el = document.getElementById(`e${n}`);
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// ── Step 1 → 2 ───────────────────────────────────────────────────────────────
+document.getElementById('n1').addEventListener('click', async () => {
+  state.date = document.getElementById('date-in').value;
+  if (!state.date) { showErr(1, 'Please select a date.'); return; }
+  if (!state.covers) { showErr(1, 'Please select your party size.'); return; }
+  showErr(1, '');
+  setStep(2);
+  await loadSlots();
+});
+
+async function loadSlots() {
+  const wrap = document.getElementById('slots-wrap');
+  wrap.innerHTML = '<div class="loading">Checking availability&hellip;</div>';
+  document.getElementById('n2').disabled = true;
+  state.slot = '';
+
+  try {
+    const res = await fetch(`${API}/api/availability?date=${state.date}`);
+    const { slots } = await res.json();
+
+    if (!slots || slots.length === 0) {
+      wrap.innerHTML = '<div class="loading">No slots available for this date.</div>';
+      return;
+    }
+    const open = slots.filter(s => s.available >= state.covers);
+    if (!open.length) {
+      wrap.innerHTML = `<div class="loading">No availability for ${state.covers} guests on this date. Try another day.</div>`;
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'slots-grid';
+    for (const s of slots) {
+      const btn = document.createElement('button');
+      btn.className = 'slot';
+      btn.disabled = s.available < state.covers;
+      const sub = s.available > 0 && s.available < 8 ? `${s.available} left` : '';
+      btn.innerHTML = `${s.time}<span class="slot-sub">${sub}</span>`;
+      if (!btn.disabled) {
+        btn.addEventListener('click', () => {
+          state.slot = s.time;
+          document.querySelectorAll('.slot').forEach(x => x.classList.remove('sel'));
+          btn.classList.add('sel');
+          document.getElementById('n2').disabled = false;
+        });
+      }
+      grid.appendChild(btn);
+    }
+    wrap.innerHTML = '';
+    wrap.appendChild(grid);
+  } catch {
+    wrap.innerHTML = '<div class="loading">Could not load availability. Please try again.</div>';
+  }
+}
+
+document.getElementById('n2').addEventListener('click', () => {
+  if (!state.slot) { showErr(2, 'Please select a time.'); return; }
+  showErr(2, '');
+  setStep(3);
+});
+
+document.getElementById('b1').addEventListener('click', () => setStep(1));
+document.getElementById('b2').addEventListener('click', () => setStep(2));
+
+// ── Step 3 → 4 ───────────────────────────────────────────────────────────────
+document.getElementById('n3').addEventListener('click', async () => {
+  const name  = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const notes = document.getElementById('f-notes').value.trim();
+
+  if (!name)  { showErr(3, 'Please enter your name.'); return; }
+  if (!phone) { showErr(3, 'Please enter a phone number.'); return; }
+  if (!email || !email.includes('@')) { showErr(3, 'Please enter a valid email address.'); return; }
+  showErr(3, '');
+
+  const btn = document.getElementById('n3');
+  btn.disabled = true;
+  btn.textContent = 'Confirming…';
+
+  try {
+    const res = await fetch(`${API}/api/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: state.date, time_slot: state.slot, covers: state.covers, name, phone, email, notes }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      showErr(3, data.error || 'Booking failed. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Confirm booking →';
+      return;
+    }
+
+    const { booking: b } = data;
+    const dateFmt = new Date(b.date + 'T12:00:00').toLocaleDateString('en-GB', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    });
+    const rows = [
+      ['Name', b.name],
+      ['Date', dateFmt],
+      ['Time', b.time_slot],
+      ['Party', `${b.covers} ${b.covers === 1 ? 'guest' : 'guests'}`],
+    ];
+    if (b.notes) rows.push(['Notes', b.notes]);
+
+    document.getElementById('conf-body').innerHTML = rows.map(([l, v]) =>
+      `<div class="conf-row"><span class="conf-label">${l}</span><span class="conf-val">${v}</span></div>`
+    ).join('');
+    document.getElementById('conf-ref').textContent = `Reference: ${b.id}`;
+    setStep(4);
+  } catch {
+    showErr(3, 'Network error. Please check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Confirm booking →';
+  }
+});
+</script>
+</body>
+</html>
